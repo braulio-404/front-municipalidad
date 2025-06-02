@@ -1,0 +1,92 @@
+<div class="estadisticas-container">
+  <h2>Estadísticas de Postulaciones</h2>
+
+  <div class="filtros-container">
+    <div class="filtro">
+      <label>Nombre Postulación:</label>
+      <div class="input-container">
+        <input 
+          type="text" 
+          [(ngModel)]="terminoBusqueda" 
+          placeholder="Ingrese una Postulación" 
+          (keyup)="filtrarPostulaciones()">
+        <button *ngIf="terminoBusqueda" class="btn-clear" (click)="limpiarFiltros()">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="filtro fecha">
+      <label>Fecha Inicio:</label>
+      <input 
+        type="date" 
+        [ngModel]="fechaInicio" 
+        (ngModelChange)="fechaInicio = $event; filtrarPostulaciones()">
+    </div>
+
+    <div class="filtro fecha">
+      <label>Fecha Término:</label>
+      <input 
+        type="date" 
+        [ngModel]="fechaTermino" 
+        (ngModelChange)="fechaTermino = $event; filtrarPostulaciones()">
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    {{ error }}
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th class="postulacion-header">Postulación</th>
+          <th class="postulantes-header">Postulantes</th>
+          <th class="fecha-header">Fecha Inicio</th>
+          <th class="fecha-header">Fecha Fin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let postulacion of postulacionesFiltradas">
+          <td class="cargo-cell">{{ postulacion.cargo }}</td>
+          <td class="postulantes-cell">{{ postulacion.cantidadPostulantes }}</td>
+          <td class="fecha-cell">{{ formatearFecha(postulacion.fechaInicio) }}</td>
+          <td class="fecha-cell">{{ formatearFecha(postulacion.fechaTermino) }}</td>
+        </tr>
+        <tr *ngIf="postulacionesFiltradas.length === 0 && !cargando">
+          <td colspan="4" class="no-results">No se encontraron postulaciones con los criterios de búsqueda.</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="cargando" class="loading-container">
+      <div class="spinner"></div>
+      <span>Cargando información...</span>
+    </div>
+  </div>
+
+  <div class="graficos-container">
+    <div class="grafico-item">
+      <h3>Postulantes</h3>
+      <div class="grafico-edad">
+        <!-- Aquí se incluirá el gráfico de barras -->
+        <canvas id="graficoEdad"></canvas>
+        <div *ngIf="!isBrowser" class="graficos-message">
+          Los gráficos se mostrarán en el navegador
+        </div>
+      </div>
+    </div>
+
+    <div class="grafico-item">
+      <h3>Postulantes</h3>
+      <div class="grafico-profesionales">
+        <!-- Aquí se incluirá el gráfico circular -->
+        <canvas id="graficoProfesionales"></canvas>
+        <div *ngIf="!isBrowser" class="graficos-message">
+          Los gráficos se mostrarán en el navegador
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

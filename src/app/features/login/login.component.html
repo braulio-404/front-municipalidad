@@ -1,0 +1,66 @@
+<div class="login-container">
+  <!-- Panel izquierdo con el logo -->
+  <div class="login-image">
+    <div class="login-placeholder">
+      <div class="logo-container">
+        <div class="logo-img">
+          <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo-png">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Panel derecho con el formulario -->
+  <div class="login-form">
+    <div class="form-header">
+      <h2>Iniciar Sesión</h2>
+      <p class="welcome-text">Bienvenido al sistema municipal</p>
+    </div>
+    
+    <div class="error-message" *ngIf="mostrarError">
+      <i class="material-icons error-icon">error_outline</i>
+      {{ mensajeError }}
+    </div>
+    
+    <form (ngSubmit)="iniciarSesion()" [formGroup]="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-container">
+          <i class="material-icons input-icon">email</i>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            placeholder="Ingrese su correo electrónico">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="input-container">
+          <i class="material-icons input-icon">lock</i>
+          <input 
+            [type]="mostrarPassword ? 'text' : 'password'" 
+            id="password" 
+            formControlName="password" 
+            placeholder="Ingrese su contraseña">
+          <i class="material-icons toggle-password" (click)="togglePasswordVisibility()">
+            {{ mostrarPassword ? 'visibility_off' : 'visibility' }}
+          </i>
+        </div>
+      </div>
+      
+      <div class="login-actions">
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
+          <span>Iniciar Sesión</span>
+          <i class="material-icons btn-icon">arrow_forward</i>
+        </button>
+        
+      </div>
+      
+      <div class="recuperar-link">
+        <a (click)="recuperarContrasena()">¿Olvidaste tu contraseña?</a>
+      </div>
+    </form>
+  </div>
+</div> 

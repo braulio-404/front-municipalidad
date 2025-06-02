@@ -1,0 +1,179 @@
+<div class="formulario-container">
+  <h2>{{ getTitulo() }}</h2>
+
+  <form [formGroup]="formularioForm" (ngSubmit)="guardarFormulario()">
+    <div class="form-content">
+      <div class="form-left">
+        <div class="form-group">
+          <label for="cargo">Cargo:</label>
+          <input 
+            id="cargo" 
+            type="text" 
+            formControlName="cargo" 
+            placeholder="Ingrese el Cargo de Postulación">
+          <div *ngIf="formularioForm.get('cargo')?.invalid && formularioForm.get('cargo')?.touched" class="error-msg">
+            Campo obligatorio
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaInicio">Fecha Inicio:</label>
+          <div class="date-input-container">
+            <input 
+              id="fechaInicio" 
+              type="date" 
+              formControlName="fechaInicio">
+            <i class="material-icons">calendar_today</i>
+          </div>
+          <div *ngIf="formularioForm.get('fechaInicio')?.invalid && formularioForm.get('fechaInicio')?.touched" class="error-msg">
+            Campo obligatorio
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaTermino">Fecha Término:</label>
+          <div class="date-input-container">
+            <input 
+              id="fechaTermino" 
+              type="date" 
+              formControlName="fechaTermino">
+            <i class="material-icons">calendar_today</i>
+          </div>
+          <div *ngIf="formularioForm.get('fechaTermino')?.invalid && formularioForm.get('fechaTermino')?.touched" class="error-msg">
+            Campo obligatorio
+          </div>
+        </div>
+
+        <div class="form-group textarea-group">
+          <label for="descripcion">Descripción del Cargo:</label>
+          <textarea 
+            id="descripcion" 
+            formControlName="descripcion" 
+            rows="6"
+            placeholder="Buscamos un Ingeniero Civil con especialización en Construcción, con amplia experiencia para liderar, controlar y supervisar proyectos específicos de gran envergadura. Esta persona se encargará de supervisar la integridad técnica, calidad y cumplimiento de estándares en todos los equipos del proyecto."></textarea>
+          <div *ngIf="formularioForm.get('descripcion')?.invalid && formularioForm.get('descripcion')?.touched" class="error-msg">
+            Campo obligatorio
+          </div>
+        </div>
+
+        <div class="form-group textarea-group">
+          <label for="requisitos">Requisitos del Cargo:</label>
+          <textarea 
+            id="requisitos" 
+            formControlName="requisitos" 
+            rows="6"
+            placeholder="Título universitario en Ingeniería Civil con especialización en Construcción.
+Mínimo 12 años de experiencia profesional comprobada en el área (preferido en Infraestructura viales).
+Capacidad para organizar, liderar y desarrollar múltiples proyectos simultáneamente.
+Conocimiento avanzado en herramientas y software habituales de Ingeniería (MS Office, Project, AutoCad). Habilidades de liderazgo, comunicación efectiva y pensamiento estratégico."></textarea>
+          <div *ngIf="formularioForm.get('requisitos')?.invalid && formularioForm.get('requisitos')?.touched" class="error-msg">
+            Campo obligatorio
+          </div>
+        </div>
+          <!-- Selector de Estado sólo en modo editar -->
+          <div *ngIf="modo === 'editar'" class="form-group">
+            <label for="estado">Estado de Postulación:</label>
+            <select id="estado" formControlName="estado" class="form-select">
+              <option *ngFor="let estado of estadosPostulacion" [value]="estado.valor">
+                {{ estado.texto }}
+              </option>
+            </select>
+            <div *ngIf="formularioForm.get('estado')?.invalid && formularioForm.get('estado')?.touched" class="error-msg">
+              Campo obligatorio
+            </div>
+          </div>
+      </div>
+
+      <div class="form-right">
+        <div class="requisitos-container">
+          <h3>Requisitos</h3>
+          
+          <!-- Buscador de requisitos -->
+          <div class="requisitos-search">
+            <div class="search-input-container">
+              <input 
+                type="text" 
+                [(ngModel)]="terminoBusqueda" 
+                [ngModelOptions]="{standalone: true}"
+                placeholder="Buscar requisito..." 
+                (keyup)="buscarRequisitos()">
+              <button *ngIf="terminoBusqueda" type="button" class="btn-clear" (click)="limpiarBusqueda()">
+                <i class="material-icons">close</i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Lista de requisitos paginados -->
+          <div formGroupName="requisitosSeleccionados" class="requisitos-grid">
+            <div *ngFor="let requisito of requisitosVisibles" 
+                 class="requisito-item" 
+                 [class.requisito-seleccionado]="isRequisitoSeleccionado(requisito)"
+                 (click)="toggleRequisito(requisito)">
+              <div class="requisito-header">
+                <label>{{ requisito.nombre }}</label>
+                <span class="requisito-disponible">
+                  {{ isRequisitoSeleccionado(requisito) ? 'Seleccionado' : 'Disponible' }}
+                </span>
+              </div>
+              <div class="checkbox-container">
+                <input 
+                  type="checkbox" 
+                  [id]="'req_' + requisito.id" 
+                  [formControlName]="getFormControlName(requisito)"
+                  (click)="$event.stopPropagation()">
+                <span class="checkbox-icon"></span>
+              </div>
+            </div>
+            
+            <!-- Mensaje cuando no hay resultados -->
+            <div *ngIf="requisitosVisibles.length === 0" class="no-requisitos">
+              No se encontraron requisitos con ese criterio de búsqueda.
+            </div>
+          </div>
+          
+          <!-- Paginador -->
+          <div *ngIf="totalPaginas > 1" class="paginador">
+            <button 
+              type="button" 
+              class="btn-pagina" 
+              [disabled]="paginaActual === 1"
+              (click)="cambiarPagina(paginaActual - 1)">
+              <i class="material-icons">chevron_left</i>
+            </button>
+            
+            <span class="info-pagina">
+              Página {{ paginaActual }} de {{ totalPaginas }}
+            </span>
+            
+            <button 
+              type="button" 
+              class="btn-pagina" 
+              [disabled]="paginaActual === totalPaginas"
+              (click)="cambiarPagina(paginaActual + 1)">
+              <i class="material-icons">chevron_right</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="btn-cancelar" 
+        (click)="onCancelar()">
+        Cancelar
+      </button>
+      <button 
+        *ngIf="modo !== 'ver'" 
+        type="submit" 
+        class="btn-guardar" 
+        [disabled]="formularioForm.invalid || cargando">
+        {{ modo === 'nuevo' ? 'Crear Postulación' : 'Actualizar Postulación' }}
+      </button>
+    </div>
+
+    <div *ngIf="error" class="error-container">{{ error }}</div>
+    <div *ngIf="cargando" class="loading-container">Procesando...</div>
+  </form>
+</div> 

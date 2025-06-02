@@ -29,6 +29,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "proyecto-muni-frontend/src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -93,6 +103,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "proyecto-muni-frontend/src/assets",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -103,5 +123,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "bc5231d6-d2f3-4568-af36-4839f28213c4"
   }
 }
