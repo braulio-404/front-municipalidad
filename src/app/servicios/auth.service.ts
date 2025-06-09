@@ -64,7 +64,6 @@ export class AuthService extends BaseApiService {
       );
   }
 
-  // Obtener perfil del usuario
   getProfile(): Observable<UserProfile> {
     return this.http.get<any>(`${this.apiUrl}/auth/profile`)
       .pipe(
