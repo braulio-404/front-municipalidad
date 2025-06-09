@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://back-municipalidad-production.up.railway.app/api'
+  apiUrl: 'https://back-municipalidad-production.up.railway.app/api'
 }; 
