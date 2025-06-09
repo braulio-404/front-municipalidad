@@ -1,16 +1,5 @@
 <div class="container">
-  <!-- Mostrar el formulario de postulación cuando sea necesario -->
-  <ng-container *ngIf="mostrarFormulario; else listaFormularios">
-    <app-postulacion-form
-      [modo]="modoFormulario"
-      [formularioId]="formularioSeleccionadoId"
-      (formularioGuardado)="onFormularioGuardado()"
-      (cancelar)="onCancelarFormulario()">
-    </app-postulacion-form>
-  </ng-container>
-  
   <!-- Lista de formularios -->
-  <ng-template #listaFormularios>
     <h1>Gestión de Formularios</h1>
 
     <div class="filtros-container">
@@ -47,17 +36,19 @@
       
       <div class="filtro-accion">
         <button class="btn-filtrar" (click)="filtrarFormularios()">Filtrar</button>
+        <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
       </div>
     </div>
 
     <div class="tabla-container">
-      <table>
+      <table *ngIf="formularios.length > 0; else noResultados">
         <thead>
           <tr>
             <th>Postulación</th>
             <th>Fecha Inicio</th>
             <th>Fecha Término</th>
             <th>Estado</th>
+            <th>Requisitos</th>
             <th>Gestión</th>
           </tr>
         </thead>
@@ -67,6 +58,15 @@
             <td>{{ form.fechaInicio | date:'dd/MM/yyyy' }}</td>
             <td>{{ form.fechaTermino | date:'dd/MM/yyyy' }}</td>
             <td>{{ form.estado }}</td>
+            <td class="requisitos-cell">
+              <span *ngIf="form.requisitosSeleccionados && form.requisitosSeleccionados.length > 0; else sinRequisitos" 
+                    [title]="obtenerNombresRequisitos(form.requisitosSeleccionados)">
+                {{ form.requisitosSeleccionados.length }} requisito(s)
+              </span>
+              <ng-template #sinRequisitos>
+                <span class="sin-requisitos">Sin requisitos</span>
+              </ng-template>
+            </td>
             <td class="acciones">
               <button class="btn-accion" title="Ver detalles" (click)="verDetalleFormulario(form.id || 0)">
                 <img src="assets/images/ver.svg" alt="Ver">
@@ -81,10 +81,16 @@
           </tr>
         </tbody>
       </table>
+      
+      <ng-template #noResultados>
+        <div class="no-resultados">
+          <p>No se encontraron formularios que coincidan con los filtros aplicados.</p>
+          <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">Limpiar filtros</button>
+        </div>
+      </ng-template>
     </div>
 
     <div class="acciones-container">
       <button class="btn-crear" (click)="crearFormulario()">Crear Postulación</button>
     </div>
-  </ng-template>
 </div> 

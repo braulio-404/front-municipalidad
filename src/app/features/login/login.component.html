@@ -51,9 +51,11 @@
       </div>
       
       <div class="login-actions">
-        <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
-          <span>Iniciar Sesión</span>
-          <i class="material-icons btn-icon">arrow_forward</i>
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid || cargando">
+          <span *ngIf="!cargando">Iniciar Sesión</span>
+          <span *ngIf="cargando">Iniciando sesión...</span>
+          <i class="material-icons btn-icon" *ngIf="!cargando">arrow_forward</i>
+          <i class="material-icons btn-icon spinning" *ngIf="cargando">hourglass_empty</i>
         </button>
         
       </div>

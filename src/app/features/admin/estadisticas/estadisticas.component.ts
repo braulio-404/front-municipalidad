@@ -2,17 +2,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormulariosService } from '../../../servicios/formularios.service';
+import { PostulacionesService } from '../../../servicios/postulaciones.service';
+import { UsuariosService } from '../../../servicios/usuarios.service';
+import { EstadisticasAdminService } from '../../../servicios/estadisticas-admin.service';
 import { Formulario } from '../../../interfaces/formulario.interface';
+import { EstadisticaPostulacion } from '../../../interfaces/estadisticas.interface';
 import { Chart, registerables } from 'chart.js';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 
 // Registramos todos los componentes de Chart.js
 Chart.register(...registerables);
-
-interface EstadisticaPostulacion extends Formulario {
-  cantidadPostulantes: number;
-}
 
 @Component({
   selector: 'app-estadisticas',
@@ -45,7 +45,10 @@ export class EstadisticasComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
 
   constructor(
-    private formulariosService: FormulariosService
+    private formulariosService: FormulariosService,
+    private postulacionesService: PostulacionesService,
+    private usuariosService: UsuariosService,
+    private estadisticasAdminService: EstadisticasAdminService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -56,12 +59,13 @@ export class EstadisticasComponent implements OnInit {
 
   cargarPostulaciones(): void {
     this.cargando = true;
-    this.formulariosService.getFormularios().subscribe({
+    // Usar el nuevo método con conteo real de postulantes
+    this.estadisticasAdminService.getFormulariosConConteoEstadisticas().subscribe({
       next: (data) => {
-        // Aquí simulamos datos de cantidad de postulantes para cada postulación
+        // Convertir formularios con conteo a EstadisticaPostulacion
         this.postulaciones = data.map(p => ({
           ...p,
-          cantidadPostulantes: Math.floor(Math.random() * 20) + 5 // Simulamos entre 5 y 24 postulantes
+          cantidadPostulantes: p.cantidadPostulantes // Usar el conteo real
         }));
         this.postulacionesFiltradas = [...this.postulaciones];
         this.cargando = false;
@@ -74,7 +78,7 @@ export class EstadisticasComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Error al cargar postulaciones', error);
+        console.error('Error al cargar formularios con conteo', error);
         this.error = 'Error al cargar datos de estadísticas';
         this.cargando = false;
       }

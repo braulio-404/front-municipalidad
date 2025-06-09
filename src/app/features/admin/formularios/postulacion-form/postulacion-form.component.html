@@ -1,5 +1,11 @@
 <div class="formulario-container">
-  <h2>{{ getTitulo() }}</h2>
+  <div class="header-container">
+    <button type="button" class="btn-volver" (click)="onVolver()">
+      <i class="material-icons">arrow_back</i>
+      Volver
+    </button>
+    <h2>{{ getTitulo() }}</h2>
+  </div>
 
   <form [formGroup]="formularioForm" (ngSubmit)="guardarFormulario()">
     <div class="form-content">
@@ -86,10 +92,15 @@ Conocimiento avanzado en herramientas y software habituales de Ingeniería (MS O
 
       <div class="form-right">
         <div class="requisitos-container">
-          <h3>Requisitos</h3>
+          <h3>Requisitos de Postulación</h3>
+          <div class="info-requisitos">
+            <p *ngIf="modo === 'nuevo'"><strong>Seleccione los requisitos para esta postulación</strong></p>
+            <p *ngIf="modo === 'editar'"><strong>Todos los requisitos disponibles - Los marcados están seleccionados para esta postulación</strong></p>
+            <p *ngIf="modo === 'ver'"><strong>Requisitos seleccionados para esta postulación</strong></p>
+          </div>
           
           <!-- Buscador de requisitos -->
-          <div class="requisitos-search">
+          <div *ngIf="modo === 'nuevo' || modo === 'editar'" class="requisitos-search">
             <div class="search-input-container">
               <input 
                 type="text" 

@@ -1,0 +1,225 @@
+<div class="container">
+  <!-- Mostrar el formulario de requisito cuando sea necesario -->
+  <ng-container *ngIf="mostrarFormulario; else listaDatos">
+    <div class="formulario-container">
+      <div class="header-container">
+        <button type="button" class="btn-volver" (click)="volverALista()">
+          <i class="material-icons">arrow_back</i>
+          Volver
+        </button>
+        <h2 *ngIf="modoFormulario === 'nuevo'">Crear Nuevo Requisito</h2>
+        <h2 *ngIf="modoFormulario === 'editar'">Editar Requisito</h2>
+        <h2 *ngIf="modoFormulario === 'ver'">Ver Requisito</h2>
+      </div>
+      
+      <form (ngSubmit)="guardarRequisito()" #requisitoForm="ngForm">
+        <div class="form-group">
+          <label for="nombre">Nombre del Requisito *</label>
+          <input 
+            id="nombre" 
+            type="text" 
+            [(ngModel)]="requisitoActual.nombre" 
+            name="nombre"
+            placeholder="Ingrese el nombre del requisito"
+            [readonly]="modoFormulario === 'ver'"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <textarea 
+            id="descripcion" 
+            [(ngModel)]="requisitoActual.descripcion" 
+            name="descripcion"
+            placeholder="Ingrese una descripción del requisito"
+            [readonly]="modoFormulario === 'ver'"
+            rows="4">
+          </textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo">Tipo de Requisito *</label>
+          <select 
+            id="tipo" 
+            [(ngModel)]="requisitoActual.tipo" 
+            name="tipo"
+            [disabled]="modoFormulario === 'ver'"
+            required>
+            <option value="">Seleccione un tipo</option>
+            <option value="documento">Documento</option>
+            <option value="certificado">Certificado</option>
+            <option value="titulo">Título</option>
+            <option value="experiencia">Experiencia</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="obligatorio">
+            <input 
+              id="obligatorio" 
+              type="checkbox" 
+              [(ngModel)]="requisitoActual.obligatorio" 
+              name="obligatorio"
+              [disabled]="modoFormulario === 'ver'">
+            Requisito Obligatorio
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="activo">
+            <input 
+              id="activo" 
+              type="checkbox" 
+              [(ngModel)]="requisitoActual.activo" 
+              name="activo"
+              [disabled]="modoFormulario === 'ver'">
+            Activo
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" (click)="cancelarFormulario()">
+            {{ modoFormulario === 'ver' ? 'Cerrar' : 'Cancelar' }}
+          </button>
+          <button 
+            type="submit" 
+            class="btn-guardar" 
+            *ngIf="modoFormulario !== 'ver'"
+            [disabled]="!requisitoForm.form.valid">
+            {{ modoFormulario === 'nuevo' ? 'Crear' : 'Actualizar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+  
+  <!-- Lista de datos configurables -->
+  <ng-template #listaDatos>
+    <h1>Gestión de Datos Configurables</h1>
+
+    <!-- Pestañas para diferentes tipos de datos -->
+    <div class="tabs-container">
+      <button 
+        class="tab" 
+        [class.active]="tipoSeleccionado === 'requisitos'"
+        (click)="seleccionarTipo('requisitos')">
+        Requisitos
+      </button>
+      <button 
+        class="tab" 
+        [class.active]="tipoSeleccionado === 'categorias'"
+        (click)="seleccionarTipo('categorias')">
+        Categorías
+      </button>
+      <button 
+        class="tab" 
+        [class.active]="tipoSeleccionado === 'estados'"
+        (click)="seleccionarTipo('estados')">
+        Estados
+      </button>
+    </div>
+
+    <!-- Sección de Requisitos -->
+    <div *ngIf="tipoSeleccionado === 'requisitos'" class="seccion-datos">
+      <div class="filtros-container">
+        <div class="filtro">
+          <label for="nombreRequisito">Nombre:</label>
+          <input 
+            id="nombreRequisito" 
+            type="text" 
+            [(ngModel)]="filtroNombre" 
+            name="filtroNombre"
+            placeholder="Buscar por nombre">
+        </div>
+
+        <div class="filtro">
+          <label for="tipoRequisito">Tipo:</label>
+          <select id="tipoRequisito" [(ngModel)]="filtroTipo" name="filtroTipo">
+            <option value="">Todos los tipos</option>
+            <option value="documento">Documento</option>
+            <option value="certificado">Certificado</option>
+            <option value="titulo">Título</option>
+            <option value="experiencia">Experiencia</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="filtro estado">
+          <label for="estadoRequisito">Estado:</label>
+          <select id="estadoRequisito" [(ngModel)]="filtroEstado" name="filtroEstado">
+            <option value="">Todos</option>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+        
+        <div class="filtro-accion">
+          <button class="btn-filtrar" (click)="filtrarRequisitos()">Filtrar</button>
+          <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+        </div>
+      </div>
+
+      <div class="tabla-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Obligatorio</th>
+              <th>Estado</th>
+              <th>Fecha Creación</th>
+              <th>Gestión</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let requisito of requisitosFiltrados">
+              <td>{{ requisito.nombre }}</td>
+              <td>{{ requisito.tipo | titlecase }}</td>
+              <td>
+                <span class="badge" [class.obligatorio]="requisito.obligatorio">
+                  {{ requisito.obligatorio ? 'Sí' : 'No' }}
+                </span>
+              </td>
+              <td>
+                <span class="badge" [class.activo]="requisito.activo">
+                  {{ requisito.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>{{ requisito.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+              <td class="acciones">
+                <button class="btn-accion" title="Ver detalles" (click)="verRequisito(requisito.id)">
+                  <img src="assets/images/ver.svg" alt="Ver">
+                </button>
+                <button class="btn-accion" title="Editar requisito" (click)="editarRequisito(requisito.id)">
+                  <img src="assets/images/editar.svg" alt="Editar">
+                </button>
+                <button class="btn-accion" title="Eliminar requisito" (click)="eliminarRequisito(requisito.id)">
+                  <img src="assets/images/eliminar.svg" alt="Eliminar">
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="acciones-container">
+        <button class="btn-crear" (click)="crearRequisito()">Crear Requisito</button>
+      </div>
+    </div>
+
+    <!-- Sección de Categorías (placeholder) -->
+    <div *ngIf="tipoSeleccionado === 'categorias'" class="seccion-datos">
+      <div class="content-message">
+        <p>Gestión de Categorías - En desarrollo</p>
+      </div>
+    </div>
+
+    <!-- Sección de Estados (placeholder) -->
+    <div *ngIf="tipoSeleccionado === 'estados'" class="seccion-datos">
+      <div class="content-message">
+        <p>Gestión de Estados - En desarrollo</p>
+      </div>
+    </div>
+  </ng-template>
+</div> 

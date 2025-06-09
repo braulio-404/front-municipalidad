@@ -1,0 +1,118 @@
+<div class="postulaciones-container">
+  <!-- Header con título y filtros -->
+  <div class="header-section">
+    <h1 class="titulo-principal">Postulaciones Disponibles</h1>
+    
+    <div class="filtros-container">
+      <select 
+        class="filtro-select" 
+        [(ngModel)]="filtroOrden" 
+        (change)="filtrarPorOrden(filtroOrden)"
+        [disabled]="cargando">
+        <option value="recientes">Más recientes</option>
+        <option value="alfabetico">Alfabético</option>
+      </select>
+      
+      <div class="busqueda-container">
+        <input 
+          type="text" 
+          class="input-busqueda" 
+          placeholder="Nombre Postulación"
+          [(ngModel)]="filtroNombre"
+          (input)="buscarPorNombre()"
+          [disabled]="cargando">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      
+      <button 
+        *ngIf="error" 
+        class="btn-recargar"
+        (click)="recargarPostulaciones()"
+        [disabled]="cargando">
+        <i class="fas fa-refresh"></i> Reintentar
+      </button>
+    </div>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="cargando" class="estado-carga">
+    <div class="spinner"></div>
+    <p>Cargando postulaciones...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error && !cargando" class="estado-error">
+    <div class="icono-error">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h2>Error al cargar postulaciones</h2>
+    <p>{{ error }}</p>
+    <button class="btn-reintentar" (click)="recargarPostulaciones()">
+      <i class="fas fa-refresh"></i> Reintentar
+    </button>
+  </div>
+
+  <!-- Lista de postulaciones -->
+  <div class="postulaciones-lista" *ngIf="tienePostulacionesActivas">
+    <div 
+      *ngFor="let postulacion of postulaciones" 
+      class="postulacion-card"
+      [ngClass]="{ 'postulacion-vencida': postulacion.estado === 'Inactivo' }">
+      
+      <!-- Icono y título -->
+      <div class="postulacion-header">
+        <div class="icono-container">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <h3 class="postulacion-titulo">{{ postulacion.cargo }}</h3>
+        <span *ngIf="postulacion.estado === 'Inactivo'" class="etiqueta-vencida">
+          <i class="fas fa-clock"></i> Cerrada
+        </span>
+      </div>
+      
+      <!-- Descripción -->
+      <div class="postulacion-descripcion">
+        <p>{{ postulacion.descripcion }}</p>
+      </div>
+      
+      <!-- Botón de postular -->
+      <div class="postulacion-acciones">
+        <button 
+          *ngIf="postulacion.estado === 'Activo' && postulacion.id"
+          class="btn-postular"
+          (click)="postular(postulacion.id!)"
+          [routerLink]="['/postulacion/formulario', postulacion.id]">
+          Postularme
+        </button>
+        <button 
+          *ngIf="postulacion.estado === 'Inactivo'"
+          class="btn-vencida"
+          disabled>
+          Postulación cerrada
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado cuando no hay postulaciones activas -->
+  <div *ngIf="!tienePostulacionesActivas && !cargando && !error" class="estado-vacio">
+    <div class="icono-vacio">
+      <i class="fas fa-clock"></i>
+    </div>
+    <h2 class="titulo-vacio">¡Postulaciones cerradas!</h2>
+    <p class="mensaje-vacio">Actualmente no hay postulaciones disponibles</p>
+    <div class="info-contacto">
+      <p>Mantente atento a nuestras redes sociales y página web para futuras convocatorias.</p>
+      <div class="contacto-detalles">
+        <div class="contacto-item">
+          <i class="fas fa-phone"></i>
+          <span>(56) 2 2345 6789</span>
+        </div>
+        <div class="contacto-item">
+          <i class="fas fa-envelope"></i>
+          <span>rrhh&#64;conchali.cl</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

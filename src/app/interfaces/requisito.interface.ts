@@ -1,5 +1,10 @@
 export interface Requisito {
   id: number;
   nombre: string;
-  // Puedes agregar más propiedades según tus necesidades
+  descripcion?: string;
+  tipo: 'documento' | 'certificado' | 'titulo' | 'experiencia' | 'otro';
+  obligatorio: boolean;
+  activo: boolean;
+  fechaCreacion: Date;
+  fechaModificacion?: Date;
 } 

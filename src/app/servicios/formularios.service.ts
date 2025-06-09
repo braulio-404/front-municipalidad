@@ -1,82 +1,104 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Formulario } from '../interfaces/formulario.interface';
-import { environment } from '../../environments/environment';
+import { BaseApiService } from './base-api.service';
+
+export interface CreateFormularioDto {
+  cargo: string;
+  descripcion?: string;
+  requisitos?: string;
+  fechaInicio: string;
+  fechaTermino: string;
+  estado?: 'Activo' | 'Inactivo';
+  requisitosSeleccionados?: number[];
+}
+
+export interface UpdateFormularioDto extends Partial<CreateFormularioDto> {}
+
+export interface FormularioConConteo extends Formulario {
+  cantidadPostulantes: number;
+}
+
+export interface DescargarDocumentosDto {
+  ids: number[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class FormulariosService {
-  private apiUrl = environment.apiUrl;
+export class FormulariosService extends BaseApiService {
 
-  constructor(private http: HttpClient) { }
-
-  // Obtener todos los formularios
-  getFormularios(): Observable<Formulario[]> {
-    // En producción, descomentar y usar:
-    // return this.http.get<Formulario[]>(`${this.apiUrl}/formularios`);
-    
-    // Datos de ejemplo mientras se implementa el backend
-    return of([
-      {
-        id: 1,
-        cargo: 'Ingeniero Civil Geotécnico',
-        fechaInicio: '2025-05-13',
-        fechaTermino: '2025-05-20',
-        estado: 'Activo'
-      },
-      {
-        id: 2,
-        cargo: 'Ingeniero de Soporte - Experiencia con ERP Odoo',
-        fechaInicio: '2025-05-13',
-        fechaTermino: '2025-05-21',
-        estado: 'Activo'
-      },
-      {
-        id: 3,
-        cargo: 'Ingeniero/a Comercial Freelance',
-        fechaInicio: '2025-01-13',
-        fechaTermino: '2025-02-21',
-        estado: 'Inactivo'
-      }
-    ]);
+  constructor(protected override http: HttpClient) {
+    super(http);
   }
 
+  // Métodos que coinciden con el controller de NestJS
+
   // Crear un nuevo formulario
-  crearFormulario(formulario: Formulario): Observable<Formulario> {
-    // En producción, descomentar y usar:
-    // return this.http.post<Formulario>(`${this.apiUrl}/formularios`, formulario);
-    
-    // Respuesta de ejemplo
-    return of({...formulario, id: Math.floor(Math.random() * 1000)});
+  create(createFormularioDto: CreateFormularioDto): Observable<Formulario> {
+    return this.http.post<Formulario>(`${this.apiUrl}/formularios`, createFormularioDto);
+  }
+
+  // Obtener todos los formularios
+  findAll(): Observable<Formulario[]> {
+    return this.http.get<Formulario[]>(`${this.apiUrl}/formularios`);
+  }
+
+  // Obtener todos los formularios con conteo optimizado
+  findAllConConteo(): Observable<FormularioConConteo[]> {
+    return this.http.get<FormularioConConteo[]>(`${this.apiUrl}/formularios/con-conteo`);
+  }
+
+  // Obtener un formulario por ID
+  findOne(id: number): Observable<Formulario> {
+    return this.http.get<Formulario>(`${this.apiUrl}/formularios/${id}`);
   }
 
   // Actualizar un formulario
-  actualizarFormulario(id: number, formulario: Formulario): Observable<Formulario> {
-    // En producción, descomentar y usar:
-    // return this.http.put<Formulario>(`${this.apiUrl}/formularios/${id}`, formulario);
-    
-    // Respuesta de ejemplo
-    return of({...formulario, id});
+  update(id: number, updateFormularioDto: UpdateFormularioDto): Observable<Formulario> {
+    return this.http.patch<Formulario>(`${this.apiUrl}/formularios/${id}`, updateFormularioDto);
   }
 
   // Eliminar un formulario
-  eliminarFormulario(id: number): Observable<any> {
-    // En producción, descomentar y usar:
-    // return this.http.delete(`${this.apiUrl}/formularios/${id}`);
-    
-    // Respuesta de ejemplo
-    return of({ success: true });
+  remove(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/formularios/${id}`);
   }
 
-  // Descargar documentos asociados a postulaciones
-  descargarDocumentos(ids: number[]): Observable<Blob> {
-    // En producción, descomentar y usar:
-    // return this.http.post(`${this.apiUrl}/formularios/descargar`, { ids }, { responseType: 'blob' });
-    
-    // Para simular la descarga en desarrollo
-    const dummyPdfBlob = new Blob(['Contenido PDF simulado'], { type: 'application/pdf' });
-    return of(dummyPdfBlob);
+  // Descargar documentos asociados a formularios
+  descargarDocumentos(descargarDocumentosDto: DescargarDocumentosDto): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/formularios/descargar`, descargarDocumentosDto, { responseType: 'blob' });
+  }
+
+  // Métodos de compatibilidad con código existente
+
+  // Obtener todos los formularios (método de compatibilidad)
+  getFormularios(): Observable<Formulario[]> {
+    return this.findAll();
+  }
+
+  // Obtener todos los formularios con conteo (método de compatibilidad)
+  getFormulariosConConteo(): Observable<FormularioConConteo[]> {
+    return this.findAllConConteo();
+  }
+
+  // Obtener un formulario por ID (método de compatibilidad)
+  getFormularioById(id: number): Observable<Formulario> {
+    return this.findOne(id);
+  }
+
+  // Crear un nuevo formulario (método de compatibilidad)
+  crearFormulario(formulario: CreateFormularioDto): Observable<Formulario> {
+    return this.create(formulario);
+  }
+
+  // Actualizar un formulario (método de compatibilidad)
+  actualizarFormulario(id: number, formulario: UpdateFormularioDto): Observable<Formulario> {
+    return this.update(id, formulario);
+  }
+
+  // Eliminar un formulario (método de compatibilidad)
+  eliminarFormulario(id: number): Observable<any> {
+    return this.remove(id);
   }
 } 

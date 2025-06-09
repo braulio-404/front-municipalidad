@@ -1,0 +1,189 @@
+<div class="formulario-container">
+  <!-- Header -->
+  <div class="header-section">
+    <button class="btn-volver" (click)="volver()">
+      <i class="fas fa-arrow-left"></i>
+      Volver
+    </button>
+    <h1 class="titulo-principal">{{ postulacionTitulo }}</h1>
+  </div>
+
+  <div class="contenido-formulario">
+    <!-- Sección izquierda: Formulario -->
+    <div class="seccion-formulario">
+      <div class="icono-formulario">
+        <i class="fas fa-user-friends"></i>
+      </div>
+
+      <form [formGroup]="formularioPostulacion" (ngSubmit)="enviarPostulacion()">
+        <!-- RUT -->
+        <div class="campo-grupo">
+          <label class="campo-label">RUT:</label>
+          <input 
+            type="text" 
+            class="campo-input" 
+            placeholder="Ingrese su RUT (ej: 12345678-9)"
+            formControlName="rut"
+            (blur)="formatearRut($event)"
+            (input)="onRutInput($event)"
+            maxlength="12"
+            [class.error]="formularioPostulacion.get('rut')?.invalid && formularioPostulacion.get('rut')?.touched">
+          <div class="campo-error" *ngIf="formularioPostulacion.get('rut')?.invalid && formularioPostulacion.get('rut')?.touched">
+            <span *ngIf="formularioPostulacion.get('rut')?.hasError('required')">RUT es requerido</span>
+            <span *ngIf="formularioPostulacion.get('rut')?.hasError('rutInvalido')">RUT inválido (ej: 12.345.678-9)</span>
+          </div>
+        </div>
+
+        <!-- Nombres -->
+        <div class="campo-grupo">
+          <label class="campo-label">Nombres:</label>
+          <input 
+            type="text" 
+            class="campo-input" 
+            placeholder="Ingrese sus Nombres"
+            formControlName="nombres"
+            [class.error]="formularioPostulacion.get('nombres')?.invalid && formularioPostulacion.get('nombres')?.touched">
+          <div class="campo-error" *ngIf="formularioPostulacion.get('nombres')?.invalid && formularioPostulacion.get('nombres')?.touched">
+            Nombres son requeridos
+          </div>
+        </div>
+
+        <!-- Apellido Paterno -->
+        <div class="campo-grupo">
+          <label class="campo-label">Apellido Paterno:</label>
+          <input 
+            type="text" 
+            class="campo-input" 
+            placeholder="Ingrese su Apellido Paterno"
+            formControlName="apellidoPaterno"
+            [class.error]="formularioPostulacion.get('apellidoPaterno')?.invalid && formularioPostulacion.get('apellidoPaterno')?.touched">
+          <div class="campo-error" *ngIf="formularioPostulacion.get('apellidoPaterno')?.invalid && formularioPostulacion.get('apellidoPaterno')?.touched">
+            Apellido Paterno es requerido
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="campo-grupo">
+          <label class="campo-label">Teléfono (opcional):</label>
+          <input 
+            type="tel" 
+            class="campo-input" 
+            placeholder="Ingrese su Teléfono"
+            formControlName="telefono"
+            [class.error]="formularioPostulacion.get('telefono')?.invalid && formularioPostulacion.get('telefono')?.touched">
+          <div class="campo-error" *ngIf="formularioPostulacion.get('telefono')?.invalid && formularioPostulacion.get('telefono')?.touched">
+            Formato de teléfono inválido (8-12 dígitos)
+          </div>
+        </div>
+
+        <!-- Correo Electrónico -->
+        <div class="campo-grupo">
+          <label class="campo-label">Correo Electrónico:</label>
+          <input 
+            type="email" 
+            class="campo-input" 
+            placeholder="Ingrese su Correo Electrónico"
+            formControlName="email"
+            [class.error]="formularioPostulacion.get('email')?.invalid && formularioPostulacion.get('email')?.touched">
+          <div class="campo-error" *ngIf="formularioPostulacion.get('email')?.invalid && formularioPostulacion.get('email')?.touched">
+            Correo electrónico válido es requerido
+          </div>
+        </div>
+
+        <!-- Documentos dinámicos basados en requisitos seleccionados -->
+        <div class="campo-grupo" *ngFor="let requisito of getRequisitosSeleccionados()">
+          <label class="campo-label">
+            {{ requisito.nombre }}
+            <span *ngIf="!requisito.obligatorio"> (opcional)</span>
+            <span *ngIf="requisito.obligatorio" class="obligatorio">*</span>
+          </label>
+          <div class="descripcion-requisito" *ngIf="requisito.descripcion">
+            {{ requisito.descripcion }}
+          </div>
+          <div class="upload-container">
+            <input 
+              type="file" 
+              [id]="'documento-upload-' + requisito.id" 
+              accept=".pdf,.doc,.docx"
+              (change)="onFileSelected($event, requisito.id)"
+              style="display: none;">
+            <button 
+              type="button" 
+              class="btn-upload" 
+              (click)="abrirSelectorDocumento(requisito.id)">
+              <i class="fas fa-upload"></i>
+              Subir {{ requisito.nombre }}
+            </button>
+            <span class="archivo-nombre" *ngIf="getArchivoSubido(requisito.id)">
+              {{ getNombreArchivo(requisito.id) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- reCAPTCHA -->
+        <div class="campo-grupo">
+          <div class="captcha-container">
+            <div class="captcha-mock" (click)="onCaptchaSuccess()">
+              <div class="captcha-checkbox" [class.checked]="captchaValido">
+                <i class="fas fa-check" *ngIf="captchaValido"></i>
+              </div>
+              <span>No soy un robot</span>
+              <div class="captcha-logo">
+                <span>reCAPTCHA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div class="mensaje-error" *ngIf="error">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{ error }}
+        </div>
+
+        <!-- Botón Enviar -->
+        <div class="boton-container">
+          <button 
+            type="submit" 
+            class="btn-postularme"
+            [disabled]="!formularioPostulacion.valid || !validarDocumentosObligatorios() || !captchaValido || cargando">
+            <span *ngIf="!cargando">Postularme</span>
+            <span *ngIf="cargando">
+              <i class="fas fa-spinner fa-spin"></i>
+              Enviando...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Sección derecha: Requisitos -->
+    <div class="seccion-requisitos">
+      <div class="icono-requisitos">
+        <i class="fas fa-clipboard-list"></i>
+      </div>
+      
+      <h3>Perfil deseado</h3>
+      <h4>Requisitos del cargo:</h4>
+      
+      <ul class="lista-requisitos">
+        <li *ngFor="let requisito of getRequisitos()">{{ requisito }}</li>
+      </ul>
+
+      <!-- Mostrar requisitos seleccionados si existen -->
+      <div *ngIf="getRequisitosSeleccionados().length > 0" class="requisitos-documentos">
+        <h4>Documentos requeridos:</h4>
+        <ul class="lista-requisitos-documentos">
+          <li *ngFor="let requisito of getRequisitosSeleccionados()" class="requisito-documento">
+            <div class="requisito-info">
+              <span class="requisito-nombre">{{ requisito.nombre }}</span>
+              <span class="requisito-tipo" [class]="'tipo-' + requisito.tipo">{{ requisito.tipo }}</span>
+              <span class="requisito-obligatorio" *ngIf="requisito.obligatorio">(Obligatorio)</span>
+            </div>
+            <div class="requisito-descripcion">{{ requisito.descripcion }}</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> 

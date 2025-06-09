@@ -1,8 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { FormulariosService } from '../../../../servicios/formularios.service';
 import { RequisitosService } from '../../../../servicios/requisitos.service';
@@ -21,10 +23,8 @@ import { Requisito } from '../../../../interfaces/requisito.interface';
   ]
 })
 export class PostulacionFormComponent implements OnInit, OnDestroy {
-  @Input() modo: 'nuevo' | 'editar' | 'ver' = 'nuevo';
-  @Input() formularioId: number | null = null;
-  @Output() formularioGuardado = new EventEmitter<void>();
-  @Output() cancelar = new EventEmitter<void>();
+  modo: 'nuevo' | 'editar' | 'ver' = 'nuevo';
+  formularioId: number | null = null;
 
   formularioForm!: FormGroup;
   cargando = false;
@@ -53,17 +53,21 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private formulariosService: FormulariosService,
-    private requisitosService: RequisitosService
+    private requisitosService: RequisitosService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
+    // Obtener modo y ID desde la ruta
+    this.modo = this.route.snapshot.data['modo'] || 'nuevo';
+    const id = this.route.snapshot.paramMap.get('id');
+    this.formularioId = id ? parseInt(id, 10) : null;
+
     this.inicializarFormulario();
     this.configurarBusqueda();
     this.cargarRequisitos();
-    
-    if (this.formularioId && this.modo !== 'nuevo') {
-      this.cargarDatosFormulario();
-    }
   }
 
   ngOnDestroy(): void {
@@ -101,21 +105,28 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
 
   private cargarRequisitos(): void {
     this.cargando = true;
-    this.requisitosService.getRequisitos().subscribe({
-      next: (requisitos) => {
-        this.requisitosCompletos = requisitos;
-        this.requisitosFiltrados = [...requisitos];
-        this.configurarRequisitosFormGroup(requisitos);
-        this.calcularTotalPaginas();
-        this.actualizarRequisitosVisibles();
-        this.cargando = false;
-      },
-      error: (error) => {
-        this.error = 'Error al cargar los requisitos';
-        console.error('Error al cargar requisitos:', error);
-        this.cargando = false;
-      }
-    });
+    
+    if (this.modo === 'nuevo') {
+      // Para formularios nuevos: mostrar solo requisitos activos de la DB
+      this.requisitosService.getRequisitosActivos().subscribe({
+        next: (requisitos) => {
+          this.requisitosCompletos = requisitos;
+          this.requisitosFiltrados = [...requisitos];
+          this.configurarRequisitosFormGroup(requisitos);
+          this.calcularTotalPaginas();
+          this.actualizarRequisitosVisibles();
+          this.cargando = false;
+        },
+        error: (error) => {
+          this.error = 'Error al cargar los requisitos';
+          console.error('Error al cargar requisitos:', error);
+          this.cargando = false;
+        }
+      });
+    } else {
+      // Para formularios existentes (ver/editar): cargar datos del formulario y todos los requisitos
+      this.cargarDatosFormulario();
+    }
   }
 
   private configurarRequisitosFormGroup(requisitos: Requisito[]): void {
@@ -124,16 +135,30 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
     requisitos.forEach(requisito => {
       const controlName = `req_${requisito.id}`;
       this.requisitosControlMap[requisito.id] = controlName;
-      requisitosGroup.addControl(controlName, this.fb.control(false));
+      
+      // Solo agregar el control si no existe
+      if (!requisitosGroup.get(controlName)) {
+        requisitosGroup.addControl(controlName, this.fb.control(false));
+      }
     });
 
-    // Suscripción a cambios en los requisitos seleccionados para reordenar
-    const valueChangesSub = requisitosGroup.valueChanges.subscribe(() => {
-      this.ordenarRequisitos();
-      this.actualizarRequisitosVisibles();
-    });
+    // Configurar suscripción solo una vez
+    this.configurarSuscripcionCambios();
+  }
+
+  private configurarSuscripcionCambios(): void {
+    // Solo configurar si no hay suscripciones previas del form
+    const existeSuscripcionForm = this.subscriptions.some(sub => sub.constructor.name === 'FormValueChangesSub');
     
-    this.subscriptions.push(valueChangesSub);
+    if (!existeSuscripcionForm) {
+      const requisitosGroup = this.formularioForm.get('requisitosSeleccionados') as FormGroup;
+      const valueChangesSub = requisitosGroup.valueChanges.subscribe(() => {
+        this.ordenarRequisitos();
+        this.actualizarRequisitosVisibles();
+      });
+      
+      this.subscriptions.push(valueChangesSub);
+    }
   }
 
   private calcularTotalPaginas(): void {
@@ -174,14 +199,40 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   private ejecutarBusqueda(termino: string): void {
     if (!termino.trim()) {
       this.requisitosFiltrados = [...this.requisitosCompletos];
+      this.paginaActual = 1;
+      this.calcularTotalPaginas();
+      this.ordenarRequisitos();
+      this.actualizarRequisitosVisibles();
     } else {
-      this.requisitosService.buscarRequisitos(termino).subscribe(resultados => {
-        this.requisitosFiltrados = resultados;
+      if (this.modo === 'nuevo' || this.modo === 'editar') {
+        // En modo nuevo y editar: buscar en toda la DB de requisitos activos
+        this.requisitosService.buscarRequisitos(termino).subscribe(resultados => {
+          // Filtrar solo los requisitos activos en el frontend
+          this.requisitosFiltrados = resultados.filter(req => req.activo);
+          
+          // Configurar controles para los nuevos requisitos encontrados si no existen
+          this.configurarRequisitosFormGroup(this.requisitosFiltrados);
+          
+          // Remarcar los requisitos que ya estaban seleccionados
+          this.remarcarRequisitosSeleccionados();
+          
+          this.paginaActual = 1;
+          this.calcularTotalPaginas();
+          this.ordenarRequisitos();
+          this.actualizarRequisitosVisibles();
+        });
+      } else {
+        // En modo ver: buscar solo dentro de los requisitos ya cargados
+        const terminoLower = termino.toLowerCase();
+        this.requisitosFiltrados = this.requisitosCompletos.filter(req =>
+          req.nombre.toLowerCase().includes(terminoLower) ||
+          (req.descripcion && req.descripcion.toLowerCase().includes(terminoLower))
+        );
         this.paginaActual = 1;
         this.calcularTotalPaginas();
         this.ordenarRequisitos();
         this.actualizarRequisitosVisibles();
-      });
+      }
     }
   }
 
@@ -236,15 +287,19 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
         if (formulario) {
           this.formularioForm.patchValue({
             cargo: formulario.cargo,
+            descripcion: formulario.descripcion || '',
+            requisitos: formulario.requisitos || '',
             fechaInicio: this.formatearFecha(formulario.fechaInicio),
             fechaTermino: this.formatearFecha(formulario.fechaTermino),
-            estado: formulario.estado,
-            // Aquí añadir más campos cuando existan en el backend
+            estado: formulario.estado
           });
+          
+          // Cargar todos los requisitos disponibles y marcar los seleccionados
+          this.cargarTodosLosRequisitosConSeleccionados(formulario.requisitosSeleccionados || []);
         } else {
           this.error = 'No se encontró la postulación solicitada';
+          this.cargando = false;
         }
-        this.cargando = false;
       },
       error: (error: any) => {
         this.error = 'Error al cargar los datos de la postulación';
@@ -252,6 +307,160 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
         console.error('Error al cargar formulario:', error);
       }
     });
+  }
+
+  private cargarTodosLosRequisitosConSeleccionados(requisitosData: any[]): void {
+    // Obtener todos los requisitos disponibles en la DB
+    const requisitosObservable = this.modo === 'ver' 
+      ? this.requisitosService.getRequisitos() // En modo ver, mostrar todos (activos e inactivos)
+      : this.requisitosService.getRequisitosActivos(); // En modo editar, solo los activos
+
+    requisitosObservable.subscribe({
+      next: (todosLosRequisitos) => {
+        this.requisitosCompletos = todosLosRequisitos;
+        this.requisitosFiltrados = [...todosLosRequisitos];
+        this.configurarRequisitosFormGroup(todosLosRequisitos);
+        
+        // Marcar los requisitos que ya están seleccionados
+        this.marcarRequisitosSeleccionados(requisitosData);
+        
+        this.calcularTotalPaginas();
+        this.ordenarRequisitos();
+        this.actualizarRequisitosVisibles();
+        this.cargando = false;
+      },
+      error: (error) => {
+        this.error = 'Error al cargar los requisitos';
+        console.error('Error al cargar requisitos:', error);
+        this.cargando = false;
+      }
+    });
+  }
+
+  private marcarRequisitosSeleccionados(requisitosData: any[]): void {
+    if (!requisitosData || requisitosData.length === 0) {
+      return;
+    }
+
+    // Extraer los IDs de los requisitos seleccionados
+    let idsSeleccionados: number[] = [];
+    
+    if (requisitosData.length > 0 && typeof requisitosData[0] === 'object' && requisitosData[0].hasOwnProperty('id')) {
+      // Los datos vienen como objetos completos, extraer los IDs
+      idsSeleccionados = requisitosData.map((req: any) => req.id);
+    } else {
+      // Los datos son solo IDs
+      idsSeleccionados = requisitosData
+        .map(id => typeof id === 'number' ? id : parseInt(id))
+        .filter(id => !isNaN(id));
+    }
+
+    // Marcar los controles correspondientes como seleccionados
+    const requisitosGroup = this.formularioForm.get('requisitosSeleccionados') as FormGroup;
+    idsSeleccionados.forEach(requisitoId => {
+      const controlName = this.requisitosControlMap[requisitoId];
+      if (controlName && requisitosGroup.get(controlName)) {
+        requisitosGroup.get(controlName)?.setValue(true);
+      }
+    });
+  }
+
+  private remarcarRequisitosSeleccionados(): void {
+    // Obtener los requisitos que ya estaban marcados antes de la búsqueda
+    const requisitosGroup = this.formularioForm.get('requisitosSeleccionados') as FormGroup;
+    const controlesExistentes = Object.keys(requisitosGroup.controls);
+    
+    // Mantener el estado de los requisitos que ya estaban marcados
+    const estadosActuales: { [key: string]: boolean } = {};
+    controlesExistentes.forEach(controlName => {
+      const control = requisitosGroup.get(controlName);
+      if (control) {
+        estadosActuales[controlName] = control.value;
+      }
+    });
+
+    // Restaurar los estados después de la nueva configuración
+    setTimeout(() => {
+      Object.keys(estadosActuales).forEach(controlName => {
+        const control = requisitosGroup.get(controlName);
+        if (control && estadosActuales[controlName]) {
+          control.setValue(true);
+        }
+      });
+    });
+  }
+
+  private cargarRequisitosSeleccionados(requisitosData: any[]): void {
+    if (!requisitosData || requisitosData.length === 0) {
+      // Si no hay requisitos seleccionados, mostrar lista vacía
+      this.requisitosCompletos = [];
+      this.requisitosFiltrados = [];
+      this.configurarRequisitosFormGroup([]);
+      this.calcularTotalPaginas();
+      this.actualizarRequisitosVisibles();
+      this.cargando = false;
+      return;
+    }
+
+    // Determinar si son objetos completos o solo IDs
+    let requisitosSeleccionados: Requisito[] = [];
+    
+    if (requisitosData.length > 0 && typeof requisitosData[0] === 'object' && requisitosData[0].hasOwnProperty('nombre')) {
+      // Los datos ya vienen como objetos completos desde el servicio
+      requisitosSeleccionados = requisitosData as Requisito[];
+      this.procesarRequisitosSeleccionados(requisitosSeleccionados);
+    } else {
+      // Los datos son solo IDs, necesitamos obtener los objetos completos
+      const idsNumericos = requisitosData
+        .map(id => typeof id === 'number' ? id : parseInt(id))
+        .filter(id => !isNaN(id));
+
+      if (idsNumericos.length === 0) {
+        this.requisitosCompletos = [];
+        this.requisitosFiltrados = [];
+        this.configurarRequisitosFormGroup([]);
+        this.calcularTotalPaginas();
+        this.actualizarRequisitosVisibles();
+        this.cargando = false;
+        return;
+      }
+
+      // Obtener todos los requisitos para filtrar los seleccionados
+      this.requisitosService.getRequisitos().subscribe({
+        next: (todosLosRequisitos) => {
+          // Filtrar solo los requisitos que están en la lista de seleccionados
+          requisitosSeleccionados = todosLosRequisitos.filter(req => 
+            idsNumericos.includes(req.id)
+          );
+          this.procesarRequisitosSeleccionados(requisitosSeleccionados);
+        },
+        error: (error) => {
+          this.error = 'Error al cargar los requisitos seleccionados';
+          console.error('Error al cargar requisitos seleccionados:', error);
+          this.cargando = false;
+        }
+      });
+    }
+  }
+
+  private procesarRequisitosSeleccionados(requisitosSeleccionados: Requisito[]): void {
+    this.requisitosCompletos = requisitosSeleccionados;
+    this.requisitosFiltrados = [...requisitosSeleccionados];
+    this.configurarRequisitosFormGroup(requisitosSeleccionados);
+    
+    // Marcar todos como seleccionados
+    const requisitosGroup = this.formularioForm.get('requisitosSeleccionados') as FormGroup;
+    requisitosSeleccionados.forEach((requisito) => {
+      const controlName = this.requisitosControlMap[requisito.id];
+      if (controlName && requisitosGroup.get(controlName)) {
+        requisitosGroup.get(controlName)?.setValue(true);
+      }
+    });
+
+    this.calcularTotalPaginas();
+    this.ordenarRequisitos();
+    this.actualizarRequisitosVisibles();
+    this.cargando = false;
   }
 
   private formatearFecha(fecha: Date | string): string {
@@ -284,19 +493,39 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  private prepararDatosFormulario(): Formulario {
+  private prepararDatosFormulario(): any {
     const formValues = this.formularioForm.value;
+    
+    // Obtener requisitos seleccionados
+    const requisitosSeleccionados: number[] = [];
+    const requisitosGroup = formValues.requisitosSeleccionados;
+    if (requisitosGroup) {
+      Object.keys(requisitosGroup).forEach(controlName => {
+        if (requisitosGroup[controlName]) {
+          // Extraer el ID del requisito del nombre del control (req_123 -> 123)
+          const requisitoId = parseInt(controlName.replace('req_', ''));
+          if (!isNaN(requisitoId)) {
+            requisitosSeleccionados.push(requisitoId);
+          }
+        }
+      });
+    }
+    
     return {
       cargo: formValues.cargo,
-      fechaInicio: formValues.fechaInicio,
-      fechaTermino: formValues.fechaTermino,
-      estado: formValues.estado
+      descripcion: formValues.descripcion,
+      requisitos: formValues.requisitos,
+      fechaInicio: formValues.fechaInicio, // Ya está en formato string
+      fechaTermino: formValues.fechaTermino, // Ya está en formato string
+      estado: formValues.estado,
+      requisitosSeleccionados: requisitosSeleccionados
     };
   }
 
   private finalizarGuardado(): void {
     this.cargando = false;
-    this.formularioGuardado.emit();
+    // Navegar de vuelta a la lista de formularios
+    this.router.navigate(['/admin/formularios']);
   }
 
   private manejarError(error: any): void {
@@ -306,7 +535,13 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   }
 
   onCancelar(): void {
-    this.cancelar.emit();
+    // Usar Location.back() para simular el botón atrás del navegador
+    this.location.back();
+  }
+
+  onVolver(): void {
+    // Método para el botón volver, usando la misma funcionalidad
+    this.location.back();
   }
 
   getTitulo(): string {

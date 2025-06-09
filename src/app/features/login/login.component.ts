@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../servicios/auth.service';
+import { LoginDto } from '../../interfaces/auth.interface';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +20,12 @@ export class LoginComponent implements OnInit {
   mensajeError = '';
   mostrarPassword = false;
   logoUrl: string = 'assets/images/logoconchali.png';
+  cargando = false;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -28,27 +34,57 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Inicialización adicional si es necesaria
+    // Verificar si ya está autenticado
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/admin']);
+    }
   }
 
   iniciarSesion(): void {
     if (this.loginForm.valid) {
-      // Para fines de demostración, redirigimos directamente al dashboard
-      this.router.navigate(['/admin']);
-      
-      // Código comentado para cuando se implemente el servicio de autenticación
-      /*
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe(
-        (response) => {
-          this.router.navigate(['/admin']);
-        },
-        (error) => {
-          this.mostrarError = true;
-          this.mensajeError = error.message || 'Error de autenticación';
-        }
-      );
-      */
+      this.cargando = true;
+      this.mostrarError = false;
+
+      const loginData: LoginDto = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
+
+      console.log('Iniciando login con:', loginData.email);
+
+      this.authService.login(loginData)
+        .pipe(
+          catchError(error => {
+            console.error('Error en login:', error);
+            this.mostrarError = true;
+            this.mensajeError = error.message || 'Error de autenticación. Verifica tus credenciales.';
+            this.cargando = false;
+            return of(null);
+          })
+        )
+        .subscribe(response => {
+          console.log('Respuesta del login:', response);
+          this.cargando = false;
+          
+          if (response) {
+            console.log('Login exitoso, verificando usuario...');
+            // Pequeña pausa para asegurar que el usuario se guardó correctamente
+            setTimeout(() => {
+              const user = this.authService.getCurrentUser();
+              console.log('Usuario actual:', user);
+              
+              if (user?.rol === 'admin') {
+                console.log('Redirigiendo a admin...');
+                this.router.navigate(['/admin']);
+              } else {
+                console.log('Redirigiendo a dashboard...');
+                this.router.navigate(['/dashboard']);
+              }
+            }, 100);
+          } else {
+            console.log('No se recibió respuesta válida');
+          }
+        });
     } else {
       this.mostrarError = true;
       this.mensajeError = 'Por favor, complete todos los campos correctamente.';
@@ -57,9 +93,26 @@ export class LoginComponent implements OnInit {
 
   recuperarContrasena(): void {
     // Implementar la lógica para recuperar contraseña
-    // Por ahora solo navegamos a una página hipotética
-    // this.router.navigate(['/recuperar-contrasena']);
-    console.log('Funcionalidad de recuperar contraseña');
+    const email = this.loginForm.get('email')?.value;
+    if (email && this.isValidEmail(email)) {
+      this.authService.resetPassword(email).subscribe({
+        next: () => {
+          alert('Se ha enviado un correo para restablecer tu contraseña.');
+        },
+        error: (error) => {
+          this.mostrarError = true;
+          this.mensajeError = error.message || 'Error al solicitar restablecimiento de contraseña.';
+        }
+      });
+    } else {
+      this.mostrarError = true;
+      this.mensajeError = 'Por favor, ingresa un email válido antes de solicitar recuperar contraseña.';
+    }
+  }
+
+  private isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
   
   togglePasswordVisibility(): void {

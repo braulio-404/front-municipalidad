@@ -35,7 +35,7 @@ export class DescargasComponent implements OnInit {
 
   cargarPostulaciones(): void {
     this.cargando = true;
-    this.formulariosService.getFormularios().subscribe({
+    this.formulariosService.getFormulariosConConteo().subscribe({
       next: (data) => {
         this.postulaciones = data;
         this.postulacionesFiltradas = data;
@@ -112,23 +112,40 @@ export class DescargasComponent implements OnInit {
     this.cargando = true;
     this.error = '';
     
-    this.formulariosService.descargarDocumentos(idsSeleccionados).subscribe({
-      next: (blob) => {
+    this.formulariosService.descargarDocumentos({ ids: idsSeleccionados }).subscribe({
+      next: (response: any) => {
         this.cargando = false;
+        
+        // Detectar el tipo de archivo desde los headers de la respuesta
+        const contentType = response.headers?.get('content-type') || response.type;
+        const esZip = contentType.includes('application/zip');
+        
+        // Determinar nombre y tipo basándose en la respuesta real
+        const tipoArchivo = esZip ? 'application/zip' : 'application/pdf';
+        const extension = esZip ? '.zip' : '.pdf';
+        const fechaActual = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+        const nombreArchivo = esZip 
+          ? `documentos_formularios_${fechaActual}.zip`
+          : `documento_formulario_${fechaActual}.pdf`;
+        
+        // Crear blob con el tipo correcto
+        const blob = new Blob([response.body || response], { type: tipoArchivo });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'documentos_postulaciones.zip';
+        a.download = nombreArchivo;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         a.remove();
+        
+        console.log(`Descarga completada: ${nombreArchivo} (Tipo detectado: ${tipoArchivo})`);
       },
       error: (error) => {
         this.cargando = false;
         console.error('Error al descargar documentos', error);
-        this.error = 'Error al descargar documentos';
-        setTimeout(() => this.error = '', 3000);
+        this.error = 'Error al descargar documentos. Verifique que el servidor esté disponible.';
+        setTimeout(() => this.error = '', 5000);
       }
     });
   }
