@@ -39,6 +39,11 @@
                 "glob": "**/*",
                 "input": "proyecto-muni-frontend/src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "_redirects",
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [
