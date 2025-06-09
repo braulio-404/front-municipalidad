@@ -34,27 +34,13 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
-              },
-              {
-                "glob": "**/*",
-                "input": "proyecto-muni-frontend/src/assets",
-                "output": "assets"
-              },
-              {
-                "glob": "_redirects",
-                "input": "public",
-                "output": "/"
               }
             ],
             "styles": [
               "src/styles.scss"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "outputMode": "static"
           },
           "configurations": {
             "production": {
@@ -112,11 +98,6 @@
               {
                 "glob": "**/*",
                 "input": "src/assets",
-                "output": "assets"
-              },
-              {
-                "glob": "**/*",
-                "input": "proyecto-muni-frontend/src/assets",
                 "output": "assets"
               }
             ],
