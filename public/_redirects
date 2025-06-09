@@ -1,0 +1,6 @@
+# Redirects for Angular SPA routing
+# API calls should not be redirected
+/api/*  /api/*  200
+
+# All other routes should serve index.html for Angular to handle
+/*  /index.html  200 
