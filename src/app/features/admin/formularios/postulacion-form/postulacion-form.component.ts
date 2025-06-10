@@ -8,10 +8,7 @@ import { Location } from '@angular/common';
 
 import { FormulariosService } from '../../../../servicios/formularios.service';
 import { RequisitosService } from '../../../../servicios/requisitos.service';
-<<<<<<< HEAD
-=======
 import { EstadisticasAdminService } from '../../../../servicios/estadisticas-admin.service';
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 import { Formulario } from '../../../../interfaces/formulario.interface';
 import { Requisito } from '../../../../interfaces/requisito.interface';
 
@@ -33,10 +30,7 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   formularioForm!: FormGroup;
   cargando = false;
   error = '';
-<<<<<<< HEAD
-=======
   mensajeInfo = '';
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   
   // Para paginación y búsqueda
   requisitosCompletos: Requisito[] = [];
@@ -62,10 +56,7 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private formulariosService: FormulariosService,
     private requisitosService: RequisitosService,
-<<<<<<< HEAD
-=======
     private estadisticasAdminService: EstadisticasAdminService,
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -98,19 +89,14 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       requisitosSeleccionados: this.fb.group({})
     });
 
-<<<<<<< HEAD
-=======
     // Configurar listener para cambios en el estado
     this.configurarCambiosEstado();
 
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     if (this.modo === 'ver') {
       this.formularioForm.disable();
     }
   }
 
-<<<<<<< HEAD
-=======
   /**
    * Configura el listener para detectar cambios en el estado de la postulación
    * y validar las fechas cuando se selecciona "Activo"
@@ -176,7 +162,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
     return true;
   }
 
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   private configurarBusqueda(): void {
     // Configurar observable para la búsqueda con debounce
     const busquedaSub = this.terminoBusquedaSubject.pipe(
@@ -290,37 +275,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       this.ordenarRequisitos();
       this.actualizarRequisitosVisibles();
     } else {
-<<<<<<< HEAD
-      if (this.modo === 'nuevo' || this.modo === 'editar') {
-        // En modo nuevo y editar: buscar en toda la DB de requisitos activos
-        this.requisitosService.buscarRequisitos(termino).subscribe(resultados => {
-          // Filtrar solo los requisitos activos en el frontend
-          this.requisitosFiltrados = resultados.filter(req => req.activo);
-          
-          // Configurar controles para los nuevos requisitos encontrados si no existen
-          this.configurarRequisitosFormGroup(this.requisitosFiltrados);
-          
-          // Remarcar los requisitos que ya estaban seleccionados
-          this.remarcarRequisitosSeleccionados();
-          
-          this.paginaActual = 1;
-          this.calcularTotalPaginas();
-          this.ordenarRequisitos();
-          this.actualizarRequisitosVisibles();
-        });
-      } else {
-        // En modo ver: buscar solo dentro de los requisitos ya cargados
-        const terminoLower = termino.toLowerCase();
-        this.requisitosFiltrados = this.requisitosCompletos.filter(req =>
-          req.nombre.toLowerCase().includes(terminoLower) ||
-          (req.descripcion && req.descripcion.toLowerCase().includes(terminoLower))
-        );
-        this.paginaActual = 1;
-        this.calcularTotalPaginas();
-        this.ordenarRequisitos();
-        this.actualizarRequisitosVisibles();
-      }
-=======
       // Búsqueda local con coincidencia parcial (like) y en lowercase para todos los modos
       const terminoLower = termino.toLowerCase();
       this.requisitosFiltrados = this.requisitosCompletos.filter(req =>
@@ -332,7 +286,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       this.calcularTotalPaginas();
       this.ordenarRequisitos();
       this.actualizarRequisitosVisibles();
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     }
   }
 
@@ -380,43 +333,49 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
 
   private cargarDatosFormulario(): void {
     this.cargando = true;
-    // Asumimos que el servicio tiene un método para obtener un formulario por ID
+    
     this.formulariosService.getFormularios().subscribe({
-      next: (formularios) => {
-        const formulario = formularios.find(f => f.id === this.formularioId);
-        if (formulario) {
-          this.formularioForm.patchValue({
-            cargo: formulario.cargo,
-            descripcion: formulario.descripcion || '',
-            requisitos: formulario.requisitos || '',
-            fechaInicio: this.formatearFecha(formulario.fechaInicio),
-            fechaTermino: this.formatearFecha(formulario.fechaTermino),
-            estado: formulario.estado
-          });
-          
-<<<<<<< HEAD
-          // Cargar todos los requisitos disponibles y marcar los seleccionados
-          this.cargarTodosLosRequisitosConSeleccionados(formulario.requisitosSeleccionados || []);
-=======
-          // Si está en modo 'ver', cargar solo los requisitos seleccionados
-          // Si está en modo 'editar', cargar todos los requisitos disponibles
-          if (this.modo === 'ver') {
-            this.cargarRequisitosSeleccionados(formulario.requisitosSeleccionados || []);
-          } else {
-            this.cargarTodosLosRequisitosConSeleccionados(formulario.requisitosSeleccionados || []);
-          }
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
-        } else {
-          this.error = 'No se encontró la postulación solicitada';
-          this.cargando = false;
-        }
-      },
-      error: (error: any) => {
-        this.error = 'Error al cargar los datos de la postulación';
-        this.cargando = false;
-        console.error('Error al cargar formulario:', error);
-      }
+      next: (formularios) => this.procesarFormulariosObtenidos(formularios),
+      error: (error: any) => this.manejarErrorCargaDatos(error)
     });
+  }
+
+  private procesarFormulariosObtenidos(formularios: Formulario[]): void {
+    const formulario = formularios.find(f => f.id === this.formularioId);
+    
+    if (!formulario) {
+      this.error = 'No se encontró la postulación solicitada';
+      this.cargando = false;
+      return;
+    }
+
+    this.rellenarFormulario(formulario);
+    this.cargarRequisitosSegunModo(formulario);
+  }
+
+  private rellenarFormulario(formulario: Formulario): void {
+    this.formularioForm.patchValue({
+      cargo: formulario.cargo,
+      descripcion: formulario.descripcion || '',
+      requisitos: formulario.requisitos || '',
+      fechaInicio: this.formatearFecha(formulario.fechaInicio),
+      fechaTermino: this.formatearFecha(formulario.fechaTermino),
+      estado: formulario.estado
+    });
+  }
+
+  private cargarRequisitosSegunModo(formulario: Formulario): void {
+    if (this.modo === 'ver') {
+      this.cargarRequisitosSeleccionados(formulario.requisitosSeleccionados || []);
+    } else {
+      this.cargarTodosLosRequisitosConSeleccionados(formulario.requisitosSeleccionados || []);
+    }
+  }
+
+  private manejarErrorCargaDatos(error: any): void {
+    this.error = 'Error al cargar los datos de la postulación';
+    this.cargando = false;
+    console.error('Error al cargar formulario:', error);
   }
 
   private cargarTodosLosRequisitosConSeleccionados(requisitosData: any[]): void {
@@ -574,13 +533,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   }
 
   private formatearFecha(fecha: Date | string): string {
-<<<<<<< HEAD
-    if (fecha instanceof Date) {
-      return fecha.toISOString().substring(0, 10);
-    }
-    // Asumimos que viene en formato ISO desde el backend
-    return typeof fecha === 'string' ? fecha.substring(0, 10) : '';
-=======
     try {
       if (!fecha) return '';
       
@@ -602,7 +554,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       console.error('Error al formatear fecha:', error, fecha);
       return '';
     }
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
 
   guardarFormulario(): void {
@@ -611,20 +562,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-<<<<<<< HEAD
-    const formularioData = this.prepararDatosFormulario();
-    this.cargando = true;
-
-    if (this.modo === 'nuevo') {
-      this.formulariosService.crearFormulario(formularioData).subscribe({
-        next: () => this.finalizarGuardado(),
-        error: (error: any) => this.manejarError(error)
-      });
-    } else if (this.modo === 'editar') {
-      this.formulariosService.actualizarFormulario(this.formularioId!, formularioData).subscribe({
-        next: () => this.finalizarGuardado(),
-        error: (error: any) => this.manejarError(error)
-=======
     // Limpiar mensajes antes de guardar
     this.mensajeInfo = '';
     this.error = '';
@@ -685,7 +622,6 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
           console.error('❌ Error al actualizar formulario:', error);
           this.manejarError(error);
         }
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       });
     }
   }
@@ -728,20 +664,12 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   private manejarError(error: any): void {
     this.cargando = false;
     this.error = 'Error al guardar la postulación';
-<<<<<<< HEAD
-=======
     this.mensajeInfo = ''; // Limpiar mensaje informativo en caso de error
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     console.error('Error al guardar formulario:', error);
   }
 
   onCancelar(): void {
-<<<<<<< HEAD
-=======
     // Limpiar mensajes antes de salir
-    this.mensajeInfo = '';
-    this.error = '';
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     // Usar Location.back() para simular el botón atrás del navegador
     this.location.back();
   }

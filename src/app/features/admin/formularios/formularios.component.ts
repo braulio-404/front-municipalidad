@@ -5,10 +5,7 @@ import { Router } from '@angular/router';
 
 import { FormulariosService } from '../../../servicios/formularios.service';
 import { RequisitosService } from '../../../servicios/requisitos.service';
-<<<<<<< HEAD
-=======
 import { EstadisticasAdminService } from '../../../servicios/estadisticas-admin.service';
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 import { Formulario } from '../../../interfaces/formulario.interface';
 import { Requisito } from '../../../interfaces/requisito.interface';
 import { RequisitoSeleccionado } from '../../../interfaces/postulante.interface';
@@ -41,10 +38,7 @@ export class FormulariosComponent implements OnInit {
   constructor(
     private formulariosService: FormulariosService,
     private requisitosService: RequisitosService,
-<<<<<<< HEAD
-=======
     private estadisticasAdminService: EstadisticasAdminService,
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     private router: Router
   ) {}
 
@@ -56,12 +50,6 @@ export class FormulariosComponent implements OnInit {
   cargarFormularios(): void {
     this.formulariosService.getFormularios().subscribe({
       next: (data) => {
-<<<<<<< HEAD
-        // Ordenar por ID descendente (más recientes primero)
-        const formularioOrdenados = data.sort((a, b) => (b.id || 0) - (a.id || 0));
-        this.formulariosOriginales = [...formularioOrdenados]; // Guardar copia original ordenada
-        this.formularios = [...formularioOrdenados]; // Mostrar todos inicialmente ordenados
-=======
         // Verificar y actualizar postulaciones vencidas antes de mostrar
         this.verificarYActualizarPostulacionesVencidas(data).then(() => {
           // Filtrar postulaciones que estén vencidas pero sigan activas (por si falla la actualización)
@@ -72,7 +60,6 @@ export class FormulariosComponent implements OnInit {
           this.formulariosOriginales = [...formularioOrdenados]; // Guardar copia original ordenada
           this.formularios = [...formularioOrdenados]; // Mostrar todos inicialmente ordenados
         });
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       },
       error: (error) => {
         console.error('Error al cargar formularios:', error);
@@ -116,8 +103,6 @@ export class FormulariosComponent implements OnInit {
   }
 
   filtrarFormularios(): void {
-<<<<<<< HEAD
-=======
     console.log('=== INICIO FILTRADO ===');
     console.log('Filtros seleccionados:', {
       cargo: this.cargoPostulacion,
@@ -127,36 +112,10 @@ export class FormulariosComponent implements OnInit {
     });
     console.log('Total formularios originales:', this.formulariosOriginales.length);
 
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     let formulariosFiltrados = [...this.formulariosOriginales];
 
     // Filtrar por cargo de postulación
     if (this.cargoPostulacion.trim()) {
-<<<<<<< HEAD
-      formulariosFiltrados = formulariosFiltrados.filter(form => 
-        form.cargo?.toLowerCase().includes(this.cargoPostulacion.toLowerCase().trim())
-      );
-    }
-
-    // Filtrar por fecha de inicio
-    if (this.fechaInicio) {
-      const fechaInicioFiltro = new Date(this.fechaInicio);
-      formulariosFiltrados = formulariosFiltrados.filter(form => {
-        if (!form.fechaInicio) return false;
-        const fechaForm = new Date(form.fechaInicio);
-        return fechaForm >= fechaInicioFiltro;
-      });
-    }
-
-    // Filtrar por fecha de término
-    if (this.fechaTermino) {
-      const fechaTerminoFiltro = new Date(this.fechaTermino);
-      formulariosFiltrados = formulariosFiltrados.filter(form => {
-        if (!form.fechaTermino) return false;
-        const fechaForm = new Date(form.fechaTermino);
-        return fechaForm <= fechaTerminoFiltro;
-      });
-=======
       const totalAntes = formulariosFiltrados.length;
       formulariosFiltrados = formulariosFiltrados.filter(form => 
         form.cargo?.toLowerCase().includes(this.cargoPostulacion.toLowerCase().trim())
@@ -232,36 +191,20 @@ export class FormulariosComponent implements OnInit {
       });
       
       console.log(`Filtro rango de fechas: ${totalAntes} -> ${formulariosFiltrados.length}`);
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     }
 
     // Filtrar por estado
     if (this.estadoSeleccionado) {
-<<<<<<< HEAD
-      formulariosFiltrados = formulariosFiltrados.filter(form => 
-        form.estado === this.estadoSeleccionado
-      );
-=======
       const totalAntes = formulariosFiltrados.length;
       formulariosFiltrados = formulariosFiltrados.filter(form => 
         form.estado === this.estadoSeleccionado
       );
       console.log(`Filtro estado: ${totalAntes} -> ${formulariosFiltrados.length}`);
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     }
 
     // Ordenar los resultados filtrados por ID descendente
     this.formularios = formulariosFiltrados.sort((a, b) => (b.id || 0) - (a.id || 0));
     
-<<<<<<< HEAD
-    console.log('Filtros aplicados:', {
-      cargo: this.cargoPostulacion,
-      fechaInicio: this.fechaInicio,
-      fechaTermino: this.fechaTermino,
-      estado: this.estadoSeleccionado,
-      resultados: formulariosFiltrados.length
-    });
-=======
     console.log('=== RESULTADO FINAL ===');
     console.log(`Resultados encontrados: ${this.formularios.length}`);
     console.log('Formularios filtrados:', this.formularios.map(f => ({
@@ -272,7 +215,6 @@ export class FormulariosComponent implements OnInit {
       estado: f.estado
     })));
     console.log('=== FIN FILTRADO ===');
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
 
   limpiarFiltros(): void {
@@ -280,14 +222,9 @@ export class FormulariosComponent implements OnInit {
     this.fechaInicio = '';
     this.fechaTermino = '';
     this.estadoSeleccionado = '';
-<<<<<<< HEAD
-    // Restaurar formularios originales (ya están ordenados por ID descendente)
-    this.formularios = [...this.formulariosOriginales];
-=======
     // Restaurar formularios originales pero aplicar filtro de postulaciones vencidas activas
     const formulariosValidos = this.filtrarPostulacionesVencidasActivas(this.formulariosOriginales);
     this.formularios = [...formulariosValidos];
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
 
   crearFormulario(): void {
@@ -303,15 +240,6 @@ export class FormulariosComponent implements OnInit {
   }
 
   eliminarFormulario(id: number): void {
-<<<<<<< HEAD
-    if (confirm('¿Está seguro que desea eliminar esta postulación?')) {
-      this.formulariosService.eliminarFormulario(id).subscribe({
-        next: () => {
-          this.cargarFormularios();
-        },
-        error: (error) => {
-          console.error('Error al eliminar el formulario:', error);
-=======
     const formulario = this.formulariosOriginales.find(f => f.id === id);
     
     if (confirm('¿Estás seguro de que deseas eliminar esta postulación? Esta acción no se puede deshacer.')) {
@@ -333,14 +261,11 @@ export class FormulariosComponent implements OnInit {
         error: (error) => {
           console.error('Error al eliminar formulario:', error);
           alert('Error al eliminar el formulario. Por favor, intente nuevamente.');
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
         }
       });
     }
   }
 
-<<<<<<< HEAD
-=======
   formatearFechaLocal(fecha: Date | string): string {
     try {
       if (!fecha) return '';
@@ -513,6 +438,5 @@ export class FormulariosComponent implements OnInit {
     });
   }
 
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   // Métodos removidos - ahora se usa navegación por rutas
 } 

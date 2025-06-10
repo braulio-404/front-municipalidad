@@ -29,24 +29,14 @@ export class EstadisticasComponent implements OnInit {
   postulaciones: EstadisticaPostulacion[] = [];
   postulacionesFiltradas: EstadisticaPostulacion[] = [];
   terminoBusqueda: string = '';
-<<<<<<< HEAD
-  fechaInicio: Date | null = null;
-  fechaTermino: Date | null = null;
-=======
   fechaInicio: string = '';
   fechaTermino: string = '';
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   cargando: boolean = false;
   error: string = '';
   
   // Variables para los gráficos
-<<<<<<< HEAD
-  graficoEdad: Chart | null = null;
-  graficoProfesionales: Chart | null = null;
-=======
   graficoEdad: Chart | null = null; // Gráfico de postulantes por cargo
   graficoProfesionales: Chart | null = null; // Gráfico de postulantes por mes
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   
   // Propiedad para verificar si estamos en el navegador
   isBrowser: boolean = false;
@@ -101,19 +91,6 @@ export class EstadisticasComponent implements OnInit {
       const coincideTermino = !this.terminoBusqueda || 
         p.cargo.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
       
-<<<<<<< HEAD
-      // Filtrar por fecha de inicio
-      const fechaInicioPostulacion = new Date(p.fechaInicio);
-      const coincideFechaInicio = !this.fechaInicio || 
-        fechaInicioPostulacion >= this.fechaInicio;
-      
-      // Filtrar por fecha de término
-      const fechaTerminoPostulacion = new Date(p.fechaTermino);
-      const coincideFechaTermino = !this.fechaTermino || 
-        fechaTerminoPostulacion <= this.fechaTermino;
-      
-      return coincideTermino && coincideFechaInicio && coincideFechaTermino;
-=======
       // Función auxiliar para convertir fecha a objeto Date normalizado
       const convertirFecha = (fecha: string | Date): Date => {
         if (typeof fecha === 'string') {
@@ -145,7 +122,6 @@ export class EstadisticasComponent implements OnInit {
       }
       
       return coincideTermino && cumpleFechaInicio && cumpleFechaTermino;
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     });
     
     // Actualizar gráficos después de filtrar
@@ -154,24 +130,10 @@ export class EstadisticasComponent implements OnInit {
 
   limpiarFiltros(): void {
     this.terminoBusqueda = '';
-<<<<<<< HEAD
-    this.fechaInicio = null;
-    this.fechaTermino = null;
-=======
     this.fechaInicio = '';
     this.fechaTermino = '';
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     this.postulacionesFiltradas = [...this.postulaciones];
     this.actualizarGraficos();
-  }
-
-<<<<<<< HEAD
-  formatearFecha(fecha: string | Date): string {
-    const fechaObj = new Date(fecha);
-    return fechaObj.toLocaleDateString('es-ES');
-=======
-  hayFiltrosActivos(): boolean {
-    return !!(this.terminoBusqueda || this.fechaInicio || this.fechaTermino);
   }
 
   formatearFecha(fecha: string | Date): string {
@@ -245,7 +207,6 @@ export class EstadisticasComponent implements OnInit {
         mes,
         cantidad
       }));
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
   
   inicializarGraficos(): void {
@@ -257,29 +218,6 @@ export class EstadisticasComponent implements OnInit {
     const ctx = document.getElementById('graficoEdad') as HTMLCanvasElement;
     if (!ctx) return;
     
-<<<<<<< HEAD
-    // Simulamos datos por edad
-    const datos = {
-      labels: ['20-30', '31-40', '41-50'],
-      datasets: [
-        {
-          label: 'Postulantes por rango de edad',
-          data: [
-            Math.floor(Math.random() * 30) + 10,
-            Math.floor(Math.random() * 40) + 15,
-            Math.floor(Math.random() * 25) + 5
-          ],
-          backgroundColor: [
-            'rgba(102, 46, 143, 0.6)',
-            'rgba(138, 75, 170, 0.6)',
-            'rgba(52, 183, 72, 0.6)'
-          ],
-          borderColor: [
-            '#662e8f',
-            '#8a4baa',
-            '#34b748'
-          ],
-=======
     // Obtener datos reales de postulantes por cargo
     const datosPorCargo = this.obtenerDatosPorCargo();
     
@@ -291,7 +229,6 @@ export class EstadisticasComponent implements OnInit {
           data: datosPorCargo.map(item => item.cantidad),
           backgroundColor: 'rgba(102, 46, 143, 0.6)',
           borderColor: '#662e8f',
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           borderWidth: 1
         }
       ]
@@ -304,9 +241,6 @@ export class EstadisticasComponent implements OnInit {
         responsive: true,
         scales: {
           y: {
-<<<<<<< HEAD
-            beginAtZero: true
-=======
             beginAtZero: true,
             ticks: {
               stepSize: 1
@@ -329,7 +263,6 @@ export class EstadisticasComponent implements OnInit {
                 return `${context.dataset.label}: ${context.parsed.y} postulantes`;
               }
             }
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           }
         }
       }
@@ -340,21 +273,6 @@ export class EstadisticasComponent implements OnInit {
     const ctx = document.getElementById('graficoProfesionales') as HTMLCanvasElement;
     if (!ctx) return;
     
-<<<<<<< HEAD
-    // Simulamos datos de profesionales vs militares
-    const datos = {
-      labels: ['Profesionales', 'Militares'],
-      datasets: [
-        {
-          data: [60, 40],
-          backgroundColor: [
-            'rgba(102, 46, 143, 0.6)',
-            'rgba(52, 183, 72, 0.6)'
-          ],
-          borderColor: [
-            '#662e8f',
-            '#34b748'
-=======
     // Obtener datos reales de postulantes por mes
     const datosPorMes = this.obtenerDatosPorMes();
     
@@ -379,7 +297,6 @@ export class EstadisticasComponent implements OnInit {
             '#ffc107',
             '#dc3545',
             '#20c997'
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           ],
           borderWidth: 1
         }
@@ -387,19 +304,13 @@ export class EstadisticasComponent implements OnInit {
     };
     
     this.graficoProfesionales = new Chart(ctx, {
-<<<<<<< HEAD
-      type: 'pie',
-=======
       type: 'doughnut',
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       data: datos,
       options: {
         responsive: true,
         plugins: {
           legend: {
             position: 'right'
-<<<<<<< HEAD
-=======
           },
           tooltip: {
             callbacks: {
@@ -407,7 +318,6 @@ export class EstadisticasComponent implements OnInit {
                 return `${context.label}: ${context.parsed} postulantes`;
               }
             }
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           }
         }
       }
@@ -418,26 +328,6 @@ export class EstadisticasComponent implements OnInit {
     // Solo actualizamos gráficos en el navegador
     if (!this.isBrowser) return;
     
-<<<<<<< HEAD
-    // Para una aplicación real, aquí actualizaríamos los datos de los gráficos 
-    // basados en las postulaciones filtradas
-    if (this.graficoEdad) {
-      // Actualizar datos del gráfico de edad
-      this.graficoEdad.data.datasets[0].data = [
-        Math.floor(Math.random() * 30) + 10,
-        Math.floor(Math.random() * 40) + 15,
-        Math.floor(Math.random() * 25) + 5
-      ];
-      this.graficoEdad.update();
-    }
-    
-    if (this.graficoProfesionales) {
-      // Actualizar datos del gráfico circular
-      this.graficoProfesionales.data.datasets[0].data = [
-        Math.floor(Math.random() * 40) + 40,
-        Math.floor(Math.random() * 40) + 20
-      ];
-=======
     // Actualizar gráfico de postulantes por cargo
     if (this.graficoEdad) {
       const datosPorCargo = this.obtenerDatosPorCargo();
@@ -451,7 +341,6 @@ export class EstadisticasComponent implements OnInit {
       const datosPorMes = this.obtenerDatosPorMes();
       this.graficoProfesionales.data.labels = datosPorMes.map(item => item.mes);
       this.graficoProfesionales.data.datasets[0].data = datosPorMes.map(item => item.cantidad);
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       this.graficoProfesionales.update();
     }
   }
