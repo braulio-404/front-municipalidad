@@ -1,0 +1,101 @@
+<div class="container">
+  <!-- Lista de formularios -->
+    <h1>Gestión de Formularios</h1>
+
+    <div class="filtros-container">
+      <div class="filtro">
+        <label for="cargoPostulacion">Postulación:</label>
+        <input 
+          id="cargoPostulacion" 
+          type="text" 
+          [(ngModel)]="cargoPostulacion" 
+          placeholder="Ingrese el Cargo de Postulación">
+      </div>
+
+      <div class="filtro fecha">
+        <label>Fecha Inicio:</label>
+        <input 
+          type="date" 
+          [(ngModel)]="fechaInicio">
+      </div>
+
+      <div class="filtro fecha">
+        <label>Fecha Término:</label>
+        <input 
+          type="date" 
+          [(ngModel)]="fechaTermino">
+      </div>
+
+      <div class="filtro estado">
+        <label for="estado">Estado:</label>
+        <select id="estado" [(ngModel)]="estadoSeleccionado">
+          <option value="">Seleccione Estado</option>
+          <option *ngFor="let estado of estadosDisponibles" [value]="estado">{{ estado }}</option>
+        </select>
+      </div>
+      
+      <div class="filtro-accion">
+        <button class="btn-filtrar" (click)="filtrarFormularios()">Filtrar</button>
+        <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+      </div>
+    </div>
+
+    <div class="tabla-container">
+      <table *ngIf="formularios.length > 0; else noResultados">
+        <thead>
+          <tr>
+            <th>Postulación</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Término</th>
+            <th>Estado</th>
+            <th>Requisitos</th>
+            <th>Gestión</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let form of formularios" [class.postulacion-vencida]="esPostulacionVencida(form)">
+            <td>{{ form.cargo }}</td>
+            <td>{{ formatearFechaLocal(form.fechaInicio) }}</td>
+            <td>{{ formatearFechaLocal(form.fechaTermino) }}</td>
+            <td>
+              <span [class.estado-vencido]="esPostulacionVencida(form)" [title]="esPostulacionVencida(form) ? 'Postulación vencida - marcada automáticamente como inactiva' : ''">
+                {{ form.estado }}
+                <span *ngIf="esPostulacionVencida(form)" class="icono-vencido"> ⏰</span>
+              </span>
+            </td>
+            <td class="requisitos-cell">
+              <span *ngIf="form.requisitosSeleccionados && form.requisitosSeleccionados.length > 0; else sinRequisitos" 
+                    [title]="obtenerNombresRequisitos(form.requisitosSeleccionados)">
+                {{ form.requisitosSeleccionados.length }} requisito(s)
+              </span>
+              <ng-template #sinRequisitos>
+                <span class="sin-requisitos">Sin requisitos</span>
+              </ng-template>
+            </td>
+            <td class="acciones">
+              <button class="btn-accion" title="Ver detalles" (click)="verDetalleFormulario(form.id || 0)">
+                <img src="assets/images/ver.svg" alt="Ver">
+              </button>
+              <button class="btn-accion" title="Editar postulación" (click)="editarFormulario(form.id || 0)">
+                <img src="assets/images/editar.svg" alt="Editar">
+              </button>
+              <button class="btn-accion" title="Eliminar postulación" (click)="eliminarFormulario(form.id || 0)">
+                <img src="assets/images/eliminar.svg" alt="Eliminar">
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <ng-template #noResultados>
+        <div class="no-resultados">
+          <p>No se encontraron formularios que coincidan con los filtros aplicados.</p>
+          <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">Limpiar filtros</button>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="acciones-container">
+      <button class="btn-crear" (click)="crearFormulario()">Crear Postulación</button>
+    </div>
+</div> 

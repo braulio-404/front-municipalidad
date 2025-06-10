@@ -1,0 +1,520 @@
+// Variables
+$color-primary: #662e8f;
+$color-primary-light: #8a4baa;
+$color-accent: #34b748;
+$color-text: #333;
+$color-inactive: #9e9e9e;
+$color-border: #e0e0e0;
+$color-background: #f8f1ff;
+$color-white: #ffffff;
+$color-purple-very-light: #f8f1ff;
+$color-success: #4caf50;
+$color-warning: #ff9800;
+$color-danger: #f44336;
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: $color-white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  
+  h1 {
+    color: $color-primary;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 10px;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: $color-accent;
+      border-radius: 3px;
+    }
+  }
+}
+
+// Estilos para las pestañas
+.tabs-container {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 30px;
+  background-color: $color-border;
+  border-radius: 8px;
+  padding: 4px;
+  
+  .tab {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    background-color: transparent;
+    color: $color-inactive;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: rgba($color-primary, 0.1);
+      color: $color-primary;
+    }
+    
+    &.active {
+      background-color: $color-primary;
+      color: $color-white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Estilos para secciones de datos
+.seccion-datos {
+  .content-message {
+    background-color: $color-purple-very-light;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid $color-primary;
+    
+    p {
+      font-size: 18px;
+      color: $color-text;
+      margin: 0;
+    }
+  }
+}
+
+// Estilos del formulario
+.formulario-container {
+  background-color: $color-white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid $color-primary;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+
+  h2 {
+    color: $color-primary;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.btn-volver {
+  background: rgba($color-primary, 0.1);
+  color: $color-primary;
+  border: 2px solid $color-primary;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  
+  &:hover {
+    background: $color-primary;
+    color: $color-white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba($color-primary, 0.3);
+  }
+
+  i {
+    font-size: 18px;
+  }
+}
+
+.formulario-container {
+  .form-group {
+    margin-bottom: 20px;
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: $color-text;
+      font-weight: 500;
+      
+      // Para checkboxes
+      &:has(input[type="checkbox"]) {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        
+        input {
+          margin-right: 8px;
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    input[type="text"], 
+    input[type="email"], 
+    input[type="tel"], 
+    textarea, 
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid $color-border;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+      
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+      }
+      
+      &[readonly] {
+        background-color: #f5f5f5;
+        color: $color-inactive;
+      }
+      
+      &[disabled] {
+        background-color: #f5f5f5;
+        color: $color-inactive;
+        cursor: not-allowed;
+      }
+    }
+    
+    input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+      transform: scale(1.2);
+      accent-color: $color-primary;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid $color-border;
+    
+    .btn-cancelar {
+      background-color: $color-white;
+      color: $color-inactive;
+      border: 1px solid $color-border;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      
+      &:hover {
+        background-color: #f5f5f5;
+        border-color: $color-inactive;
+        color: $color-text;
+      }
+    }
+    
+    .btn-guardar {
+      background-color: $color-primary;
+      color: $color-white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      
+      &:hover:not(:disabled) {
+        background-color: $color-primary-light;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+      
+      &:disabled {
+        background-color: $color-inactive;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// Estilos de filtros (reutilizados del componente de formularios)
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: $color-purple-very-light;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid $color-primary;
+  
+  .filtro {
+    flex: 1;
+    min-width: 200px;
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: $color-text;
+      font-weight: 500;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid $color-border;
+      border-radius: 4px;
+      font-size: 14px;
+      
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+      }
+    }
+    
+    select {
+      background-color: $color-white;
+    }
+  }
+}
+
+.filtro-accion {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  
+  .btn-filtrar {
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 40px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: $color-primary-light;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .btn-limpiar {
+    background-color: $color-inactive;
+    color: $color-white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 40px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: darken($color-inactive, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Estilos de tabla
+.tabla-container {
+  margin-bottom: 30px;
+  overflow-x: auto;
+  background-color: $color-white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  padding: 5px;
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid $color-border;
+    }
+    
+    th {
+      background-color: $color-primary;
+      color: $color-white;
+      font-weight: 500;
+      
+      &:first-child {
+        border-top-left-radius: 6px;
+      }
+      
+      &:last-child {
+        border-top-right-radius: 6px;
+      }
+    }
+    
+    tr:nth-child(even) {
+      background-color: $color-purple-very-light;
+    }
+    
+    tr:hover {
+      background-color: var(--gray-50);
+    }
+    
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      
+      .btn-accion {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        transition: all 0.2s;
+        
+        img {
+          width: 20px;
+          height: 20px;
+        }
+        
+        &:hover {
+          background-color: rgba($color-primary, 0.1);
+          transform: scale(1.1);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+  }
+}
+
+// Estilos para badges
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: $color-inactive;
+  color: $color-white;
+  
+  &.activo {
+    background-color: $color-success;
+  }
+  
+  &.obligatorio {
+    background-color: $color-warning;
+    color: $color-text;
+  }
+}
+
+// Estilos de acciones
+.acciones-container {
+  display: flex;
+  justify-content: flex-end;
+  
+  .btn-crear {
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: $color-primary-light;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Responsividad
+@media (max-width: 768px) {
+  .tabs-container {
+    flex-direction: column;
+    
+    .tab {
+      text-align: center;
+    }
+  }
+  
+  .filtros-container {
+    flex-direction: column;
+    
+    .filtro {
+      width: 100%;
+    }
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .acciones-container {
+    justify-content: center;
+    
+    .btn-crear {
+      width: 100%;
+    }
+  }
+  
+  .tabla-container {
+    font-size: 14px;
+    
+    th, td {
+      padding: 8px 10px;
+    }
+  }
+} 

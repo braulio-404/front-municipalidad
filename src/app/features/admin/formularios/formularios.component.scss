@@ -1,0 +1,341 @@
+// Variables
+$color-primary: #662e8f;
+$color-primary-light: #8a4baa;
+$color-accent: #34b748;
+$color-text: #333;
+$color-inactive: #9e9e9e;
+$color-border: #e0e0e0;
+$color-background: #f8f1ff;
+$color-white: #ffffff;
+$color-purple-very-light: #f8f1ff;
+
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: $color-white;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  
+  h1 {
+    color: $color-primary;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 10px;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background-color: $color-accent;
+      border-radius: 3px;
+    }
+  }
+}
+
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: $color-purple-very-light;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid $color-primary;
+  
+  .filtro {
+    flex: 1;
+    min-width: 200px;
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: $color-text;
+      font-weight: 500;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid $color-border;
+      border-radius: 4px;
+      font-size: 14px;
+      
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+      }
+    }
+    
+    &.fecha {
+      input {
+        padding: 9px 10px;
+      }
+    }
+    
+    &.estado {
+      select {
+        background-color: $color-white;
+      }
+    }
+  }
+}
+
+.filtro-accion {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  
+  .btn-filtrar {
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 40px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: $color-primary-light;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .btn-limpiar {
+    background-color: $color-inactive;
+    color: $color-white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 40px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: darken($color-inactive, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+.tabla-container {
+  margin-bottom: 30px;
+  overflow-x: auto;
+  background-color: $color-white;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  padding: 5px;
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid $color-border;
+    }
+    
+    th {
+      background-color: $color-primary;
+      color: $color-white;
+      font-weight: 500;
+      
+      &:first-child {
+        border-top-left-radius: 6px;
+      }
+      
+      &:last-child {
+        border-top-right-radius: 6px;
+      }
+    }
+    
+    tr:nth-child(even) {
+      background-color: $color-purple-very-light;
+    }
+    
+    tr:hover {
+      background-color: var(--gray-50);
+    }
+    
+    .acciones {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      
+      .btn-accion {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        transition: all 0.2s;
+        
+        img {
+          width: 20px;
+          height: 20px;
+        }
+        
+        &:hover {
+          background-color: rgba($color-primary, 0.1);
+          transform: scale(1.1);
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+    
+    .requisitos-cell {
+      max-width: 200px;
+      
+      .sin-requisitos {
+        color: $color-inactive;
+        font-style: italic;
+        font-size: 14px;
+      }
+      
+      span[title] {
+        cursor: help;
+        border-bottom: 1px dotted $color-primary;
+        
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+  }
+  
+  .no-resultados {
+    text-align: center;
+    padding: 40px 20px;
+    color: $color-inactive;
+    
+    p {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    
+    .btn-limpiar-filtros {
+      background-color: $color-primary;
+      color: $color-white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      
+      &:hover {
+        background-color: $color-primary-light;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+.acciones-container {
+  display: flex;
+  justify-content: flex-end;
+  
+  .btn-crear {
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: $color-primary-light;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Estilos para postulaciones vencidas
+.postulacion-vencida {
+  background-color: rgba(255, 152, 0, 0.1) !important; // Fondo naranja muy tenue
+}
+
+.estado-vencido {
+  color: #ff6b00;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  
+  .icono-vencido {
+    font-size: 16px;
+    animation: pulse 2s infinite;
+  }
+}
+
+// Animación para el icono de reloj
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Tooltip mejorado para postulaciones vencidas
+[title] {
+  position: relative;
+}
+
+// Responsividad
+@media (max-width: 768px) {
+  .filtros-container {
+    flex-direction: column;
+    
+    .filtro {
+      width: 100%;
+    }
+  }
+  
+  .acciones-container {
+    justify-content: center;
+  }
+} 

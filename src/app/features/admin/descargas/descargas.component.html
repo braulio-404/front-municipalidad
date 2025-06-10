@@ -1,0 +1,96 @@
+<div class="descarga-container">
+  <h2>Descarga de Información</h2>
+
+  <div class="filtros-container">
+    <div class="filtro">
+      <label>Postulación:</label>
+      <div class="input-container">
+        <input 
+          type="text" 
+          [(ngModel)]="terminoBusqueda" 
+          placeholder="Ingrese una Postulación" 
+          (keyup)="filtrarPostulaciones()">
+        <button *ngIf="terminoBusqueda" class="btn-clear" (click)="limpiarFiltros()">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+    </div>
+
+    <div class="filtro fecha">
+      <label>Fecha Inicio:</label>
+      <input 
+        type="date" 
+        [(ngModel)]="fechaInicio" 
+        (ngModelChange)="filtrarPostulaciones()">
+    </div>
+
+    <div class="filtro fecha">
+      <label>Fecha Término:</label>
+      <input 
+        type="date" 
+        [(ngModel)]="fechaTermino" 
+        (ngModelChange)="filtrarPostulaciones()">
+    </div>
+
+    <div class="filtro-accion">
+      <button class="btn-filtrar" (click)="filtrarPostulaciones()">Filtrar</button>
+      <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    {{ error }}
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <input 
+              type="checkbox" 
+              (change)="seleccionarTodas($event)">
+            Postulación
+          </th>
+          <th>N° Postulantes</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
+          <th>Añadir a descarga</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let postulacion of postulacionesFiltradas">
+          <td class="cargo-cell">
+            <span>{{ postulacion.cargo }}</span>
+          </td>
+          <td class="id-cell">{{ postulacion.cantidadPostulantes }}</td>
+          <td class="fecha-cell">{{ formatearFecha(postulacion.fechaInicio) }}</td>
+          <td class="fecha-cell">{{ formatearFecha(postulacion.fechaTermino) }}</td>
+          <td class="checkbox-cell">
+            <input 
+              type="checkbox" 
+              [checked]="postulacion.id !== undefined && seleccionadas[postulacion.id]" 
+              (change)="toggleSeleccion(postulacion)">
+          </td>
+        </tr>
+        <tr *ngIf="postulacionesFiltradas.length === 0 && !cargando">
+          <td colspan="5" class="no-results">No se encontraron postulaciones con los criterios de búsqueda.</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="cargando" class="loading-container">
+      <div class="spinner"></div>
+      <span>Cargando información...</span>
+    </div>
+  </div>
+
+  <div class="actions-container">
+    <button 
+      class="btn-descargar" 
+      [disabled]="!haySeleccionadas() || cargando"
+      (click)="descargarDocumentos()">
+      <i class="material-icons">download</i> Descargar Documentos
+    </button>
+  </div>
+</div> 

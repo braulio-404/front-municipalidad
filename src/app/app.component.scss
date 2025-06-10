@@ -1,0 +1,24 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    
+    &:has(app-menu) {
+      padding: 0;
+      background: none;
+    }
+  }
+  
+  .centered-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; // Espacio entre el encabezado y el formulario
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0; // Ajusta el margen para centrar mejor
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+  }
+  

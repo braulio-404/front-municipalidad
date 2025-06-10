@@ -1,0 +1,83 @@
+<div class="login-container" *ngIf="!verificandoAutenticacion">
+  <!-- Panel izquierdo con el logo -->
+  <div class="login-image">
+    <div class="login-placeholder">
+      <div class="logo-container">
+        <div class="logo-img">
+          <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo-png">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Panel derecho con el formulario -->
+  <div class="login-form">
+    <div class="form-header">
+      <h2>Iniciar Sesión</h2>
+      <p class="welcome-text">Bienvenido al sistema municipal</p>
+    </div>
+    
+    <div class="error-message" *ngIf="mostrarError">
+      <i class="material-icons error-icon">error_outline</i>
+      {{ mensajeError }}
+    </div>
+    
+    <form (ngSubmit)="iniciarSesion()" [formGroup]="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-container">
+          <i class="material-icons input-icon">email</i>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            placeholder="Ingrese su correo electrónico">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="input-container">
+          <i class="material-icons input-icon">lock</i>
+          <input 
+            [type]="mostrarPassword ? 'text' : 'password'" 
+            id="password" 
+            formControlName="password" 
+            placeholder="Ingrese su contraseña">
+          <i class="material-icons toggle-password" (click)="alternarPassword()">
+            {{ mostrarPassword ? 'visibility_off' : 'visibility' }}
+          </i>
+        </div>
+      </div>
+      
+      <div class="login-actions">
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid || cargando">
+          <span *ngIf="!cargando">Iniciar Sesión</span>
+          <span *ngIf="cargando">Iniciando sesión...</span>
+          <i class="material-icons btn-icon" *ngIf="!cargando">arrow_forward</i>
+          <i class="material-icons btn-icon spinning" *ngIf="cargando">hourglass_empty</i>
+        </button>
+        
+      </div>
+      
+      <div class="recuperar-link">
+        <a (click)="recuperarContrasena()">¿Olvidaste tu contraseña?</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Pantalla de carga inicial -->
+<div class="verificando-container" *ngIf="verificandoAutenticacion">
+  <div class="verificando-content">
+    <div class="logo-container">
+      <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo-verificando">
+    </div>
+    <div class="verificando-text">
+      <h3>Verificando autenticación...</h3>
+      <div class="spinner">
+        <i class="material-icons spinning">hourglass_empty</i>
+      </div>
+    </div>
+  </div>
+</div> 

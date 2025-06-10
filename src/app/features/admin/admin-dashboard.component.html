@@ -1,0 +1,51 @@
+<div class="admin-container">
+  <!-- Barra lateral de navegación -->
+  <div class="sidebar">
+    <div class="logo-container">
+      <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo">
+      <div class="brand-text">CONCHALÍ</div>
+    </div>
+    
+    <div class="menu-container">
+      <div class="menu-header">Panel de Administración</div>
+      <div class="menu-items">
+        <div *ngFor="let option of menuOptions" 
+          class="menu-item" 
+          [routerLink]="option.route"
+          routerLinkActive="active-menu-item">
+          <i class="material-icons menu-icon">{{option.icon}}</i>
+          <span class="menu-text">{{option.name}}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="logout-container">
+      <div class="menu-item logout-button" (click)="cerrarSesion()">
+        <i class="material-icons menu-icon">exit_to_app</i>
+        <span class="menu-text">Cerrar Sesión</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- Barra superior -->
+    <div class="top-bar">
+      <div class="page-title">
+        <h1>Panel de Administración</h1>
+      </div>
+      <div class="user-info">
+        <span class="user-name">Bienvenido, {{nombreUsuario}}</span>
+        <div class="user-avatar">
+          <i class="material-icons">person</i>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Área de contenido principal -->
+    <div class="content-area">
+      <!-- Router outlet para cargar los componentes hijos -->
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div> 
