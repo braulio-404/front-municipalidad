@@ -15,10 +15,19 @@ import { FormulariosService } from '../../servicios/formularios.service';
 export class PostulacionesComponent implements OnInit {
   postulaciones: Formulario[] = [];
   postulacionesOriginales: Formulario[] = [];
+  postulacionesFiltradas: Formulario[] = [];
   filtroOrden: string = 'recientes';
   filtroNombre: string = '';
   cargando: boolean = false;
   error: string | null = null;
+
+  // Variables para paginación
+  paginaActual: number = 1;
+  elementosPorPagina: number = 10;
+  totalPaginas: number = 0;
+  
+  // Opciones para elementos por página
+  opcionesElementosPorPagina: number[] = [5, 10, 20, 30];
 
   constructor(private formulariosService: FormulariosService) {}
 
@@ -27,11 +36,16 @@ export class PostulacionesComponent implements OnInit {
   }
 
   get postulacionesActivas() {
-    return this.postulaciones.filter(p => p.estado === 'Activo');
+    return this.postulacionesFiltradas.filter(p => p.estado === 'Activo');
   }
 
   get tienePostulacionesActivas() {
     return this.postulacionesActivas.length > 0;
+  }
+
+  // Getter para las postulaciones que se muestran en la página actual
+  get postulacionesEnPaginaActual() {
+    return this.postulaciones;
   }
 
   cargarPostulaciones() {
@@ -90,24 +104,96 @@ export class PostulacionesComponent implements OnInit {
       {
         id: 3,
         cargo: 'Ingeniero Civil Geotécnico',
-        descripcion: 'Buscamos un Jefe del Departamento de Geotécnica con amplia experiencia para liderar, coordinar y supervisar proyectos geotécnicos de gran envergadura. Esta posición es clave para asegurar la calidad técnica, la innovación y el cumplimiento de estándares en todas las etapas del proyecto.',
+        descripcion: 'Buscamos un Jefe del Departamento de Geotécnica con amplia experiencia para liderar, coordinar y supervisar proyectos geotécnicos de gran envergadura.',
         fechaCreacion: new Date('2024-01-15'),
         fechaInicio: new Date('2024-01-15'),
         fechaTermino: new Date('2024-02-15'),
+        estado: 'Activo'
+      },
+      {
+        id: 4,
+        cargo: 'Analista de Sistemas',
+        descripcion: 'Se requiere analista de sistemas con experiencia en gestión de bases de datos y análisis de requerimientos.',
+        fechaCreacion: new Date('2024-01-12'),
+        fechaInicio: new Date('2024-01-12'),
+        fechaTermino: new Date('2024-02-12'),
+        estado: 'Activo'
+      },
+      {
+        id: 5,
+        cargo: 'Contador Público',
+        descripcion: 'Contador público titulado para área de finanzas municipales. Experiencia mínima 3 años en sector público.',
+        fechaCreacion: new Date('2024-01-10'),
+        fechaInicio: new Date('2024-01-10'),
+        fechaTermino: new Date('2024-02-10'),
+        estado: 'Activo'
+      },
+      {
+        id: 6,
+        cargo: 'Asistente Social',
+        descripcion: 'Asistente social para programas comunitarios y atención ciudadana. Experiencia en trabajo con familias.',
+        fechaCreacion: new Date('2024-01-08'),
+        fechaInicio: new Date('2024-01-08'),
+        fechaTermino: new Date('2024-02-08'),
+        estado: 'Activo'
+      },
+      {
+        id: 7,
+        cargo: 'Técnico en Informática',
+        descripcion: 'Técnico en informática para soporte técnico y mantención de equipos municipales.',
+        fechaCreacion: new Date('2024-01-05'),
+        fechaInicio: new Date('2024-01-05'),
+        fechaTermino: new Date('2024-02-05'),
+        estado: 'Activo'
+      },
+      {
+        id: 8,
+        cargo: 'Secretaria Ejecutiva',
+        descripcion: 'Secretaria ejecutiva bilingüe para apoyo administrativo en alcaldía. Manejo de agenda y correspondencia.',
+        fechaCreacion: new Date('2024-01-03'),
+        fechaInicio: new Date('2024-01-03'),
+        fechaTermino: new Date('2024-02-03'),
+        estado: 'Activo'
+      },
+      {
+        id: 9,
+        cargo: 'Inspector Municipal',
+        descripcion: 'Inspector municipal para fiscalización y control de normativas locales. Conocimiento en ordenanzas municipales.',
+        fechaCreacion: new Date('2023-12-28'),
+        fechaInicio: new Date('2023-12-28'),
+        fechaTermino: new Date('2024-01-28'),
+        estado: 'Inactivo'
+      },
+      {
+        id: 10,
+        cargo: 'Coordinador de Proyectos',
+        descripcion: 'Coordinador de proyectos sociales y comunitarios. Experiencia en gestión de equipos y seguimiento de programas.',
+        fechaCreacion: new Date('2024-01-01'),
+        fechaInicio: new Date('2024-01-01'),
+        fechaTermino: new Date('2024-02-01'),
+        estado: 'Activo'
+      },
+      {
+        id: 11,
+        cargo: 'Psicólogo Clínico',
+        descripcion: 'Psicólogo clínico para atención en programas de salud mental comunitaria. Especialización en terapia familiar.',
+        fechaCreacion: new Date('2023-12-30'),
+        fechaInicio: new Date('2023-12-30'),
+        fechaTermino: new Date('2024-01-30'),
+        estado: 'Activo'
+      },
+      {
+        id: 12,
+        cargo: 'Conductor Municipal',
+        descripcion: 'Conductor para vehículos municipales. Licencia clase B al día y experiencia mínima 2 años.',
+        fechaCreacion: new Date('2023-12-25'),
+        fechaInicio: new Date('2023-12-25'),
+        fechaTermino: new Date('2024-01-25'),
         estado: 'Inactivo'
       }
     ];
     
     this.postulaciones = [...this.postulacionesOriginales];
-    this.aplicarFiltros();
-  }
-
-  filtrarPorOrden(orden: string) {
-    this.filtroOrden = orden;
-    this.aplicarFiltros();
-  }
-
-  buscarPorNombre() {
     this.aplicarFiltros();
   }
 
@@ -145,7 +231,115 @@ export class PostulacionesComponent implements OnInit {
     }
     
     // Combinar: activas primero, luego inactivas
-    this.postulaciones = [...postulacionesActivas, ...postulacionesInactivas];
+    this.postulacionesFiltradas = [...postulacionesActivas, ...postulacionesInactivas];
+    
+    // Actualizar paginación
+    this.actualizarPaginacion();
+  }
+
+  // Métodos de paginación
+  actualizarPaginacion() {
+    this.totalPaginas = Math.ceil(this.postulacionesFiltradas.length / this.elementosPorPagina);
+    
+    // Si la página actual es mayor al total de páginas, ir a la primera
+    if (this.paginaActual > this.totalPaginas && this.totalPaginas > 0) {
+      this.paginaActual = 1;
+    }
+    
+    // Si no hay páginas (sin resultados), asegurar que esté en página 1
+    if (this.totalPaginas === 0) {
+      this.paginaActual = 1;
+    }
+    
+    this.actualizarPostulacionesVisibles();
+  }
+
+  actualizarPostulacionesVisibles() {
+    const inicio = (this.paginaActual - 1) * this.elementosPorPagina;
+    const fin = inicio + this.elementosPorPagina;
+    this.postulaciones = this.postulacionesFiltradas.slice(inicio, fin);
+    
+    console.log('Paginación actualizada:', {
+      paginaActual: this.paginaActual,
+      elementosPorPagina: this.elementosPorPagina,
+      totalFiltradas: this.postulacionesFiltradas.length,
+      totalPaginas: this.totalPaginas,
+      inicio, fin,
+      postulacionesVisibles: this.postulaciones.length,
+      tieneActivas: this.tienePostulacionesActivas
+    });
+  }
+
+  // Navegación de páginas
+  irAPagina(pagina: number) {
+    if (pagina >= 1 && pagina <= this.totalPaginas) {
+      this.paginaActual = pagina;
+      this.actualizarPostulacionesVisibles();
+    }
+  }
+
+  paginaAnterior() {
+    this.irAPagina(this.paginaActual - 1);
+  }
+
+  paginaSiguiente() {
+    this.irAPagina(this.paginaActual + 1);
+  }
+
+  get tienePaginaAnterior(): boolean {
+    return this.paginaActual > 1;
+  }
+
+  // Getter para verificar si hay página siguiente
+  get tienePaginaSiguiente(): boolean {
+    return this.paginaActual < this.totalPaginas;
+  }
+
+  // Getter para obtener array de números de página para mostrar
+  get numerosPagina(): number[] {
+    const paginas: number[] = [];
+    const maxPaginasVisibles = 5;
+    
+    if (this.totalPaginas <= maxPaginasVisibles) {
+      // Si hay pocas páginas, mostrar todas
+      for (let i = 1; i <= this.totalPaginas; i++) {
+        paginas.push(i);
+      }
+    } else {
+      // Lógica para mostrar páginas alrededor de la actual
+      let inicio = Math.max(1, this.paginaActual - 2);
+      let fin = Math.min(this.totalPaginas, inicio + maxPaginasVisibles - 1);
+      
+      // Ajustar si estamos cerca del final
+      if (fin === this.totalPaginas) {
+        inicio = Math.max(1, fin - maxPaginasVisibles + 1);
+      }
+      
+      for (let i = inicio; i <= fin; i++) {
+        paginas.push(i);
+      }
+    }
+    
+    return paginas;
+  }
+
+  // Reiniciar paginación cuando se aplican filtros
+  buscarPorNombre() {
+    this.paginaActual = 1; // Resetear a primera página al buscar
+    this.aplicarFiltros();
+  }
+
+  filtrarPorOrden(orden: string) {
+    this.filtroOrden = orden;
+    this.paginaActual = 1; // Resetear a primera página al cambiar orden
+    this.aplicarFiltros();
+  }
+
+  // Cambiar cantidad de elementos por página
+  cambiarElementosPorPagina(nuevaCantidad: number) {
+    this.elementosPorPagina = nuevaCantidad;
+    this.paginaActual = 1; // Resetear a primera página al cambiar cantidad
+    this.actualizarPaginacion();
   }
 
   postular(postulacionId: number | undefined) {

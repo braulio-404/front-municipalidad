@@ -13,6 +13,16 @@
         <option value="alfabetico">Alfabético</option>
       </select>
       
+      <select 
+        class="filtro-select elementos-por-pagina" 
+        [(ngModel)]="elementosPorPagina" 
+        (change)="cambiarElementosPorPagina(elementosPorPagina)"
+        [disabled]="cargando">
+        <option *ngFor="let opcion of opcionesElementosPorPagina" [value]="opcion">
+          {{ opcion }} por página
+        </option>
+      </select>
+      
       <div class="busqueda-container">
         <input 
           type="text" 
@@ -55,7 +65,7 @@
   <!-- Lista de postulaciones -->
   <div class="postulaciones-lista" *ngIf="tienePostulacionesActivas">
     <div 
-      *ngFor="let postulacion of postulaciones" 
+      *ngFor="let postulacion of postulacionesEnPaginaActual" 
       class="postulacion-card"
       [ngClass]="{ 'postulacion-vencida': postulacion.estado === 'Inactivo' }">
       
@@ -89,6 +99,68 @@
           class="btn-vencida"
           disabled>
           Postulación cerrada
+        </button>
+      </div>
+    </div>
+    
+    <!-- Controles de paginación -->
+    <div *ngIf="totalPaginas > 1" class="paginacion-container">
+      <div class="paginacion-info">
+        <span>Página {{ paginaActual }} de {{ totalPaginas }}</span>
+        <span class="total-resultados">({{ postulacionesFiltradas.length }} resultado{{ postulacionesFiltradas.length !== 1 ? 's' : '' }})</span>
+      </div>
+      
+      <div class="paginacion-controles">
+        <!-- Botón anterior -->
+        <button 
+          class="btn-paginacion btn-anterior"
+          [disabled]="!tienePaginaAnterior"
+          (click)="paginaAnterior()">
+          <i class="fas fa-chevron-left"></i>
+          Anterior
+        </button>
+        
+        <!-- Números de página -->
+        <div class="numeros-pagina">
+          <!-- Primera página si no está visible -->
+          <button 
+            *ngIf="numerosPagina[0] > 1"
+            class="btn-numero-pagina"
+            (click)="irAPagina(1)">
+            1
+          </button>
+          
+          <!-- Puntos suspensivos si hay salto -->
+          <span *ngIf="numerosPagina[0] > 2" class="puntos-suspensivos">...</span>
+          
+          <!-- Números de página visibles -->
+          <button 
+            *ngFor="let num of numerosPagina"
+            class="btn-numero-pagina"
+            [class.activa]="num === paginaActual"
+            (click)="irAPagina(num)">
+            {{ num }}
+          </button>
+          
+          <!-- Puntos suspensivos si hay salto al final -->
+          <span *ngIf="numerosPagina[numerosPagina.length - 1] < totalPaginas - 1" class="puntos-suspensivos">...</span>
+          
+          <!-- Última página si no está visible -->
+          <button 
+            *ngIf="numerosPagina[numerosPagina.length - 1] < totalPaginas"
+            class="btn-numero-pagina"
+            (click)="irAPagina(totalPaginas)">
+            {{ totalPaginas }}
+          </button>
+        </div>
+        
+        <!-- Botón siguiente -->
+        <button 
+          class="btn-paginacion btn-siguiente"
+          [disabled]="!tienePaginaSiguiente"
+          (click)="paginaSiguiente()">
+          Siguiente
+          <i class="fas fa-chevron-right"></i>
         </button>
       </div>
     </div>
