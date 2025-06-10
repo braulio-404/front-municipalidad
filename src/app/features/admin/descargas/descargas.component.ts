@@ -4,6 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormulariosService } from '../../../servicios/formularios.service';
 import { Formulario } from '../../../interfaces/formulario.interface';
 
+// Interfaz extendida para incluir el conteo de postulantes
+interface FormularioConConteo extends Formulario {
+  cantidadPostulantes: number;
+}
+
 @Component({
   selector: 'app-descargas',
   templateUrl: './descargas.component.html',
@@ -16,8 +21,8 @@ import { Formulario } from '../../../interfaces/formulario.interface';
   ]
 })
 export class DescargasComponent implements OnInit {
-  postulaciones: Formulario[] = [];
-  postulacionesFiltradas: Formulario[] = [];
+  postulaciones: FormularioConConteo[] = [];
+  postulacionesFiltradas: FormularioConConteo[] = [];
   seleccionadas: { [key: number]: boolean } = {};
   terminoBusqueda: string = '';
   fechaInicio: string = '';
@@ -35,26 +40,27 @@ export class DescargasComponent implements OnInit {
 
   cargarPostulaciones(): void {
     this.cargando = true;
+    this.error = '';
+    
+    console.log('Cargando formularios con conteo...');
+    
+    // Usar el método optimizado que trae el conteo desde el backend
     this.formulariosService.getFormulariosConConteo().subscribe({
-      next: (data) => {
-        this.postulaciones = data;
-        this.postulacionesFiltradas = data;
+      next: (formularios) => {
+        console.log('Formularios con conteo obtenidos:', formularios.length);
+        console.log('Detalle de conteos:', formularios.map(f => ({
+          id: f.id,
+          cargo: f.cargo,
+          cantidadPostulantes: f.cantidadPostulantes
+        })));
+        
+        this.postulaciones = formularios;
+        this.postulacionesFiltradas = [...formularios];
         this.cargando = false;
       },
       error: (error) => {
-        console.error('Error al cargar postulaciones', error);
-        
-        // Manejar mensajes específicos del servicio
-        if (error.error?.error === "No se encontraron documentos") {
-          this.error = error.error.message || "No se encontraron documentos para ningún postulante en las postulaciones solicitadas";
-        } else if (error.error?.message) {
-          this.error = error.error.message;
-        } else if (error.error?.error) {
-          this.error = error.error.error;
-        } else {
-          this.error = 'Error al cargar postulaciones';
-        }
-        
+        console.error('Error al cargar formularios con conteo:', error);
+        this.error = 'Error al cargar postulaciones';
         this.cargando = false;
       }
     });
@@ -111,7 +117,7 @@ export class DescargasComponent implements OnInit {
     return !!(this.terminoBusqueda || this.fechaInicio || this.fechaTermino);
   }
 
-  toggleSeleccion(postulacion: Formulario): void {
+  toggleSeleccion(postulacion: FormularioConConteo): void {
     if (!postulacion.id) return;
     this.seleccionadas[postulacion.id] = !this.seleccionadas[postulacion.id];
   }

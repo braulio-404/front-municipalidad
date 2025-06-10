@@ -63,7 +63,7 @@
           <td class="cargo-cell">
             <span>{{ postulacion.cargo }}</span>
           </td>
-          <td class="id-cell">{{ postulacion.cantidadPostulantes }}</td>
+          <td class="id-cell">{{ postulacion.cantidadPostulantes || 0 }}</td>
           <td class="fecha-cell">{{ formatearFecha(postulacion.fechaInicio) }}</td>
           <td class="fecha-cell">{{ formatearFecha(postulacion.fechaTermino) }}</td>
           <td class="checkbox-cell">
