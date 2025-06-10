@@ -53,13 +53,6 @@
           </tr>
         </thead>
         <tbody>
-<<<<<<< HEAD
-          <tr *ngFor="let form of formularios">
-            <td>{{ form.cargo }}</td>
-            <td>{{ form.fechaInicio | date:'dd/MM/yyyy' }}</td>
-            <td>{{ form.fechaTermino | date:'dd/MM/yyyy' }}</td>
-            <td>{{ form.estado }}</td>
-=======
           <tr *ngFor="let form of formularios" [class.postulacion-vencida]="esPostulacionVencida(form)">
             <td>{{ form.cargo }}</td>
             <td>{{ formatearFechaLocal(form.fechaInicio) }}</td>
@@ -70,7 +63,6 @@
                 <span *ngIf="esPostulacionVencida(form)" class="icono-vencido"> ⏰</span>
               </span>
             </td>
->>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
             <td class="requisitos-cell">
               <span *ngIf="form.requisitosSeleccionados && form.requisitosSeleccionados.length > 0; else sinRequisitos" 
                     [title]="obtenerNombresRequisitos(form.requisitosSeleccionados)">
