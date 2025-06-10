@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../servicios/auth.service';
 import { LoginDto } from '../../interfaces/auth.interface';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter, take } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   mostrarPassword = false;
   logoUrl: string = 'assets/images/logoconchali.png';
   cargando = false;
+  verificandoAutenticacion = true; // Nuevo estado para mostrar loading inicial
 
   constructor(
     private fb: FormBuilder,
@@ -34,10 +35,22 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Verificar si ya está autenticado
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/admin']);
-    }
+    // Esperar a que el servicio se inicialice antes de verificar autenticación
+    this.authService.initialized$.pipe(
+      filter(initialized => initialized),
+      take(1)
+    ).subscribe(() => {
+      this.verificandoAutenticacion = false;
+      
+      // Verificar si ya está autenticado
+      const isAuthenticated = this.authService.isAuthenticated();
+      const user = this.authService.getCurrentUser();
+      
+      if (isAuthenticated && user) {
+        // Cualquier usuario autenticado va a admin
+        this.router.navigate(['/admin']);
+      }
+    });
   }
 
   iniciarSesion(): void {
@@ -50,53 +63,40 @@ export class LoginComponent implements OnInit {
         password: this.loginForm.value.password
       };
 
-      console.log('Iniciando login con:', loginData.email);
-
       this.authService.login(loginData)
         .pipe(
           catchError(error => {
             console.error('Error en login:', error);
             this.mostrarError = true;
-            
-            // Manejar específicamente el error 401 (credenciales incorrectas)
-            if (error.status === 401) {
-              this.mensajeError = 'Email o contraseña incorrecta';
-            } else {
-              // Para otros errores, mostrar mensaje genérico sin detalles técnicos
-              this.mensajeError = 'Error de conexión. Intenta nuevamente.';
-            }
-            
+            this.mensajeError = error.message || 'Error de autenticación. Verifica tus credenciales.';
             this.cargando = false;
             return of(null);
           })
         )
         .subscribe(response => {
-          console.log('Respuesta del login:', response);
           this.cargando = false;
           
           if (response) {
-            console.log('Login exitoso, verificando usuario...');
             // Pequeña pausa para asegurar que el usuario se guardó correctamente
             setTimeout(() => {
               const user = this.authService.getCurrentUser();
-              console.log('Usuario actual:', user);
               
               if (user?.rol === 'admin') {
-                console.log('Redirigiendo a admin...');
                 this.router.navigate(['/admin']);
               } else {
-                console.log('Redirigiendo a dashboard...');
                 this.router.navigate(['/dashboard']);
               }
             }, 100);
-          } else {
-            console.log('No se recibió respuesta válida');
           }
         });
     } else {
       this.mostrarError = true;
       this.mensajeError = 'Por favor, complete todos los campos correctamente.';
     }
+  }
+
+  alternarPassword(): void {
+    this.mostrarPassword = !this.mostrarPassword;
   }
 
   recuperarContrasena(): void {
@@ -122,19 +122,6 @@ export class LoginComponent implements OnInit {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
-  
-  togglePasswordVisibility(): void {
-    this.mostrarPassword = !this.mostrarPassword;
-  }
 
-  registrarse(): void {
-    // Navegar a la página de registro cuando se implemente
-    // this.router.navigate(['/registro']);
-    console.log('Navegando a página de registro');
-  }
 
-  loginConRedSocial(redSocial: string): void {
-    // Implementar la lógica para iniciar sesión con redes sociales
-    console.log(`Iniciando sesión con ${redSocial}`);
-  }
 } 

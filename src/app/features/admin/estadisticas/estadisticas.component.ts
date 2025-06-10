@@ -29,14 +29,24 @@ export class EstadisticasComponent implements OnInit {
   postulaciones: EstadisticaPostulacion[] = [];
   postulacionesFiltradas: EstadisticaPostulacion[] = [];
   terminoBusqueda: string = '';
+<<<<<<< HEAD
   fechaInicio: Date | null = null;
   fechaTermino: Date | null = null;
+=======
+  fechaInicio: string = '';
+  fechaTermino: string = '';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   cargando: boolean = false;
   error: string = '';
   
   // Variables para los gráficos
+<<<<<<< HEAD
   graficoEdad: Chart | null = null;
   graficoProfesionales: Chart | null = null;
+=======
+  graficoEdad: Chart | null = null; // Gráfico de postulantes por cargo
+  graficoProfesionales: Chart | null = null; // Gráfico de postulantes por mes
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   
   // Propiedad para verificar si estamos en el navegador
   isBrowser: boolean = false;
@@ -91,6 +101,7 @@ export class EstadisticasComponent implements OnInit {
       const coincideTermino = !this.terminoBusqueda || 
         p.cargo.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
       
+<<<<<<< HEAD
       // Filtrar por fecha de inicio
       const fechaInicioPostulacion = new Date(p.fechaInicio);
       const coincideFechaInicio = !this.fechaInicio || 
@@ -102,6 +113,39 @@ export class EstadisticasComponent implements OnInit {
         fechaTerminoPostulacion <= this.fechaTermino;
       
       return coincideTermino && coincideFechaInicio && coincideFechaTermino;
+=======
+      // Función auxiliar para convertir fecha a objeto Date normalizado
+      const convertirFecha = (fecha: string | Date): Date => {
+        if (typeof fecha === 'string') {
+          const fechaStr = fecha.includes('T') ? fecha.split('T')[0] : fecha;
+          const [year, month, day] = fechaStr.split('-').map(num => parseInt(num, 10));
+          return new Date(year, month - 1, day);
+        } else {
+          const fechaObj = new Date(fecha);
+          return new Date(fechaObj.getFullYear(), fechaObj.getMonth(), fechaObj.getDate());
+        }
+      };
+      
+      // Filtrar por fecha de inicio (si está definida)
+      let cumpleFechaInicio = true;
+      if (this.fechaInicio && p.fechaInicio) {
+        const fechaInicioForm = convertirFecha(p.fechaInicio);
+        const fechaInicioFiltro = convertirFecha(this.fechaInicio);
+        // La postulación debe iniciar en o después de la fecha del filtro
+        cumpleFechaInicio = fechaInicioForm >= fechaInicioFiltro;
+      }
+      
+      // Filtrar por fecha de término (si está definida)
+      let cumpleFechaTermino = true;
+      if (this.fechaTermino && p.fechaTermino) {
+        const fechaTerminoForm = convertirFecha(p.fechaTermino);
+        const fechaTerminoFiltro = convertirFecha(this.fechaTermino);
+        // La postulación debe terminar en o antes de la fecha del filtro
+        cumpleFechaTermino = fechaTerminoForm <= fechaTerminoFiltro;
+      }
+      
+      return coincideTermino && cumpleFechaInicio && cumpleFechaTermino;
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     });
     
     // Actualizar gráficos después de filtrar
@@ -110,15 +154,98 @@ export class EstadisticasComponent implements OnInit {
 
   limpiarFiltros(): void {
     this.terminoBusqueda = '';
+<<<<<<< HEAD
     this.fechaInicio = null;
     this.fechaTermino = null;
+=======
+    this.fechaInicio = '';
+    this.fechaTermino = '';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     this.postulacionesFiltradas = [...this.postulaciones];
     this.actualizarGraficos();
   }
 
+<<<<<<< HEAD
   formatearFecha(fecha: string | Date): string {
     const fechaObj = new Date(fecha);
     return fechaObj.toLocaleDateString('es-ES');
+=======
+  hayFiltrosActivos(): boolean {
+    return !!(this.terminoBusqueda || this.fechaInicio || this.fechaTermino);
+  }
+
+  formatearFecha(fecha: string | Date): string {
+    try {
+      if (!fecha) return '';
+      
+      let fechaObj: Date;
+      
+      if (typeof fecha === 'string') {
+        // Si viene en formato ISO, extraer solo la parte de la fecha (YYYY-MM-DD)
+        const fechaStr = fecha.includes('T') ? fecha.split('T')[0] : fecha;
+        const [year, month, day] = fechaStr.split('-').map(num => parseInt(num, 10));
+        // Crear fecha en zona horaria local para evitar problemas de UTC
+        fechaObj = new Date(year, month - 1, day);
+      } else {
+        fechaObj = new Date(fecha);
+      }
+      
+      // Formatear como dd/MM/yyyy
+      const dia = fechaObj.getDate().toString().padStart(2, '0');
+      const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
+      const año = fechaObj.getFullYear();
+      
+      return `${dia}/${mes}/${año}`;
+    } catch (error) {
+      console.error('Error al formatear fecha:', error, fecha);
+      return '';
+    }
+  }
+
+  obtenerDatosPorCargo(): {cargo: string, cantidad: number}[] {
+    const datosPorCargo: {[key: string]: number} = {};
+    
+    this.postulacionesFiltradas.forEach(postulacion => {
+      if (datosPorCargo[postulacion.cargo]) {
+        datosPorCargo[postulacion.cargo] += postulacion.cantidadPostulantes;
+      } else {
+        datosPorCargo[postulacion.cargo] = postulacion.cantidadPostulantes;
+      }
+    });
+    
+    return Object.entries(datosPorCargo).map(([cargo, cantidad]) => ({
+      cargo,
+      cantidad
+    }));
+  }
+
+  obtenerDatosPorMes(): {mes: string, cantidad: number}[] {
+    const datosPorMes: {[key: string]: number} = {};
+    const meses = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    
+    this.postulacionesFiltradas.forEach(postulacion => {
+      const fecha = new Date(postulacion.fechaInicio);
+      const mesNumero = fecha.getMonth();
+      const mesNombre = meses[mesNumero];
+      
+      if (datosPorMes[mesNombre]) {
+        datosPorMes[mesNombre] += postulacion.cantidadPostulantes;
+      } else {
+        datosPorMes[mesNombre] = postulacion.cantidadPostulantes;
+      }
+    });
+    
+    // Filtrar solo los meses que tienen datos
+    return Object.entries(datosPorMes)
+      .filter(([mes, cantidad]) => cantidad > 0)
+      .map(([mes, cantidad]) => ({
+        mes,
+        cantidad
+      }));
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
   
   inicializarGraficos(): void {
@@ -130,6 +257,7 @@ export class EstadisticasComponent implements OnInit {
     const ctx = document.getElementById('graficoEdad') as HTMLCanvasElement;
     if (!ctx) return;
     
+<<<<<<< HEAD
     // Simulamos datos por edad
     const datos = {
       labels: ['20-30', '31-40', '41-50'],
@@ -151,6 +279,19 @@ export class EstadisticasComponent implements OnInit {
             '#8a4baa',
             '#34b748'
           ],
+=======
+    // Obtener datos reales de postulantes por cargo
+    const datosPorCargo = this.obtenerDatosPorCargo();
+    
+    const datos = {
+      labels: datosPorCargo.map(item => item.cargo),
+      datasets: [
+        {
+          label: 'Postulantes por cargo',
+          data: datosPorCargo.map(item => item.cantidad),
+          backgroundColor: 'rgba(102, 46, 143, 0.6)',
+          borderColor: '#662e8f',
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           borderWidth: 1
         }
       ]
@@ -163,7 +304,32 @@ export class EstadisticasComponent implements OnInit {
         responsive: true,
         scales: {
           y: {
+<<<<<<< HEAD
             beginAtZero: true
+=======
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          },
+          x: {
+            ticks: {
+              maxRotation: 45,
+              minRotation: 45
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.dataset.label}: ${context.parsed.y} postulantes`;
+              }
+            }
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           }
         }
       }
@@ -174,6 +340,7 @@ export class EstadisticasComponent implements OnInit {
     const ctx = document.getElementById('graficoProfesionales') as HTMLCanvasElement;
     if (!ctx) return;
     
+<<<<<<< HEAD
     // Simulamos datos de profesionales vs militares
     const datos = {
       labels: ['Profesionales', 'Militares'],
@@ -187,6 +354,32 @@ export class EstadisticasComponent implements OnInit {
           borderColor: [
             '#662e8f',
             '#34b748'
+=======
+    // Obtener datos reales de postulantes por mes
+    const datosPorMes = this.obtenerDatosPorMes();
+    
+    const datos = {
+      labels: datosPorMes.map((item: {mes: string, cantidad: number}) => item.mes),
+      datasets: [
+        {
+          label: 'Postulantes por mes',
+          data: datosPorMes.map((item: {mes: string, cantidad: number}) => item.cantidad),
+          backgroundColor: [
+            'rgba(102, 46, 143, 0.6)',
+            'rgba(138, 75, 170, 0.6)',
+            'rgba(52, 183, 72, 0.6)',
+            'rgba(255, 193, 7, 0.6)',
+            'rgba(220, 53, 69, 0.6)',
+            'rgba(32, 201, 151, 0.6)'
+          ],
+          borderColor: [
+            '#662e8f',
+            '#8a4baa',
+            '#34b748',
+            '#ffc107',
+            '#dc3545',
+            '#20c997'
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           ],
           borderWidth: 1
         }
@@ -194,13 +387,27 @@ export class EstadisticasComponent implements OnInit {
     };
     
     this.graficoProfesionales = new Chart(ctx, {
+<<<<<<< HEAD
       type: 'pie',
+=======
+      type: 'doughnut',
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       data: datos,
       options: {
         responsive: true,
         plugins: {
           legend: {
             position: 'right'
+<<<<<<< HEAD
+=======
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context: any) {
+                return `${context.label}: ${context.parsed} postulantes`;
+              }
+            }
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           }
         }
       }
@@ -211,6 +418,7 @@ export class EstadisticasComponent implements OnInit {
     // Solo actualizamos gráficos en el navegador
     if (!this.isBrowser) return;
     
+<<<<<<< HEAD
     // Para una aplicación real, aquí actualizaríamos los datos de los gráficos 
     // basados en las postulaciones filtradas
     if (this.graficoEdad) {
@@ -229,6 +437,21 @@ export class EstadisticasComponent implements OnInit {
         Math.floor(Math.random() * 40) + 40,
         Math.floor(Math.random() * 40) + 20
       ];
+=======
+    // Actualizar gráfico de postulantes por cargo
+    if (this.graficoEdad) {
+      const datosPorCargo = this.obtenerDatosPorCargo();
+      this.graficoEdad.data.labels = datosPorCargo.map(item => item.cargo);
+      this.graficoEdad.data.datasets[0].data = datosPorCargo.map(item => item.cantidad);
+      this.graficoEdad.update();
+    }
+    
+    // Actualizar gráfico de postulantes por mes
+    if (this.graficoProfesionales) {
+      const datosPorMes = this.obtenerDatosPorMes();
+      this.graficoProfesionales.data.labels = datosPorMes.map(item => item.mes);
+      this.graficoProfesionales.data.datasets[0].data = datosPorMes.map(item => item.cantidad);
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       this.graficoProfesionales.update();
     }
   }

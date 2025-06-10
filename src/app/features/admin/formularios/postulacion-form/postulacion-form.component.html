@@ -119,6 +119,10 @@ Conocimiento avanzado en herramientas y software habituales de Ingeniería (MS O
             <div *ngFor="let requisito of requisitosVisibles" 
                  class="requisito-item" 
                  [class.requisito-seleccionado]="isRequisitoSeleccionado(requisito)"
+<<<<<<< HEAD
+=======
+                 [class.requisito-readonly]="modo === 'ver'"
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
                  (click)="toggleRequisito(requisito)">
               <div class="requisito-header">
                 <label>{{ requisito.nombre }}</label>
@@ -131,6 +135,10 @@ Conocimiento avanzado en herramientas y software habituales de Ingeniería (MS O
                   type="checkbox" 
                   [id]="'req_' + requisito.id" 
                   [formControlName]="getFormControlName(requisito)"
+<<<<<<< HEAD
+=======
+                  [disabled]="modo === 'ver'"
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
                   (click)="$event.stopPropagation()">
                 <span class="checkbox-icon"></span>
               </div>
@@ -138,7 +146,13 @@ Conocimiento avanzado en herramientas y software habituales de Ingeniería (MS O
             
             <!-- Mensaje cuando no hay resultados -->
             <div *ngIf="requisitosVisibles.length === 0" class="no-requisitos">
+<<<<<<< HEAD
               No se encontraron requisitos con ese criterio de búsqueda.
+=======
+              <span *ngIf="modo === 'ver'">Esta postulación no tiene requisitos asociados.</span>
+              <span *ngIf="modo !== 'ver' && terminoBusqueda">No se encontraron requisitos con ese criterio de búsqueda.</span>
+              <span *ngIf="modo !== 'ver' && !terminoBusqueda">No hay requisitos disponibles.</span>
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
             </div>
           </div>
           
@@ -185,6 +199,10 @@ Conocimiento avanzado en herramientas y software habituales de Ingeniería (MS O
     </div>
 
     <div *ngIf="error" class="error-container">{{ error }}</div>
+<<<<<<< HEAD
+=======
+    <div *ngIf="mensajeInfo" class="info-container">{{ mensajeInfo }}</div>
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     <div *ngIf="cargando" class="loading-container">Procesando...</div>
   </form>
 </div> 

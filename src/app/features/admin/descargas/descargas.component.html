@@ -20,16 +20,21 @@
       <label>Fecha Inicio:</label>
       <input 
         type="date" 
-        [ngModel]="fechaInicio" 
-        (ngModelChange)="fechaInicio = $event; filtrarPostulaciones()">
+        [(ngModel)]="fechaInicio" 
+        (ngModelChange)="filtrarPostulaciones()">
     </div>
 
     <div class="filtro fecha">
       <label>Fecha Término:</label>
       <input 
         type="date" 
-        [ngModel]="fechaTermino" 
-        (ngModelChange)="fechaTermino = $event; filtrarPostulaciones()">
+        [(ngModel)]="fechaTermino" 
+        (ngModelChange)="filtrarPostulaciones()">
+    </div>
+
+    <div class="filtro-accion">
+      <button class="btn-filtrar" (click)="filtrarPostulaciones()">Filtrar</button>
+      <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
     </div>
   </div>
 

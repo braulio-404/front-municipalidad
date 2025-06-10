@@ -218,7 +218,20 @@ export class FormularioPostulacionComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al enviar postulación:', error);
+<<<<<<< HEAD
           this.error = 'Error al enviar la postulación. Por favor, intenta nuevamente.';
+=======
+          
+          // Manejar mensajes específicos del servicio
+          if (error.status === 409 && error.error?.message) {
+            this.error = error.error.message;
+          } else if (error.error?.message) {
+            this.error = error.error.message;
+          } else {
+            this.error = 'Error al enviar la postulación. Por favor, intenta nuevamente.';
+          }
+          
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
           this.cargando = false;
         }
       });

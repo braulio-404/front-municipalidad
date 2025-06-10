@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+<<<<<<< HEAD
 import { Observable, forkJoin, map, catchError, of } from 'rxjs';
+=======
+import { Observable, forkJoin, map, catchError, of, BehaviorSubject } from 'rxjs';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 import { BaseApiService } from './base-api.service';
 import { FormulariosService, FormularioConConteo } from './formularios.service';
 import { PostulacionesService, Postulacion } from './postulaciones.service';
@@ -15,6 +19,13 @@ import {
   providedIn: 'root'
 })
 export class EstadisticasAdminService extends BaseApiService {
+<<<<<<< HEAD
+=======
+  // BehaviorSubject para manejar la actividad reciente
+  private actividadRecienteSubject = new BehaviorSubject<ActividadReciente[]>([]);
+  private actividades: ActividadReciente[] = [];
+  private readonly STORAGE_KEY = 'actividad_reciente_municipalidad';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 
   constructor(
     protected override http: HttpClient,
@@ -23,6 +34,7 @@ export class EstadisticasAdminService extends BaseApiService {
     private usuariosService: UsuariosService
   ) {
     super(http);
+<<<<<<< HEAD
   }
 
   // Obtener formularios con conteo de postulantes para estadísticas
@@ -165,6 +177,41 @@ export class EstadisticasAdminService extends BaseApiService {
     // En una implementación real, esto vendría del backend
     // Por ahora simulamos datos
     const actividadSimulada: ActividadReciente[] = [
+=======
+    this.inicializarActividadReciente();
+  }
+
+  // Inicializar actividad reciente con datos persistidos o por defecto
+  private inicializarActividadReciente(): void {
+    console.log('🔄 Inicializando sistema de actividad reciente...');
+    
+    // Intentar cargar desde localStorage primero
+    try {
+      const actividadGuardada = localStorage.getItem(this.STORAGE_KEY);
+      if (actividadGuardada) {
+        const actividadParseada = JSON.parse(actividadGuardada);
+        // Convertir fechas de string a Date
+        this.actividades = actividadParseada.map((actividad: any) => ({
+          ...actividad,
+          fecha: new Date(actividad.fecha)
+        }));
+        console.log('📂 Actividad reciente cargada desde localStorage:', this.actividades.length, 'elementos');
+      } else {
+        console.log('📂 No hay actividad guardada, inicializando con datos por defecto');
+        this.cargarDatosPorDefecto();
+      }
+    } catch (error) {
+      console.error('❌ Error al cargar actividad desde localStorage:', error);
+      this.cargarDatosPorDefecto();
+    }
+    
+    this.actividadRecienteSubject.next([...this.actividades]);
+    console.log('✅ Sistema de actividad reciente inicializado:', this.actividades.length, 'actividades');
+  }
+
+  private cargarDatosPorDefecto(): void {
+    this.actividades = [
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       {
         id: '1',
         tipo: 'formulario',
@@ -192,6 +239,7 @@ export class EstadisticasAdminService extends BaseApiService {
         usuario: 'Admin RH'
       }
     ];
+<<<<<<< HEAD
 
     return new Observable(observer => {
       setTimeout(() => {
@@ -203,21 +251,239 @@ export class EstadisticasAdminService extends BaseApiService {
 
   // Métodos auxiliares
   private calcularPostulacionesPorMes(postulaciones: Postulacion[]): { mes: string; cantidad: number }[] {
+=======
+  }
+
+  // Guardar actividades en localStorage
+  private guardarEnLocalStorage(): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.actividades));
+      console.log('💾 Actividades guardadas en localStorage');
+    } catch (error) {
+      console.error('❌ Error al guardar en localStorage:', error);
+    }
+  }
+
+  // Registrar nueva actividad
+  registrarActividad(actividad: Omit<ActividadReciente, 'id' | 'fecha'>): void {
+    console.log('📝 Registrando nueva actividad:', actividad);
+    
+    const nuevaActividad: ActividadReciente = {
+      ...actividad,
+      id: Date.now().toString(),
+      fecha: new Date()
+    };
+
+    // Agregar al inicio de la lista
+    this.actividades.unshift(nuevaActividad);
+    
+    // Mantener solo las últimas 50 actividades
+    if (this.actividades.length > 50) {
+      this.actividades = this.actividades.slice(0, 50);
+    }
+
+    console.log('✅ Actividad registrada correctamente. Total actividades:', this.actividades.length);
+    console.log('📋 Lista actual de actividades:', this.actividades.map(a => ({ titulo: a.titulo, fecha: a.fecha })));
+    
+    // Guardar en localStorage
+    this.guardarEnLocalStorage();
+    
+    // Forzar emisión inmediata con una nueva referencia del array
+    this.actividadRecienteSubject.next([...this.actividades]);
+    
+    console.log('🔄 Emisión forzada de actividades actualizada');
+  }
+
+  // Obtener actividad reciente
+  getActividadReciente(limite: number = 10): Observable<ActividadReciente[]> {
+    console.log('🔍 Solicitando actividad reciente, límite:', limite);
+    
+    return this.actividadRecienteSubject.asObservable().pipe(
+      map(actividades => {
+        const resultado = actividades.slice(0, limite);
+        console.log('📊 Retornando', resultado.length, 'actividades de', actividades.length, 'totales');
+        return resultado;
+      })
+    );
+  }
+
+  // Método para obtener todas las actividades (para depuración)
+  getTodasLasActividades(): ActividadReciente[] {
+    return [...this.actividades];
+  }
+
+  // Método para limpiar las actividades (para pruebas)
+  limpiarActividades(): void {
+    console.log('🧹 Limpiando todas las actividades');
+    this.actividades = [];
+    this.actividadRecienteSubject.next([]);
+    
+    // Limpiar también localStorage
+    try {
+      localStorage.removeItem(this.STORAGE_KEY);
+      console.log('🧹 Actividades eliminadas de localStorage');
+    } catch (error) {
+      console.error('❌ Error al limpiar localStorage:', error);
+    }
+  }
+
+  // Obtener formularios con conteo de postulantes para estadísticas
+  getFormulariosConConteoEstadisticas(): Observable<FormularioConConteo[]> {
+    return this.formulariosService.findAllConConteo();
+  }
+
+  // Obtener estadísticas generales combinando datos de diferentes servicios
+  getEstadisticasGenerales(): Observable<EstadisticasGenerales> {
+    return forkJoin({
+      formularios: this.formulariosService.getFormulariosConConteo().pipe(
+        catchError(error => {
+          console.warn('Error al obtener formularios:', error);
+          return of([]);
+        })
+      ),
+      usuarios: this.usuariosService.getUsuarios().pipe(
+        catchError(error => {
+          console.warn('Error al obtener usuarios:', error);
+          return of([]);
+        })
+      )
+    }).pipe(
+      map(({ formularios, usuarios }) => {
+        // Validar que los datos sean arrays antes de usar métodos de array
+        const formulariosArray = Array.isArray(formularios) ? formularios : [];
+        const usuariosArray = Array.isArray(usuarios) ? usuarios : [];
+        
+        // Contar formularios activos (usando 'Activo' como estado correcto)
+        const formularioesActivos = formulariosArray.filter((f: any) => f.estado === 'Activo').length;
+        const formularioesInactivos = formulariosArray.filter((f: any) => f.estado === 'Inactivo').length;
+        const usuariosActivos = usuariosArray.filter((u: any) => u.estado === 'activo').length;
+        
+        // Calcular usuarios nuevos este mes
+        const inicioMes = new Date();
+        inicioMes.setDate(1);
+        inicioMes.setHours(0, 0, 0, 0);
+        
+        const nuevosUsuariosEsteMes = usuariosArray.filter((u: any) => 
+          u.fechaCreacion && new Date(u.fechaCreacion) >= inicioMes
+        ).length;
+
+        // Calcular total de postulantes desde los formularios con conteo
+        const totalPostulantes = formulariosArray.reduce((total, formulario) => 
+          total + (formulario.cantidadPostulantes || 0), 0);
+
+        return {
+          totalFormularios: formulariosArray.length,
+          totalPostulaciones: formulariosArray.length, // En realidad son formularios, mantenemos por compatibilidad
+          totalPostulantes,
+          postulacionesActivas: formularioesActivos, // Formularios activos
+          postulacionesVencidas: formularioesInactivos, // Formularios inactivos
+          totalUsuarios: usuariosArray.length,
+          usuariosActivos,
+          nuevosUsuariosEsteMes
+        };
+      }),
+      catchError(error => {
+        console.error('Error general en estadísticas:', error);
+        return of({
+          totalFormularios: 0,
+          totalPostulaciones: 0,
+          totalPostulantes: 0,
+          postulacionesActivas: 0,
+          postulacionesVencidas: 0,
+          totalUsuarios: 0,
+          usuariosActivos: 0,
+          nuevosUsuariosEsteMes: 0
+        });
+      })
+    );
+  }
+
+  // Obtener datos para gráficos
+  getEstadisticasGraficos(): Observable<EstadisticasGraficos> {
+    return forkJoin({
+      formularios: this.formulariosService.getFormulariosConConteo(),
+      usuarios: this.usuariosService.getUsuarios()
+    }).pipe(
+      map(({ formularios, usuarios }) => {
+        // Validar que los datos sean arrays antes de usar métodos de array
+        const formulariosArray = Array.isArray(formularios) ? formularios : [];
+        const usuariosArray = Array.isArray(usuarios) ? usuarios : [];
+        
+        // Formularios por mes (últimos 6 meses)
+        const formulariosPorMes = this.calcularFormulariosPorMes(formulariosArray);
+        
+        // Formularios por estado
+        const estadosCount = formulariosArray.reduce((acc: { [key: string]: number }, f: any) => {
+          acc[f.estado] = (acc[f.estado] || 0) + 1;
+          return acc;
+        }, {} as { [key: string]: number });
+        
+        const postulacionesPorEstado = Object.entries(estadosCount).map(([estado, cantidad]) => ({
+          estado: estado === 'Activo' ? 'Activas' : 'Inactivas',
+          cantidad
+        }));
+
+        // Usuarios por rol
+        const rolesCount = usuariosArray.reduce((acc: { [key: string]: number }, u: any) => {
+          acc[u.rol] = (acc[u.rol] || 0) + 1;
+          return acc;
+        }, {} as { [key: string]: number });
+        
+        const usuariosPorRol = Object.entries(rolesCount).map(([rol, cantidad]) => ({
+          rol: this.formatearNombreRol(rol),
+          cantidad
+        }));
+
+        // Postulantes por formulario
+        const postulantesPorFormulario = formulariosArray.map(formulario => ({
+          formulario: formulario.cargo,
+          cantidad: formulario.cantidadPostulantes || 0
+        })).sort((a, b) => b.cantidad - a.cantidad);
+
+        // Tendencia de formularios y usuarios (últimos 7 días)
+        const tendenciaPostulaciones = this.calcularTendencia(formulariosArray, usuariosArray);
+
+        return {
+          postulacionesPorMes: formulariosPorMes,
+          postulacionesPorEstado,
+          usuariosPorRol,
+          postulantesPorFormulario,
+          tendenciaPostulaciones
+        };
+      })
+    );
+  }
+
+  // Métodos auxiliares
+  private calcularFormulariosPorMes(formularios: any[]): { mes: string; cantidad: number }[] {
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     const meses = [];
     const ahora = new Date();
     
     // Validar que el parámetro sea un array
+<<<<<<< HEAD
     const postulacionesArray = Array.isArray(postulaciones) ? postulaciones : [];
+=======
+    const formulariosArray = Array.isArray(formularios) ? formularios : [];
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     
     for (let i = 5; i >= 0; i--) {
       const fecha = new Date(ahora.getFullYear(), ahora.getMonth() - i, 1);
       const nombreMes = fecha.toLocaleDateString('es-ES', { month: 'short', year: '2-digit' });
       
+<<<<<<< HEAD
       const cantidad = postulacionesArray.filter((p: Postulacion) => {
         if (!p.fechaCreacion) return false;
         const fechaPost = new Date(p.fechaCreacion);
         return fechaPost.getMonth() === fecha.getMonth() && 
                fechaPost.getFullYear() === fecha.getFullYear();
+=======
+      const cantidad = formulariosArray.filter((f: any) => {
+        if (!f.fechaCreacion && !f.fechaInicio) return false;
+        const fechaForm = new Date(f.fechaCreacion || f.fechaInicio);
+        return fechaForm.getMonth() === fecha.getMonth() && 
+               fechaForm.getFullYear() === fecha.getFullYear();
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       }).length;
       
       meses.push({ mes: nombreMes, cantidad });
@@ -226,22 +492,37 @@ export class EstadisticasAdminService extends BaseApiService {
     return meses;
   }
 
+<<<<<<< HEAD
   private calcularTendencia(postulaciones: Postulacion[], usuarios: any[]): { fecha: string; postulaciones: number; usuarios: number }[] {
+=======
+  private calcularTendencia(formularios: any[], usuarios: any[]): { fecha: string; postulaciones: number; usuarios: number }[] {
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     const tendencia = [];
     const ahora = new Date();
     
     // Validar que los parámetros sean arrays
+<<<<<<< HEAD
     const postulacionesArray = Array.isArray(postulaciones) ? postulaciones : [];
+=======
+    const formulariosArray = Array.isArray(formularios) ? formularios : [];
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     const usuariosArray = Array.isArray(usuarios) ? usuarios : [];
     
     for (let i = 6; i >= 0; i--) {
       const fecha = new Date(ahora.getTime() - i * 24 * 60 * 60 * 1000);
       const fechaStr = fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
       
+<<<<<<< HEAD
       const postulacionesDia = postulacionesArray.filter((p: Postulacion) => {
         if (!p.fechaCreacion) return false;
         const fechaPost = new Date(p.fechaCreacion);
         return fechaPost.toDateString() === fecha.toDateString();
+=======
+      const formulariosDia = formulariosArray.filter((f: any) => {
+        if (!f.fechaCreacion && !f.fechaInicio) return false;
+        const fechaForm = new Date(f.fechaCreacion || f.fechaInicio);
+        return fechaForm.toDateString() === fecha.toDateString();
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       }).length;
       
       const usuariosDia = usuariosArray.filter((u: any) => {
@@ -252,7 +533,11 @@ export class EstadisticasAdminService extends BaseApiService {
       
       tendencia.push({
         fecha: fechaStr,
+<<<<<<< HEAD
         postulaciones: postulacionesDia,
+=======
+        postulaciones: formulariosDia,
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
         usuarios: usuariosDia
       });
     }

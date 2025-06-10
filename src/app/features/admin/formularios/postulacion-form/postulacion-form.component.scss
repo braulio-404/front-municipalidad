@@ -427,6 +427,30 @@ $color-error: #d81b60;
   border-radius: 4px;
 }
 
+<<<<<<< HEAD
+=======
+.info-container {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: rgba($color-accent, 0.1);
+  border-left: 3px solid $color-accent;
+  color: darken($color-accent, 20%);
+  border-radius: 4px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 .loading-container {
   display: flex;
   justify-content: center;

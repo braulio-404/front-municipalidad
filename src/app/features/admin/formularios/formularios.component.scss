@@ -210,6 +210,28 @@ $color-purple-very-light: #f8f1ff;
         }
       }
     }
+<<<<<<< HEAD
+=======
+    
+    .requisitos-cell {
+      max-width: 200px;
+      
+      .sin-requisitos {
+        color: $color-inactive;
+        font-style: italic;
+        font-size: 14px;
+      }
+      
+      span[title] {
+        cursor: help;
+        border-bottom: 1px dotted $color-primary;
+        
+        &:hover {
+          color: $color-primary;
+        }
+      }
+    }
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
   
   .no-resultados {
@@ -267,6 +289,48 @@ $color-purple-very-light: #f8f1ff;
   }
 }
 
+<<<<<<< HEAD
+=======
+// Estilos para postulaciones vencidas
+.postulacion-vencida {
+  background-color: rgba(255, 152, 0, 0.1) !important; // Fondo naranja muy tenue
+}
+
+.estado-vencido {
+  color: #ff6b00;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  
+  .icono-vencido {
+    font-size: 16px;
+    animation: pulse 2s infinite;
+  }
+}
+
+// Animación para el icono de reloj
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Tooltip mejorado para postulaciones vencidas
+[title] {
+  position: relative;
+}
+
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 // Responsividad
 @media (max-width: 768px) {
   .filtros-container {

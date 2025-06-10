@@ -121,6 +121,59 @@ h2 {
   }
 }
 
+.filtro-accion {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  
+  .btn-filtrar {
+    background-color: $color-primary;
+    color: $color-white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 40px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: $color-primary-light;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .btn-limpiar {
+    background-color: $color-inactive;
+    color: $color-white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    height: 40px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: darken($color-inactive, 10%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
 .error-container {
   background-color: rgba($color-error, 0.1);
   color: $color-error;

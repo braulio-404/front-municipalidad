@@ -8,6 +8,10 @@ import { Location } from '@angular/common';
 
 import { FormulariosService } from '../../../../servicios/formularios.service';
 import { RequisitosService } from '../../../../servicios/requisitos.service';
+<<<<<<< HEAD
+=======
+import { EstadisticasAdminService } from '../../../../servicios/estadisticas-admin.service';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 import { Formulario } from '../../../../interfaces/formulario.interface';
 import { Requisito } from '../../../../interfaces/requisito.interface';
 
@@ -29,6 +33,10 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   formularioForm!: FormGroup;
   cargando = false;
   error = '';
+<<<<<<< HEAD
+=======
+  mensajeInfo = '';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   
   // Para paginación y búsqueda
   requisitosCompletos: Requisito[] = [];
@@ -54,6 +62,10 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private formulariosService: FormulariosService,
     private requisitosService: RequisitosService,
+<<<<<<< HEAD
+=======
+    private estadisticasAdminService: EstadisticasAdminService,
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -86,11 +98,85 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       requisitosSeleccionados: this.fb.group({})
     });
 
+<<<<<<< HEAD
+=======
+    // Configurar listener para cambios en el estado
+    this.configurarCambiosEstado();
+
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     if (this.modo === 'ver') {
       this.formularioForm.disable();
     }
   }
 
+<<<<<<< HEAD
+=======
+  /**
+   * Configura el listener para detectar cambios en el estado de la postulación
+   * y validar las fechas cuando se selecciona "Activo"
+   */
+  private configurarCambiosEstado(): void {
+    const estadoControl = this.formularioForm.get('estado');
+    const fechaTerminoControl = this.formularioForm.get('fechaTermino');
+    
+    if (estadoControl && fechaTerminoControl) {
+      // Listener para limpiar errores cuando se cambian las fechas o estado
+      const estadoChangesSub = estadoControl.valueChanges.subscribe(() => {
+        this.limpiarErroresFecha();
+      });
+      
+      const fechaChangesSub = fechaTerminoControl.valueChanges.subscribe(() => {
+        this.limpiarErroresFecha();
+      });
+      
+      this.subscriptions.push(estadoChangesSub, fechaChangesSub);
+    }
+  }
+
+  /**
+   * Limpia los errores de validación de fecha cuando el usuario modifica los campos
+   */
+  private limpiarErroresFecha(): void {
+    // Solo limpiar el error específico de fecha de término, mantener otros errores
+    if (this.error && this.error.includes('fecha de término')) {
+      this.error = '';
+    }
+    this.mensajeInfo = '';
+  }
+
+  /**
+   * Valida que la fecha de término sea válida para el estado "Activo"
+   * Retorna true si es válida, false si hay error
+   */
+  private validarFechaTerminoParaEstadoActivo(): boolean {
+    const estadoControl = this.formularioForm.get('estado');
+    const fechaTerminoControl = this.formularioForm.get('fechaTermino');
+    
+    if (!estadoControl || !fechaTerminoControl) return true;
+    
+    // Solo validar si el estado es "Activo"
+    if (estadoControl.value !== 'Activo') return true;
+    
+    const fechaTermino = fechaTerminoControl.value;
+    if (!fechaTermino) return true; // La validación required se encarga de esto
+    
+    const fechaTerminoDate = new Date(fechaTermino);
+    const fechaActual = new Date();
+    
+    // Resetear horas para comparar solo fechas
+    fechaActual.setHours(0, 0, 0, 0);
+    fechaTerminoDate.setHours(0, 0, 0, 0);
+    
+    // Si la fecha de término es menor a hoy, es inválida
+    if (fechaTerminoDate < fechaActual) {
+      this.error = 'No se puede activar una postulación con fecha de término anterior a hoy. Por favor, seleccione una fecha de término futura.';
+      return false;
+    }
+    
+    return true;
+  }
+
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   private configurarBusqueda(): void {
     // Configurar observable para la búsqueda con debounce
     const busquedaSub = this.terminoBusquedaSubject.pipe(
@@ -204,6 +290,7 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       this.ordenarRequisitos();
       this.actualizarRequisitosVisibles();
     } else {
+<<<<<<< HEAD
       if (this.modo === 'nuevo' || this.modo === 'editar') {
         // En modo nuevo y editar: buscar en toda la DB de requisitos activos
         this.requisitosService.buscarRequisitos(termino).subscribe(resultados => {
@@ -233,6 +320,19 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
         this.ordenarRequisitos();
         this.actualizarRequisitosVisibles();
       }
+=======
+      // Búsqueda local con coincidencia parcial (like) y en lowercase para todos los modos
+      const terminoLower = termino.toLowerCase();
+      this.requisitosFiltrados = this.requisitosCompletos.filter(req =>
+        req.nombre.toLowerCase().includes(terminoLower) ||
+        (req.descripcion && req.descripcion.toLowerCase().includes(terminoLower))
+      );
+      
+      this.paginaActual = 1;
+      this.calcularTotalPaginas();
+      this.ordenarRequisitos();
+      this.actualizarRequisitosVisibles();
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     }
   }
 
@@ -294,8 +394,18 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
             estado: formulario.estado
           });
           
+<<<<<<< HEAD
           // Cargar todos los requisitos disponibles y marcar los seleccionados
           this.cargarTodosLosRequisitosConSeleccionados(formulario.requisitosSeleccionados || []);
+=======
+          // Si está en modo 'ver', cargar solo los requisitos seleccionados
+          // Si está en modo 'editar', cargar todos los requisitos disponibles
+          if (this.modo === 'ver') {
+            this.cargarRequisitosSeleccionados(formulario.requisitosSeleccionados || []);
+          } else {
+            this.cargarTodosLosRequisitosConSeleccionados(formulario.requisitosSeleccionados || []);
+          }
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
         } else {
           this.error = 'No se encontró la postulación solicitada';
           this.cargando = false;
@@ -464,11 +574,35 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   }
 
   private formatearFecha(fecha: Date | string): string {
+<<<<<<< HEAD
     if (fecha instanceof Date) {
       return fecha.toISOString().substring(0, 10);
     }
     // Asumimos que viene en formato ISO desde el backend
     return typeof fecha === 'string' ? fecha.substring(0, 10) : '';
+=======
+    try {
+      if (!fecha) return '';
+      
+      if (fecha instanceof Date) {
+        // Formatear fecha object a YYYY-MM-DD sin conversión de zona horaria
+        const year = fecha.getFullYear();
+        const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+        const day = fecha.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+      
+      if (typeof fecha === 'string') {
+        // Si viene en formato ISO, extraer solo la parte de la fecha (YYYY-MM-DD)
+        return fecha.includes('T') ? fecha.split('T')[0] : fecha;
+      }
+      
+      return '';
+    } catch (error) {
+      console.error('Error al formatear fecha:', error, fecha);
+      return '';
+    }
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
 
   guardarFormulario(): void {
@@ -477,6 +611,7 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+<<<<<<< HEAD
     const formularioData = this.prepararDatosFormulario();
     this.cargando = true;
 
@@ -489,6 +624,68 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
       this.formulariosService.actualizarFormulario(this.formularioId!, formularioData).subscribe({
         next: () => this.finalizarGuardado(),
         error: (error: any) => this.manejarError(error)
+=======
+    // Limpiar mensajes antes de guardar
+    this.mensajeInfo = '';
+    this.error = '';
+
+    // Validar fecha de término para estado "Activo"
+    if (!this.validarFechaTerminoParaEstadoActivo()) {
+      return; // No continuar si la validación falla
+    }
+
+    const formularioData = this.prepararDatosFormulario();
+    this.cargando = true;
+
+    console.log('💾 Guardando formulario en modo:', this.modo);
+    console.log('📋 Datos del formulario:', formularioData);
+
+    if (this.modo === 'nuevo') {
+      this.formulariosService.crearFormulario(formularioData).subscribe({
+        next: (formularioCreado) => {
+          console.log('✅ Formulario creado exitosamente:', formularioCreado);
+          
+          // Registrar actividad de creación de formulario
+          console.log('📝 Registrando actividad de creación de formulario...');
+          this.estadisticasAdminService.registrarActividad({
+            tipo: 'formulario',
+            titulo: 'Nuevo formulario creado',
+            descripcion: `Se creó el formulario para ${formularioCreado.cargo}`,
+            icono: 'description',
+            usuario: 'Admin Sistema'
+          });
+          console.log('✅ Actividad registrada correctamente');
+          
+          this.finalizarGuardado();
+        },
+        error: (error: any) => {
+          console.error('❌ Error al crear formulario:', error);
+          this.manejarError(error);
+        }
+      });
+    } else if (this.modo === 'editar') {
+      this.formulariosService.actualizarFormulario(this.formularioId!, formularioData).subscribe({
+        next: (formularioActualizado) => {
+          console.log('✅ Formulario actualizado exitosamente:', formularioActualizado);
+          
+          // Registrar actividad de actualización de formulario
+          console.log('📝 Registrando actividad de actualización de formulario...');
+          this.estadisticasAdminService.registrarActividad({
+            tipo: 'formulario',
+            titulo: 'Formulario actualizado',
+            descripcion: `Se actualizó el formulario para ${formularioActualizado.cargo}`,
+            icono: 'edit',
+            usuario: 'Admin Sistema'
+          });
+          console.log('✅ Actividad registrada correctamente');
+          
+          this.finalizarGuardado();
+        },
+        error: (error: any) => {
+          console.error('❌ Error al actualizar formulario:', error);
+          this.manejarError(error);
+        }
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
       });
     }
   }
@@ -531,10 +728,20 @@ export class PostulacionFormComponent implements OnInit, OnDestroy {
   private manejarError(error: any): void {
     this.cargando = false;
     this.error = 'Error al guardar la postulación';
+<<<<<<< HEAD
+=======
+    this.mensajeInfo = ''; // Limpiar mensaje informativo en caso de error
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     console.error('Error al guardar formulario:', error);
   }
 
   onCancelar(): void {
+<<<<<<< HEAD
+=======
+    // Limpiar mensajes antes de salir
+    this.mensajeInfo = '';
+    this.error = '';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     // Usar Location.back() para simular el botón atrás del navegador
     this.location.back();
   }

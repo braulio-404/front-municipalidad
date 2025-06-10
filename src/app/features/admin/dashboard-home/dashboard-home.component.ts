@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormulariosService } from '../../../servicios/formularios.service';
@@ -6,6 +6,7 @@ import { PostulacionesService, Postulacion } from '../../../servicios/postulacio
 import { UsuariosService } from '../../../servicios/usuarios.service';
 import { EstadisticasAdminService } from '../../../servicios/estadisticas-admin.service';
 import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -16,7 +17,7 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
         <div class="dashboard-card" (click)="navigateTo('formularios')">
           <div class="card-icon">
             <i class="material-icons">description</i>
-          </div> 
+          </div>
           <div class="card-info">
             <h3>Gestión de Formularios</h3>
             <p>Administre los formularios y solicitudes</p>
@@ -59,7 +60,12 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
       
       <!-- Sección de estadísticas rápidas -->
       <div class="quick-stats">
-        <h2>Estadísticas Rápidas</h2>
+        <div class="stats-header">
+          <h2>Estadísticas Rápidas</h2>
+          <button class="btn-actualizar" (click)="actualizarEstadisticas()" [disabled]="cargandoEstadisticas" title="Actualizar estadísticas">
+            <i class="material-icons" [class.rotating]="cargandoEstadisticas">refresh</i>
+          </button>
+        </div>
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-icon">
@@ -77,7 +83,7 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
             </div>
             <div class="stat-content">
               <h3>{{ postulacionesActivas }}</h3>
-              <p>Postulaciones Activas</p>
+              <p>Formularios Activos</p>
             </div>
           </div>
           
@@ -105,7 +111,18 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
       
       <!-- Sección de actividad reciente -->
       <div class="recent-activity">
-        <h2>Actividad Reciente</h2>
+        <div class="activity-header">
+          <h2>Actividad Reciente</h2>
+          <div class="activity-buttons">
+            <button class="btn-clear" (click)="limpiarActividades()" title="Limpiar actividades (botón temporal)">
+              <i class="material-icons">clear_all</i>
+              Limpiar
+            </button>
+            <button class="btn-actualizar-actividad" (click)="actualizarActividad()" [disabled]="cargandoActividad" title="Actualizar actividad">
+              <i class="material-icons" [class.rotating]="cargandoActividad">refresh</i>
+            </button>
+          </div>
+        </div>
         <div class="activity-list" *ngIf="!cargandoActividad; else loadingTemplate">
           <div class="activity-item" *ngFor="let actividad of actividadReciente">
             <div class="activity-icon">
@@ -215,11 +232,18 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
       padding: 25px;
       margin-bottom: 30px;
+    }
+
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
       
       h2 {
         color: #9c27b0;
         font-size: 1.3rem;
-        margin: 0 0 20px;
+        margin: 0;
         position: relative;
         padding-bottom: 10px;
         
@@ -234,6 +258,65 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
           border-radius: 3px;
         }
       }
+    }
+
+    .btn-actualizar, .btn-actualizar-actividad {
+      background: none;
+      border: 1px solid #9c27b0;
+      color: #9c27b0;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: 8px;
+      
+      &:hover:not(:disabled) {
+        background-color: #9c27b0;
+        color: white;
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      
+      i {
+        font-size: 18px;
+      }
+    }
+
+    .btn-clear {
+      background: none;
+      border: 1px solid #f44336;
+      color: #f44336;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: 8px;
+      
+      &:hover:not(:disabled) {
+        background-color: #f44336;
+        color: white;
+      }
+      
+      i {
+        font-size: 18px;
+      }
+    }
+
+    .activity-buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    .rotating {
+      animation: rotate 1s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
     
     .stats-grid {
@@ -296,11 +379,18 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
       border-radius: 10px;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
       padding: 25px;
+    }
+
+    .activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
       
       h2 {
         color: #9c27b0;
         font-size: 1.3rem;
-        margin: 0 0 20px;
+        margin: 0;
         position: relative;
         padding-bottom: 10px;
         
@@ -390,33 +480,68 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
   standalone: true,
   imports: [CommonModule]
 })
-export class DashboardHomeComponent implements OnInit {
+export class DashboardHomeComponent implements OnInit, OnDestroy {
   totalFormularios: number = 0;
   postulacionesActivas: number = 0;
   totalUsuarios: number = 0;
-  totalPostulantes: number = 0; // Nuevo campo para mostrar total de postulantes
-  cargandoActividad: boolean = true;
+  totalPostulantes: number = 0;
+  cargandoActividad: boolean = false;
+  cargandoEstadisticas: boolean = false;
   
   actividadReciente: ActividadReciente[] = [];
+  
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private router: Router,
     private formulariosService: FormulariosService,
     private postulacionesService: PostulacionesService,
     private usuariosService: UsuariosService,
-    private estadisticasAdminService: EstadisticasAdminService
+    private estadisticasAdminService: EstadisticasAdminService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    console.log('🚀 Inicializando Dashboard Home');
     this.cargarEstadisticas();
     this.cargarActividadReciente();
+    
+    // Suscripción directa al BehaviorSubject para actualizaciones inmediatas
+    const actividadSub = this.estadisticasAdminService.getActividadReciente(5).subscribe({
+      next: (actividad) => {
+        console.log('🔔 Actualización inmediata de actividad recibida:', actividad.length, 'elementos');
+        const actividadAnterior = JSON.stringify(this.actividadReciente);
+        this.actividadReciente = Array.isArray(actividad) ? [...actividad] : [];
+        
+        // Solo forzar detección si realmente cambió algo
+        if (JSON.stringify(this.actividadReciente) !== actividadAnterior) {
+          console.log('🔄 Contenido cambió, actualizando vista');
+          this.cdr.detectChanges();
+        }
+      },
+      error: (error) => {
+        console.error('❌ Error en suscripción directa de actividad:', error);
+      }
+    });
+    
+    // Configurar actualización automática cada 10 segundos para la actividad reciente (más frecuente para pruebas)
+    const timerSub = timer(0, 10000).subscribe(() => {
+      console.log('⏰ Timer de actualización automática ejecutándose');
+      this.cargarActividadReciente();
+    });
+    
+    this.subscriptions.push(actividadSub, timerSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   cargarEstadisticas(): void {
-    // Usar el servicio de estadísticas optimizado para obtener todos los datos
+    this.cargandoEstadisticas = true;
+    
     this.estadisticasAdminService.getEstadisticasGenerales().subscribe({
       next: (estadisticas) => {
-        // Validar que estadisticas no sea null o undefined
         if (estadisticas) {
           this.totalFormularios = estadisticas.totalFormularios || 0;
           this.postulacionesActivas = estadisticas.postulacionesActivas || 0;
@@ -425,16 +550,17 @@ export class DashboardHomeComponent implements OnInit {
         } else {
           this.resetearEstadisticas();
         }
+        this.cargandoEstadisticas = false;
       },
       error: (error) => {
         console.error('Error al cargar estadísticas generales:', error);
         this.resetearEstadisticas();
+        this.cargandoEstadisticas = false;
       }
     });
   }
 
   private resetearEstadisticas(): void {
-    // Valores por defecto en caso de error
     this.totalFormularios = 0;
     this.postulacionesActivas = 0;
     this.totalUsuarios = 0;
@@ -442,20 +568,57 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   cargarActividadReciente(): void {
-    this.cargandoActividad = true;
+    if (!this.cargandoActividad) {
+      console.log('🔄 Cargando actividad reciente...');
+      this.cargandoActividad = true;
+      
+      this.estadisticasAdminService.getActividadReciente(5).subscribe({
+        next: (actividad) => {
+          console.log('📨 Actividad reciente recibida:', actividad);
+          const actividadAnterior = this.actividadReciente.length;
+          this.actividadReciente = Array.isArray(actividad) ? [...actividad] : [];
+          console.log('✅ Actividad reciente actualizada:', this.actividadReciente.length, 'elementos');
+          
+          // Si hay cambios, forzar detección de cambios
+          if (this.actividadReciente.length !== actividadAnterior || 
+              JSON.stringify(this.actividadReciente) !== JSON.stringify(actividad)) {
+            console.log('🔄 Forzando detección de cambios en el template');
+            this.cdr.markForCheck();
+            this.cdr.detectChanges();
+          }
+          
+          this.cargandoActividad = false;
+        },
+        error: (error) => {
+          console.error('❌ Error al cargar actividad reciente:', error);
+          this.actividadReciente = [];
+          this.cargandoActividad = false;
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
+      console.log('⚠️ Ya se está cargando la actividad reciente, omitiendo...');
+    }
+  }
+
+  actualizarEstadisticas(): void {
+    this.cargarEstadisticas();
+  }
+
+  actualizarActividad(): void {
+    console.log('🔄 Actualización manual de actividad solicitada');
+    this.cargarActividadReciente();
+  }
+
+  limpiarActividades(): void {
+    console.log('🧹 Limpiando actividades...');
     
-    this.estadisticasAdminService.getActividadReciente(3).subscribe({
-      next: (actividad) => {
-        // Validar que actividad sea un array
-        this.actividadReciente = Array.isArray(actividad) ? actividad : [];
-        this.cargandoActividad = false;
-      },
-      error: (error) => {
-        console.error('Error al cargar actividad reciente:', error);
-        this.actividadReciente = [];
-        this.cargandoActividad = false;
-      }
-    });
+    if (confirm('¿Estás seguro de que quieres limpiar todas las actividades? Esta acción no se puede deshacer.')) {
+      this.estadisticasAdminService.limpiarActividades();
+      this.actividadReciente = [];
+      this.cdr.detectChanges();
+      console.log('✅ Actividades limpiadas correctamente');
+    }
   }
 
   navigateTo(route: string): void {

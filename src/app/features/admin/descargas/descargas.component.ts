@@ -20,8 +20,8 @@ export class DescargasComponent implements OnInit {
   postulacionesFiltradas: Formulario[] = [];
   seleccionadas: { [key: number]: boolean } = {};
   terminoBusqueda: string = '';
-  fechaInicio: Date | null = null;
-  fechaTermino: Date | null = null;
+  fechaInicio: string = '';
+  fechaTermino: string = '';
   cargando: boolean = false;
   error: string = '';
 
@@ -43,7 +43,18 @@ export class DescargasComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error al cargar postulaciones', error);
-        this.error = 'Error al cargar postulaciones';
+        
+        // Manejar mensajes específicos del servicio
+        if (error.error?.error === "No se encontraron documentos") {
+          this.error = error.error.message || "No se encontraron documentos para ningún postulante en las postulaciones solicitadas";
+        } else if (error.error?.message) {
+          this.error = error.error.message;
+        } else if (error.error?.error) {
+          this.error = error.error.error;
+        } else {
+          this.error = 'Error al cargar postulaciones';
+        }
+        
         this.cargando = false;
       }
     });
@@ -55,25 +66,49 @@ export class DescargasComponent implements OnInit {
       const coincideTermino = !this.terminoBusqueda || 
         p.cargo.toLowerCase().includes(this.terminoBusqueda.toLowerCase());
       
-      // Filtrar por fecha de inicio
-      const fechaInicioPostulacion = new Date(p.fechaInicio);
-      const coincideFechaInicio = !this.fechaInicio || 
-        fechaInicioPostulacion >= this.fechaInicio;
+      // Función auxiliar para convertir fecha a objeto Date normalizado
+      const convertirFecha = (fecha: string | Date): Date => {
+        if (typeof fecha === 'string') {
+          const fechaStr = fecha.includes('T') ? fecha.split('T')[0] : fecha;
+          const [year, month, day] = fechaStr.split('-').map(num => parseInt(num, 10));
+          return new Date(year, month - 1, day);
+        } else {
+          const fechaObj = new Date(fecha);
+          return new Date(fechaObj.getFullYear(), fechaObj.getMonth(), fechaObj.getDate());
+        }
+      };
       
-      // Filtrar por fecha de término
-      const fechaTerminoPostulacion = new Date(p.fechaTermino);
-      const coincideFechaTermino = !this.fechaTermino || 
-        fechaTerminoPostulacion <= this.fechaTermino;
+      // Filtrar por fecha de inicio (si está definida)
+      let cumpleFechaInicio = true;
+      if (this.fechaInicio && p.fechaInicio) {
+        const fechaInicioForm = convertirFecha(p.fechaInicio);
+        const fechaInicioFiltro = convertirFecha(this.fechaInicio);
+        // La postulación debe iniciar en o después de la fecha del filtro
+        cumpleFechaInicio = fechaInicioForm >= fechaInicioFiltro;
+      }
       
-      return coincideTermino && coincideFechaInicio && coincideFechaTermino;
+      // Filtrar por fecha de término (si está definida)
+      let cumpleFechaTermino = true;
+      if (this.fechaTermino && p.fechaTermino) {
+        const fechaTerminoForm = convertirFecha(p.fechaTermino);
+        const fechaTerminoFiltro = convertirFecha(this.fechaTermino);
+        // La postulación debe terminar en o antes de la fecha del filtro
+        cumpleFechaTermino = fechaTerminoForm <= fechaTerminoFiltro;
+      }
+      
+      return coincideTermino && cumpleFechaInicio && cumpleFechaTermino;
     });
   }
 
   limpiarFiltros(): void {
     this.terminoBusqueda = '';
-    this.fechaInicio = null;
-    this.fechaTermino = null;
+    this.fechaInicio = '';
+    this.fechaTermino = '';
     this.postulacionesFiltradas = this.postulaciones;
+  }
+
+  hayFiltrosActivos(): boolean {
+    return !!(this.terminoBusqueda || this.fechaInicio || this.fechaTermino);
   }
 
   toggleSeleccion(postulacion: Formulario): void {
@@ -144,14 +179,81 @@ export class DescargasComponent implements OnInit {
       error: (error) => {
         this.cargando = false;
         console.error('Error al descargar documentos', error);
-        this.error = 'Error al descargar documentos. Verifique que el servidor esté disponible.';
+        console.error('Error completo:', JSON.stringify(error, null, 2));
+        console.error('error.error:', error.error);
+        
+        // Intentar extraer el mensaje de error
+        let mensajeError = '';
+        
+        // Si error.error es un Blob (cuando el servidor devuelve JSON pero esperamos Blob)
+        if (error.error instanceof Blob && error.error.type === 'application/json') {
+          // Leer el Blob como texto para obtener el JSON
+          error.error.text().then((text: string) => {
+            try {
+              const errorData = JSON.parse(text);
+              console.error('Error parseado desde Blob:', errorData);
+              
+              if (errorData.error === "No se encontraron documentos") {
+                this.error = errorData.message || "No se encontraron documentos para ningún postulante en las postulaciones solicitadas";
+              } else if (errorData.message) {
+                this.error = errorData.message;
+              } else {
+                this.error = 'Error al descargar documentos. Verifique que el servidor esté disponible.';
+              }
+            } catch (parseError) {
+              console.error('Error al parsear JSON desde Blob:', parseError);
+              this.error = 'Error al descargar documentos. Verifique que el servidor esté disponible.';
+            }
+          });
+          return;
+        }
+        
+        // Manejo normal de errores JSON
+        if (error.error?.error === "No se encontraron documentos") {
+          mensajeError = error.error.message || "No se encontraron documentos para ningún postulante en las postulaciones solicitadas";
+        } else if (error.error?.message && error.error.message.includes("No se encontraron documentos")) {
+          mensajeError = error.error.message;
+        } else if (error.error?.message) {
+          mensajeError = error.error.message;
+        } else if (error.error?.error) {
+          mensajeError = error.error.error;
+        } else if (error.message) {
+          mensajeError = error.message;
+        } else {
+          mensajeError = 'Error al descargar documentos. Verifique que el servidor esté disponible.';
+        }
+        
+        this.error = mensajeError;
         setTimeout(() => this.error = '', 5000);
       }
     });
   }
 
   formatearFecha(fecha: string | Date): string {
-    const fechaObj = new Date(fecha);
-    return fechaObj.toLocaleDateString('es-ES');
+    try {
+      if (!fecha) return '';
+      
+      let fechaObj: Date;
+      
+      if (typeof fecha === 'string') {
+        // Si viene en formato ISO, extraer solo la parte de la fecha (YYYY-MM-DD)
+        const fechaStr = fecha.includes('T') ? fecha.split('T')[0] : fecha;
+        const [year, month, day] = fechaStr.split('-').map(num => parseInt(num, 10));
+        // Crear fecha en zona horaria local para evitar problemas de UTC
+        fechaObj = new Date(year, month - 1, day);
+      } else {
+        fechaObj = new Date(fecha);
+      }
+      
+      // Formatear como dd/MM/yyyy
+      const dia = fechaObj.getDate().toString().padStart(2, '0');
+      const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
+      const año = fechaObj.getFullYear();
+      
+      return `${dia}/${mes}/${año}`;
+    } catch (error) {
+      console.error('Error al formatear fecha:', error, fecha);
+      return '';
+    }
   }
 } 

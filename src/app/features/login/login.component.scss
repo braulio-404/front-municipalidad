@@ -537,4 +537,73 @@
     font-size: 1.8rem;
     margin: 10px 0;
   }
+}
+
+// Estilos para la pantalla de verificación de autenticación
+.verificando-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--background-alt);
+  background-image: 
+    linear-gradient(45deg, rgba(199, 50, 133, 0.1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(199, 50, 133, 0.1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(199, 50, 133, 0.1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(199, 50, 133, 0.1) 75%);
+  background-size: 60px 60px;
+}
+
+.verificando-content {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out;
+  
+  .logo-container {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .logo-verificando {
+    max-width: 120px;
+    height: auto;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  }
+  
+  .verificando-text {
+    h3 {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      margin-bottom: var(--spacing-md);
+      font-weight: 600;
+    }
+    
+    .spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      .material-icons {
+        font-size: 2rem;
+        color: var(--accent-color);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .verificando-content {
+    margin: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    
+    .logo-verificando {
+      max-width: 100px;
+    }
+    
+    .verificando-text h3 {
+      font-size: 1.1rem;
+    }
+  }
 } 

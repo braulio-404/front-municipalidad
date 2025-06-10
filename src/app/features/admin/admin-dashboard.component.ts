@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../servicios/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,17 +22,10 @@ export class AdminDashboardComponent implements OnInit {
     { name: 'Estadísticas de Postulaciones', icon: 'bar_chart', route: 'estadisticas' }
   ];
 
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Cargar información del usuario actual
-    const currentUser = this.authService.getCurrentUser();
-    if (currentUser) {
-      this.nombreUsuario = currentUser.nombre || 'Administrador';
-    }
+    // Inicialización adicional si es necesaria
   }
 
   navigateTo(route: string): void {
@@ -52,20 +44,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   cerrarSesion(): void {
-    console.log('🚪 Cerrando sesión...');
-    
-    // Llamar al servicio de autenticación para hacer logout
-    this.authService.logout().subscribe({
-      next: () => {
-        console.log('✅ Sesión cerrada exitosamente');
-        // El método logout() ya navega al login internamente
-      },
-      error: (error) => {
-        console.error('❌ Error al cerrar sesión:', error);
-        // En caso de error del servidor, hacer logout local
-        localStorage.removeItem('auth_token');
-        this.router.navigate(['/login']);
-      }
-    });
+    // Aquí se implementará la lógica para cerrar sesión
+    this.router.navigate(['/login']);
   }
 } 

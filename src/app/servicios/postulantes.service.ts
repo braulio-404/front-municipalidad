@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+<<<<<<< HEAD
 import { Observable } from 'rxjs';
+=======
+import { Observable, tap } from 'rxjs';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 import { BaseApiService } from './base-api.service';
 import { 
   Postulante, 
@@ -8,13 +12,24 @@ import {
   DocumentoPostulante, 
   PostulacionFormData 
 } from '../interfaces/postulante.interface';
+<<<<<<< HEAD
+=======
+import { EstadisticasAdminService } from './estadisticas-admin.service';
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostulantesService extends BaseApiService {
 
+<<<<<<< HEAD
   constructor(protected override http: HttpClient) {
+=======
+  constructor(
+    protected override http: HttpClient,
+    private estadisticasAdminService: EstadisticasAdminService
+  ) {
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
     super(http);
   }
 
@@ -46,7 +61,21 @@ export class PostulantesService extends BaseApiService {
       });
     }
 
+<<<<<<< HEAD
     return this.http.post<Postulante>(`${this.apiUrl}/postulante/crear-postulante`, formData);
+=======
+    return this.http.post<Postulante>(`${this.apiUrl}/postulante/crear-postulante`, formData).pipe(
+      tap((postulanteCreado) => {
+        // Registrar actividad de nuevo postulante
+        this.estadisticasAdminService.registrarActividad({
+          tipo: 'usuario',
+          titulo: 'Nuevo postulante registrado',
+          descripcion: `${postulanteCreado.nombres} ${postulanteCreado.apellidoPaterno} se registró como postulante`,
+          icono: 'person_add'
+        });
+      })
+    );
+>>>>>>> 25bc920cbf6c7702527730caa98efbd236a87326
   }
 
   // Obtener todos los postulantes

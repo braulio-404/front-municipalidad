@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap, map } from 'rxjs';
+import { Observable, BehaviorSubject, tap, map, of, catchError } from 'rxjs';
 import { Router } from '@angular/router';
 import { BaseApiService } from './base-api.service';
 import { 
@@ -19,6 +19,10 @@ import {
 export class AuthService extends BaseApiService {
   private currentUserSubject = new BehaviorSubject<UserProfile | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+  
+  // Estado de inicialización para manejar el loading del usuario al inicio
+  private initializationSubject = new BehaviorSubject<boolean>(false);
+  public initialized$ = this.initializationSubject.asObservable();
 
   constructor(
     protected override http: HttpClient,
@@ -50,6 +54,7 @@ export class AuthService extends BaseApiService {
         tap(authResponse => {
           this.setToken(authResponse.access_token);
           this.currentUserSubject.next(authResponse.user);
+          this.initializationSubject.next(true);
         })
       );
   }
@@ -60,6 +65,11 @@ export class AuthService extends BaseApiService {
       .pipe(
         tap(() => {
           this.clearAuth();
+        }),
+        catchError(() => {
+          // Incluso si el logout falla en el servidor, limpiar localmente
+          this.clearAuth();
+          return of(null);
         })
       );
   }
@@ -125,25 +135,35 @@ export class AuthService extends BaseApiService {
   private clearAuth(): void {
     localStorage.removeItem('auth_token');
     this.currentUserSubject.next(null);
+    this.initializationSubject.next(true);
     this.router.navigate(['/login']);
   }
 
   private loadCurrentUser(): void {
     const token = this.getToken();
+    
     if (token) {
       this.getProfile().subscribe({
         next: (profile) => {
           this.currentUserSubject.next(profile);
+          this.initializationSubject.next(true);
         },
-        error: () => {
-          this.clearAuth();
+        error: (error) => {
+          // Si el token es inválido, limpiar autenticación
+          localStorage.removeItem('auth_token');
+          this.currentUserSubject.next(null);
+          this.initializationSubject.next(true);
         }
       });
+    } else {
+      this.initializationSubject.next(true);
     }
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const hasToken = !!this.getToken();
+    const hasUser = !!this.getCurrentUser();
+    return hasToken && hasUser;
   }
 
   getCurrentUser(): UserProfile | null {
@@ -157,5 +177,10 @@ export class AuthService extends BaseApiService {
 
   isAdmin(): boolean {
     return this.hasRole('admin');
+  }
+
+  // Método para verificar si el servicio está inicializado
+  isInitialized(): boolean {
+    return this.initializationSubject.value;
   }
 } 
