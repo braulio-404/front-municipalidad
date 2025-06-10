@@ -21,7 +21,8 @@ export const routes: Routes = [
         component: AdminDashboardComponent,
         canActivate: [AdminGuard],
         children: [
-            { path: '', component: DashboardHomeComponent },
+            { path: 'home', component: DashboardHomeComponent },
+            { path: 'login', component: LoginComponent },
             { path: 'formularios', component: FormulariosComponent },
             { path: 'formularios/nuevo', component: PostulacionFormComponent, data: { modo: 'nuevo' } },
             { path: 'formularios/ver/:id', component: PostulacionFormComponent, data: { modo: 'ver' } },

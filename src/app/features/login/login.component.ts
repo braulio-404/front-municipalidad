@@ -57,7 +57,15 @@ export class LoginComponent implements OnInit {
           catchError(error => {
             console.error('Error en login:', error);
             this.mostrarError = true;
-            this.mensajeError = error.message || 'Error de autenticación. Verifica tus credenciales.';
+            
+            // Manejar específicamente el error 401 (credenciales incorrectas)
+            if (error.status === 401) {
+              this.mensajeError = 'Email o contraseña incorrecta';
+            } else {
+              // Para otros errores, mostrar mensaje genérico sin detalles técnicos
+              this.mensajeError = 'Error de conexión. Intenta nuevamente.';
+            }
+            
             this.cargando = false;
             return of(null);
           })
@@ -101,7 +109,7 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.mostrarError = true;
-          this.mensajeError = error.message || 'Error al solicitar restablecimiento de contraseña.';
+          this.mensajeError = 'Error al solicitar restablecimiento de contraseña.';
         }
       });
     } else {

@@ -16,7 +16,7 @@ import { ActividadReciente } from '../../../interfaces/estadisticas.interface';
         <div class="dashboard-card" (click)="navigateTo('formularios')">
           <div class="card-icon">
             <i class="material-icons">description</i>
-          </div>
+          </div> 
           <div class="card-info">
             <h3>Gestión de Formularios</h3>
             <p>Administre los formularios y solicitudes</p>
