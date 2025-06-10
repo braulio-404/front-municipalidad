@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
               const user = this.authService.getCurrentUser();
               
               if (user?.rol === 'admin') {
-                this.router.navigate(['/admin']);
+                this.router.navigate(['/admin/home']);
               } else {
                 this.router.navigate(['/dashboard']);
               }
