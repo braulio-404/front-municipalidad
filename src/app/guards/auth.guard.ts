@@ -31,14 +31,7 @@ export class AuthGuard implements CanActivate {
             const isAuthenticated = this.authService.isAuthenticated();
             
             if (isAuthenticated && user) {
-              // Verificar si la ruta requiere un rol específico
-              const requiredRole = route.data?.['role'];
-              
-              if (requiredRole && user.rol !== requiredRole) {
-                // El usuario no tiene el rol requerido
-                this.router.navigate(['/unauthorized']);
-                return false;
-              }
+              // Solo verificar autenticación, no roles específicos
               return true;
             } else {
               // No está autenticado, redirigir al login

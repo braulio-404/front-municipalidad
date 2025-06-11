@@ -1,51 +1,122 @@
 <div class="admin-container">
-  <!-- Barra lateral de navegación -->
-  <div class="sidebar">
-    <div class="logo-container">
-      <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo">
-      <div class="brand-text">CONCHALÍ</div>
-    </div>
-    
-    <div class="menu-container">
-      <div class="menu-header">Panel de Administración</div>
-      <div class="menu-items">
-        <div *ngFor="let option of menuOptions" 
-          class="menu-item" 
-          [routerLink]="option.route"
-          routerLinkActive="active-menu-item">
-          <i class="material-icons menu-icon">{{option.icon}}</i>
-          <span class="menu-text">{{option.name}}</span>
+  <!-- Contenido para todos los usuarios autenticados -->
+  <div *ngIf="currentUser" class="admin-layout">
+    <!-- Barra lateral de navegación -->
+    <div class="sidebar">
+      <div class="logo-container">
+        <img [src]="logoUrl" [alt]="'Logo ' + municipalityFullName" class="logo">
+        <div class="brand-text">{{municipalityName}}</div>
+      </div>
+      
+      <div class="menu-container">
+        <div class="menu-header">
+          <span>Panel de Control</span>
+        </div>
+        <div class="menu-items">
+          <!-- Opciones para todos los usuarios autenticados -->
+          <div class="menu-item" 
+            (click)="navigateToRoute('/admin/home')"
+            [class.active-menu-item]="router.url === '/admin/home' || router.url === '/admin'">
+            <i class="material-icons menu-icon">home</i>
+            <span class="menu-text">Inicio</span>
+          </div>
+          
+          <div class="menu-item" 
+            (click)="navigateToRoute('/admin/formularios')"
+            [class.active-menu-item]="router.url.startsWith('/admin/formularios')">
+            <i class="material-icons menu-icon">description</i>
+            <span class="menu-text">Gestión de Formularios</span>
+          </div>
+          
+          <div class="menu-item" 
+            (click)="navigateToRoute('/admin/datos')"
+            [class.active-menu-item]="router.url.startsWith('/admin/datos')">
+            <i class="material-icons menu-icon">storage</i>
+            <span class="menu-text">Gestión de Datos</span>
+          </div>
+          
+          <div class="menu-item" 
+            (click)="navigateToRoute('/admin/descargas')"
+            [class.active-menu-item]="router.url.startsWith('/admin/descargas')">
+            <i class="material-icons menu-icon">cloud_download</i>
+            <span class="menu-text">Descarga de Información</span>
+          </div>
+          
+          <div class="menu-item" 
+            (click)="navigateToRoute('/admin/estadisticas')"
+            [class.active-menu-item]="router.url.startsWith('/admin/estadisticas')">
+            <i class="material-icons menu-icon">bar_chart</i>
+            <span class="menu-text">Estadísticas</span>
+          </div>
+        </div>
+        
+        <!-- Información del rol para usuarios no admin -->
+        <div *ngIf="!isUserAdmin()" class="role-info">
+          <div class="role-badge">
+            <i class="material-icons">person</i>
+            <span>{{currentUser?.rol || 'usuario'}}</span>
+          </div>
+          
+        </div>
+      </div>
+      
+      <div class="logout-container">
+        <div class="menu-item logout-button" (click)="cerrarSesion()">
+          <i class="material-icons menu-icon">exit_to_app</i>
+          <span class="menu-text">Cerrar Sesión</span>
         </div>
       </div>
     </div>
     
-    <div class="logout-container">
-      <div class="menu-item logout-button" (click)="cerrarSesion()">
-        <i class="material-icons menu-icon">exit_to_app</i>
-        <span class="menu-text">Cerrar Sesión</span>
+    <!-- Contenido principal -->
+    <div class="main-content">
+      <!-- Barra superior -->
+      <div class="top-bar">
+        <div class="page-title">
+          <h1>Panel de Control</h1>
+        </div>
+        <div class="user-info">
+          <div class="user-role-badge" [class.admin]="isUserAdmin()" [class.user]="!isUserAdmin()">
+            {{isUserAdmin() ? 'ADMIN' : 'USUARIO'}}
+          </div>
+          <span class="user-name">Bienvenido, {{currentUser?.nombre || nombreUsuario}}</span>
+          <div class="user-avatar">
+            <i class="material-icons">person</i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Área de contenido principal -->
+      <div class="content-area">
+        <!-- Router outlet para cargar los componentes hijos -->
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+    <!-- Selector de tema (solo para admin) -->
+    <div *ngIf="isUserAdmin()" class="theme-testing">
+      <button 
+        class="theme-selector-btn" 
+        (click)="toggleThemeSelector()"
+        [class.active]="showThemeSelector"
+        title="Configurar Tema (Solo Admin)">
+        <span class="theme-icon">🎨</span>
+        Temas
+      </button>
+    </div>
+    
+    <div *ngIf="showThemeSelector" class="theme-overlay" (click)="showThemeSelector = false">
+      <div (click)="$event.stopPropagation()">
+        <app-theme-selector></app-theme-selector>
       </div>
     </div>
   </div>
-  
-  <!-- Contenido principal -->
-  <div class="main-content">
-    <!-- Barra superior -->
-    <div class="top-bar">
-      <div class="page-title">
-        <h1>Panel de Administración</h1>
-      </div>
-      <div class="user-info">
-        <span class="user-name">Bienvenido, {{nombreUsuario}}</span>
-        <div class="user-avatar">
-          <i class="material-icons">person</i>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Área de contenido principal -->
-    <div class="content-area">
-      <!-- Router outlet para cargar los componentes hijos -->
-      <router-outlet></router-outlet>
+
+  <!-- Mostrar cargando si no hay usuario -->
+  <div *ngIf="!currentUser" class="loading-container">
+    <div class="loading-content">
+      <div class="spinner"></div>
+      <p>Verificando autenticación...</p>
     </div>
   </div>
 </div> 

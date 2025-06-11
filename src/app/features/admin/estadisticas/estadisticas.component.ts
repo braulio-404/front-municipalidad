@@ -5,6 +5,7 @@ import { FormulariosService } from '../../../servicios/formularios.service';
 import { PostulacionesService } from '../../../servicios/postulaciones.service';
 import { UsuariosService } from '../../../servicios/usuarios.service';
 import { EstadisticasAdminService } from '../../../servicios/estadisticas-admin.service';
+import { ThemeService } from '../../../servicios/theme.service';
 import { Formulario } from '../../../interfaces/formulario.interface';
 import { EstadisticaPostulacion } from '../../../interfaces/estadisticas.interface';
 import { Chart, registerables } from 'chart.js';
@@ -48,13 +49,24 @@ export class EstadisticasComponent implements OnInit {
     private formulariosService: FormulariosService,
     private postulacionesService: PostulacionesService,
     private usuariosService: UsuariosService,
-    private estadisticasAdminService: EstadisticasAdminService
+    private estadisticasAdminService: EstadisticasAdminService,
+    private themeService: ThemeService
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
   ngOnInit(): void {
     this.cargarPostulaciones();
+    
+    // Suscribirse a cambios de tema para actualizar gráficos
+    this.themeService.currentTheme$.subscribe(() => {
+      if (this.isBrowser && this.postulaciones.length > 0) {
+        // Pequeño delay para asegurar que las variables CSS se hayan actualizado
+        setTimeout(() => {
+          this.actualizarGraficos();
+        }, 100);
+      }
+    });
   }
 
   cargarPostulaciones(): void {
@@ -209,6 +221,39 @@ export class EstadisticasComponent implements OnInit {
       }));
   }
   
+  // Métodos para obtener colores del tema actual
+  private getThemeColors() {
+    const root = document.documentElement;
+    return {
+      primary: getComputedStyle(root).getPropertyValue('--primary-color').trim(),
+      primaryLight: getComputedStyle(root).getPropertyValue('--primary-color-light').trim(),
+      accent: getComputedStyle(root).getPropertyValue('--accent-color').trim(),
+      success: getComputedStyle(root).getPropertyValue('--success-color').trim(),
+      warning: getComputedStyle(root).getPropertyValue('--warning-color').trim(),
+      error: getComputedStyle(root).getPropertyValue('--error-color').trim(),
+      info: getComputedStyle(root).getPropertyValue('--info-color').trim()
+    };
+  }
+
+  private generateDynamicColors(count: number) {
+    const colors = this.getThemeColors();
+    const baseColors = [
+      colors.primary,
+      colors.accent,
+      colors.success,
+      colors.warning,
+      colors.error,
+      colors.info,
+      colors.primaryLight
+    ];
+
+    const result = [];
+    for (let i = 0; i < count; i++) {
+      result.push(baseColors[i % baseColors.length]);
+    }
+    return result;
+  }
+  
   inicializarGraficos(): void {
     this.inicializarGraficoEdad();
     this.inicializarGraficoProfesionales();
@@ -220,6 +265,7 @@ export class EstadisticasComponent implements OnInit {
     
     // Obtener datos reales de postulantes por cargo
     const datosPorCargo = this.obtenerDatosPorCargo();
+    const colors = this.getThemeColors();
     
     const datos = {
       labels: datosPorCargo.map(item => item.cargo),
@@ -227,9 +273,11 @@ export class EstadisticasComponent implements OnInit {
         {
           label: 'Postulantes por cargo',
           data: datosPorCargo.map(item => item.cantidad),
-          backgroundColor: 'rgba(102, 46, 143, 0.6)',
-          borderColor: '#662e8f',
-          borderWidth: 1
+          backgroundColor: `${colors.primary}99`, // Agregar transparencia
+          borderColor: colors.primary,
+          borderWidth: 2,
+          hoverBackgroundColor: colors.primaryLight,
+          hoverBorderColor: colors.accent
         }
       ]
     };
@@ -243,21 +291,37 @@ export class EstadisticasComponent implements OnInit {
           y: {
             beginAtZero: true,
             ticks: {
-              stepSize: 1
+              stepSize: 1,
+              color: colors.primary
+            },
+            grid: {
+              color: `${colors.primary}33`
             }
           },
           x: {
             ticks: {
               maxRotation: 45,
-              minRotation: 45
+              minRotation: 45,
+              color: colors.primary
+            },
+            grid: {
+              color: `${colors.primary}33`
             }
           }
         },
         plugins: {
           legend: {
-            display: true
+            display: true,
+            labels: {
+              color: colors.primary
+            }
           },
           tooltip: {
+            backgroundColor: colors.primary,
+            titleColor: 'white',
+            bodyColor: 'white',
+            borderColor: colors.accent,
+            borderWidth: 1,
             callbacks: {
               label: function(context) {
                 return `${context.dataset.label}: ${context.parsed.y} postulantes`;
@@ -275,6 +339,8 @@ export class EstadisticasComponent implements OnInit {
     
     // Obtener datos reales de postulantes por mes
     const datosPorMes = this.obtenerDatosPorMes();
+    const dynamicColors = this.generateDynamicColors(datosPorMes.length);
+    const backgroundColors = dynamicColors.map(color => `${color}99`); // Agregar transparencia
     
     const datos = {
       labels: datosPorMes.map((item: {mes: string, cantidad: number}) => item.mes),
@@ -282,23 +348,11 @@ export class EstadisticasComponent implements OnInit {
         {
           label: 'Postulantes por mes',
           data: datosPorMes.map((item: {mes: string, cantidad: number}) => item.cantidad),
-          backgroundColor: [
-            'rgba(102, 46, 143, 0.6)',
-            'rgba(138, 75, 170, 0.6)',
-            'rgba(52, 183, 72, 0.6)',
-            'rgba(255, 193, 7, 0.6)',
-            'rgba(220, 53, 69, 0.6)',
-            'rgba(32, 201, 151, 0.6)'
-          ],
-          borderColor: [
-            '#662e8f',
-            '#8a4baa',
-            '#34b748',
-            '#ffc107',
-            '#dc3545',
-            '#20c997'
-          ],
-          borderWidth: 1
+          backgroundColor: backgroundColors,
+          borderColor: dynamicColors,
+          borderWidth: 2,
+          hoverBorderWidth: 3,
+          hoverBorderColor: this.getThemeColors().accent
         }
       ]
     };
@@ -310,9 +364,19 @@ export class EstadisticasComponent implements OnInit {
         responsive: true,
         plugins: {
           legend: {
-            position: 'right'
+            position: 'right',
+            labels: {
+              color: this.getThemeColors().primary,
+              usePointStyle: true,
+              padding: 20
+            }
           },
           tooltip: {
+            backgroundColor: this.getThemeColors().primary,
+            titleColor: 'white',
+            bodyColor: 'white',
+            borderColor: this.getThemeColors().accent,
+            borderWidth: 1,
             callbacks: {
               label: function(context: any) {
                 return `${context.label}: ${context.parsed} postulantes`;
@@ -325,23 +389,21 @@ export class EstadisticasComponent implements OnInit {
   }
   
   actualizarGraficos(): void {
-    // Solo actualizamos gráficos en el navegador
-    if (!this.isBrowser) return;
-    
-    // Actualizar gráfico de postulantes por cargo
-    if (this.graficoEdad) {
-      const datosPorCargo = this.obtenerDatosPorCargo();
-      this.graficoEdad.data.labels = datosPorCargo.map(item => item.cargo);
-      this.graficoEdad.data.datasets[0].data = datosPorCargo.map(item => item.cantidad);
-      this.graficoEdad.update();
-    }
-    
-    // Actualizar gráfico de postulantes por mes
-    if (this.graficoProfesionales) {
-      const datosPorMes = this.obtenerDatosPorMes();
-      this.graficoProfesionales.data.labels = datosPorMes.map(item => item.mes);
-      this.graficoProfesionales.data.datasets[0].data = datosPorMes.map(item => item.cantidad);
-      this.graficoProfesionales.update();
+    if (this.isBrowser) {
+      // Destruir gráficos existentes antes de recrearlos
+      if (this.graficoEdad) {
+        this.graficoEdad.destroy();
+        this.graficoEdad = null;
+      }
+      if (this.graficoProfesionales) {
+        this.graficoProfesionales.destroy();
+        this.graficoProfesionales = null;
+      }
+      
+      // Recrear gráficos con nuevos colores
+      setTimeout(() => {
+        this.inicializarGraficos();
+      }, 50);
     }
   }
 } 

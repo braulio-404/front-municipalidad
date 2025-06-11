@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Formulario } from '../../interfaces/formulario.interface';
 import { FormulariosService } from '../../servicios/formularios.service';
+import { ThemeService } from '../../servicios/theme.service';
 
 @Component({
   selector: 'app-postulaciones',
@@ -20,6 +21,7 @@ export class PostulacionesComponent implements OnInit {
   filtroNombre: string = '';
   cargando: boolean = false;
   error: string | null = null;
+  municipalityEmail: string = 'rrhh@conchali.cl'; // fallback
 
   // Variables para paginación
   paginaActual: number = 1;
@@ -29,10 +31,23 @@ export class PostulacionesComponent implements OnInit {
   // Opciones para elementos por página
   opcionesElementosPorPagina: number[] = [5, 10, 20, 30];
 
-  constructor(private formulariosService: FormulariosService) {}
+  constructor(
+    private formulariosService: FormulariosService,
+    private themeService: ThemeService
+  ) {}
 
   ngOnInit() {
+    this.loadThemeData();
     this.cargarPostulaciones();
+  }
+
+  private loadThemeData(): void {
+    try {
+      this.municipalityEmail = this.themeService.getMunicipalityEmail();
+    } catch (error) {
+      console.warn('Error loading theme data, using fallbacks:', error);
+      // El valor fallback ya está definido arriba
+    }
   }
 
   get postulacionesActivas() {

@@ -21,37 +21,30 @@ export class BaseApiService {
   /**
    * Maneja errores HTTP
    */
-  protected handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Ocurrió un error desconocido';
+  protected handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = 'Error desconocido';
     
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Error del lado del servidor
-      switch (error.status) {
-        case 400:
-          errorMessage = 'Solicitud incorrecta. Verifica los datos enviados.';
-          break;
-        case 401:
-          errorMessage = 'No autorizado. Verifica tus credenciales.';
-          break;
-        case 403:
-          errorMessage = 'Acceso prohibido.';
-          break;
-        case 404:
-          errorMessage = 'Recurso no encontrado.';
-          break;
-        case 500:
-          errorMessage = 'Error interno del servidor.';
-          break;
-        default:
-          errorMessage = `Error ${error.status}: ${error.message}`;
+      errorMessage = `Código de error: ${error.status}\nMensaje: ${error.message}`;
+      
+      if (error.error && typeof error.error === 'object') {
+        if (error.error.message) {
+          errorMessage = error.error.message;
+        } else if (error.error.error) {
+          errorMessage = error.error.error;
+        }
       }
     }
     
-    console.error('Error en la API:', error);
-    return throwError(() => new Error(errorMessage));
+    return throwError(() => ({ 
+      message: errorMessage, 
+      status: error.status, 
+      error: error.error 
+    }));
   }
 
   /**

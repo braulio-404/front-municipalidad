@@ -12,15 +12,9 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background-color: #cb3b8c;
   
-  // Patrón específico del login (rosa/magenta)
-  background-image: 
-    linear-gradient(45deg, rgba(199, 50, 133, 0.3) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(199, 50, 133, 0.3) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(199, 50, 133, 0.3) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(199, 50, 133, 0.3) 75%);
-  background-size: 60px 60px;
+  // Fondo por defecto usando variables CSS que cambian dinámicamente
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-light) 50%, var(--primary-color-dark) 100%);
 }
 
 // Animación específica del patrón de fondo del login
@@ -76,12 +70,126 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+  min-height: 120px; // Altura mínima para evitar saltos
 }
 
 .logo-png {
   max-width: 280px;
   height: auto;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: opacity 0.3s ease-in-out;
+  
+  &.logo-hidden {
+    opacity: 0;
+    position: absolute;
+  }
+}
+
+// Indicador de carga del logo
+.logo-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  
+  .logo-skeleton {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.2) 25%, 
+      rgba(255, 255, 255, 0.4) 50%, 
+      rgba(255, 255, 255, 0.2) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 12px;
+  }
+  
+  .loading-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Fallback del logo
+.logo-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  
+  i {
+    font-size: 4rem;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+  
+  span {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+}
+
+// Indicador de carga general
+.loading-indicator {
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: rgba(var(--primary-color-rgb), 0.05);
+  border-radius: var(--border-radius-md);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+  text-align: center;
+  
+  .loading-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(var(--primary-color-rgb), 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+    
+    .loading-progress {
+      height: 100%;
+      background: linear-gradient(90deg, 
+        var(--primary-color), 
+        var(--primary-color-light), 
+        var(--primary-color));
+      background-size: 200% 100%;
+      animation: loading-progress 1.5s infinite;
+      border-radius: 2px;
+    }
+  }
+  
+  small {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+}
+
+@keyframes loading-progress {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 // Ocultar elementos no necesarios en móvil
@@ -94,8 +202,8 @@
 .login-placeholder h1 {
   font-size: 3.5rem;
   font-weight: 900;
-  color: #333333;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   letter-spacing: 2px;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -112,7 +220,7 @@
   flex-direction: column;
   justify-content: center;
   padding: var(--spacing-3xl);
-  background-color: #fdf6f8;
+  background-color: var(--background-color);
   position: relative;
   box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
 }

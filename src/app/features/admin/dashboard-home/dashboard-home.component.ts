@@ -168,35 +168,35 @@ import { Subscription, timer } from 'rxjs';
     }
     
     .dashboard-card {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-      padding: 20px;
+      background-color: var(--background-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-lg);
       display: flex;
       align-items: center;
       cursor: pointer;
-      transition: all 0.3s;
-      border-left: 4px solid #9c27b0;
+      transition: var(--transition-normal);
+      border-left: 4px solid var(--primary-color);
       
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        border-left-color: #34b748;
+        box-shadow: var(--shadow-xl);
+        border-left-color: var(--accent-color);
       }
       
       .card-icon {
         width: 60px;
         height: 60px;
-        border-radius: 12px;
-        background-color: #f8f1ff;
+        border-radius: var(--border-radius-lg);
+        background-color: var(--primary-color-very-light);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 20px;
+        margin-right: var(--spacing-lg);
         
         i {
           font-size: 28px;
-          color: #9c27b0;
+          color: var(--primary-color);
         }
       }
       
@@ -205,19 +205,19 @@ import { Subscription, timer } from 'rxjs';
         
         h3 {
           margin: 0 0 5px;
-          color: #9c27b0;
+          color: var(--primary-color);
           font-size: 1.1rem;
         }
         
         p {
           margin: 0;
-          color: #666;
+          color: var(--text-color-light);
           font-size: 0.9rem;
         }
       }
       
       &:hover .card-icon {
-        background-color: #9c27b0;
+        background-color: var(--primary-color);
         
         i {
           color: white;
@@ -227,25 +227,25 @@ import { Subscription, timer } from 'rxjs';
     
     // Sección de estadísticas rápidas
     .quick-stats {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-      padding: 25px;
-      margin-bottom: 30px;
+      background-color: var(--background-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
     }
 
     .stats-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: var(--spacing-lg);
       
       h2 {
-        color: #9c27b0;
+        color: var(--primary-color);
         font-size: 1.3rem;
         margin: 0;
         position: relative;
-        padding-bottom: 10px;
+        padding-bottom: var(--spacing-sm);
         
         &:after {
           content: '';
@@ -254,24 +254,24 @@ import { Subscription, timer } from 'rxjs';
           left: 0;
           width: 50px;
           height: 3px;
-          background-color: #34b748;
-          border-radius: 3px;
+          background-color: var(--accent-color);
+          border-radius: var(--border-radius-sm);
         }
       }
     }
 
     .btn-actualizar, .btn-actualizar-actividad {
       background: none;
-      border: 1px solid #9c27b0;
-      color: #9c27b0;
-      border-radius: 6px;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      border-radius: var(--border-radius-md);
       padding: 8px 12px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: var(--transition-normal);
       margin-left: 8px;
       
       &:hover:not(:disabled) {
-        background-color: #9c27b0;
+        background-color: var(--primary-color);
         color: white;
       }
       
@@ -287,16 +287,16 @@ import { Subscription, timer } from 'rxjs';
 
     .btn-clear {
       background: none;
-      border: 1px solid #f44336;
-      color: #f44336;
-      border-radius: 6px;
+      border: 1px solid var(--error-color);
+      color: var(--error-color);
+      border-radius: var(--border-radius-md);
       padding: 8px 12px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: var(--transition-normal);
       margin-left: 8px;
       
       &:hover:not(:disabled) {
-        background-color: #f44336;
+        background-color: var(--error-color);
         color: white;
       }
       
@@ -326,27 +326,29 @@ import { Subscription, timer } from 'rxjs';
     }
     
     .stat-card {
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      padding: 20px;
+      background-color: var(--background-card);
+      border-radius: var(--border-radius-md);
+      padding: var(--spacing-lg);
       display: flex;
       align-items: center;
-      border-left: 4px solid #9c27b0;
+      border-left: 4px solid var(--primary-color);
       transition: transform 0.2s;
+      box-shadow: var(--shadow-sm);
       
       &:hover {
         transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
       }
       
       .stat-icon {
         width: 50px;
         height: 50px;
-        border-radius: 8px;
-        background-color: #9c27b0;
+        border-radius: var(--border-radius-md);
+        background-color: var(--primary-color);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 15px;
+        margin-right: var(--spacing-md);
         
         i {
           font-size: 24px;
@@ -360,14 +362,14 @@ import { Subscription, timer } from 'rxjs';
         h3 {
           font-size: 2rem;
           font-weight: bold;
-          color: #9c27b0;
+          color: var(--primary-color);
           margin: 0;
           line-height: 1;
         }
         
         p {
           margin: 5px 0 0;
-          color: #666;
+          color: var(--text-color-light);
           font-size: 0.9rem;
         }
       }
@@ -375,24 +377,24 @@ import { Subscription, timer } from 'rxjs';
     
     // Sección de actividad reciente
     .recent-activity {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-      padding: 25px;
+      background-color: var(--background-card);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: var(--spacing-xl);
     }
 
     .activity-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: var(--spacing-lg);
       
       h2 {
-        color: #9c27b0;
+        color: var(--primary-color);
         font-size: 1.3rem;
         margin: 0;
         position: relative;
-        padding-bottom: 10px;
+        padding-bottom: var(--spacing-sm);
         
         &:after {
           content: '';
@@ -401,51 +403,53 @@ import { Subscription, timer } from 'rxjs';
           left: 0;
           width: 50px;
           height: 3px;
-          background-color: #34b748;
-          border-radius: 3px;
+          background-color: var(--accent-color);
+          border-radius: var(--border-radius-sm);
         }
       }
     }
     
     .loading-spinner {
       text-align: center;
-      padding: 20px;
-      color: #666;
+      padding: var(--spacing-lg);
+      color: var(--text-color-light);
     }
     
     .activity-list {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: var(--spacing-md);
     }
     
     .activity-item {
       display: flex;
       align-items: flex-start;
-      padding: 15px;
-      border-radius: 8px;
-      background-color: #f8f1ff;
-      transition: all 0.3s;
+      padding: var(--spacing-md);
+      border-radius: var(--border-radius-md);
+      background-color: var(--primary-color-very-light);
+      transition: var(--transition-normal);
+      border-left: 3px solid var(--primary-color-border);
       
       &:hover {
-        background-color: #f8f1ff;
+        background-color: var(--primary-color-very-light);
         transform: translateX(5px);
+        border-left-color: var(--primary-color);
       }
       
       .activity-icon {
         width: 40px;
         height: 40px;
-        border-radius: 50%;
-        background-color: rgba(#9c27b0, 0.1);
+        border-radius: var(--border-radius-full);
+        background-color: rgba(var(--primary-color-rgb), 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 15px;
+        margin-right: var(--spacing-md);
         flex-shrink: 0;
         
         i {
           font-size: 20px;
-          color: #9c27b0;
+          color: var(--primary-color);
         }
       }
       
@@ -454,18 +458,18 @@ import { Subscription, timer } from 'rxjs';
         
         p {
           margin: 0 0 5px;
-          color: #444;
+          color: var(--text-color);
           font-size: 0.95rem;
           
           strong {
-            color: #9c27b0;
+            color: var(--primary-color);
             font-weight: 600;
           }
         }
         
         .activity-time {
           font-size: 0.8rem;
-          color: #777;
+          color: var(--text-color-muted);
         }
       }
     }

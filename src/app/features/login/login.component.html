@@ -4,7 +4,25 @@
     <div class="login-placeholder">
       <div class="logo-container">
         <div class="logo-img">
-          <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo-png">
+          <!-- Indicador de carga del logo -->
+          <div class="logo-loading" *ngIf="logoLoading">
+            <div class="logo-skeleton"></div>
+            <div class="loading-text">Cargando logo...</div>
+          </div>
+          
+          <!-- Logo principal -->
+          <img [src]="logoUrl" 
+               [alt]="'Logo ' + municipalityFullName" 
+               class="logo-png"
+               [class.logo-hidden]="logoLoading"
+               (load)="onLogoLoad()"
+               (error)="onLogoError()">
+          
+          <!-- Fallback en caso de error -->
+          <div class="logo-fallback" *ngIf="logoError && !logoLoading">
+            <i class="material-icons">business</i>
+            <span>{{ municipalityName }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -15,6 +33,14 @@
     <div class="form-header">
       <h2>Iniciar Sesión</h2>
       <p class="welcome-text">Bienvenido al sistema municipal</p>
+    </div>
+    
+    <!-- Loading estado general -->
+    <div class="loading-indicator" *ngIf="logoLoading">
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+      <small>Aplicando tema...</small>
     </div>
     
     <div class="error-message" *ngIf="mostrarError">
@@ -71,7 +97,7 @@
 <div class="verificando-container" *ngIf="verificandoAutenticacion">
   <div class="verificando-content">
     <div class="logo-container">
-      <img [src]="logoUrl" alt="Logo Municipalidad de Conchalí" class="logo-verificando">
+      <img [src]="logoUrl" [alt]="'Logo ' + municipalityFullName" class="logo-verificando">
     </div>
     <div class="verificando-text">
       <h3>Verificando autenticación...</h3>

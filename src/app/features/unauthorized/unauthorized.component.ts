@@ -18,10 +18,9 @@ export class UnauthorizedComponent {
 
   volverAlInicio(): void {
     const user = this.authService.getCurrentUser();
-    if (user?.rol === 'admin') {
+    if (user) {
+      // Todos los usuarios autenticados van a admin
       this.router.navigate(['/admin']);
-    } else if (user) {
-      this.router.navigate(['/dashboard']);
     } else {
       this.router.navigate(['/login']);
     }

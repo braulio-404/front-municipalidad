@@ -6,11 +6,21 @@
   min-height: 100vh;
   background-color: var(--background-alt);
   font-family: 'Roboto', sans-serif;
+  width: 100%;
+  overflow: hidden; // Prevenir scroll horizontal
+}
+
+// Contenedor principal que mantiene el layout
+.admin-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
 }
 
 // Sidebar específico del admin
 .sidebar {
   width: 280px;
+  min-width: 280px; // Prevenir que se encoja
   background-color: var(--primary-color);
   color: white;
   display: flex;
@@ -18,7 +28,7 @@
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: var(--z-sticky);
-  
+  flex-shrink: 0; // Importante: no permitir que se encoja
   
   // Patrón geométrico específico del sidebar admin
   background-image: 
@@ -94,11 +104,11 @@
   }
 
   &.active-menu-item {
-    background-color: rgba(156, 39, 176, 0.1);
-    border-left: 4px solid #9c27b0;
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    border-left: 4px solid var(--primary-color);
     
     .menu-icon, .menu-text {
-      color: #9c27b0;
+      color: var(--primary-color);
     }
   }
 }
@@ -120,9 +130,11 @@
 // Contenido principal
 .main-content {
   flex: 1;
+  min-width: 0; // Importante: permite que el contenido se ajuste
   background-color: var(--background-color);
   display: flex;
   flex-direction: column;
+  overflow: hidden; // Prevenir overflow del contenedor
 }
 
 // Barra superior
@@ -134,6 +146,7 @@
   background-color: var(--background-card);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   z-index: 1;
+  flex-shrink: 0; // No permitir que se encoja
   
   .page-title {
     h1 {
@@ -147,6 +160,24 @@
   .user-info {
     display: flex;
     align-items: center;
+    
+    .user-role-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: var(--spacing-md);
+      
+      &.admin {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      
+      &.user {
+        background-color: var(--accent-color);
+        color: white;
+      }
+    }
     
     .user-name {
       margin-right: var(--spacing-md);
@@ -176,6 +207,7 @@
   flex: 1;
   padding: var(--spacing-xl);
   overflow-y: auto;
+  min-height: 0; // Importante: permite que el scroll funcione correctamente
 }
 
 // Cards específicos del dashboard admin
@@ -643,13 +675,32 @@
 }
 
 @media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .main-content {
+    width: 100%;
+  }
+  
   .top-bar {
     padding: var(--spacing-md);
-    flex-direction: column;
-    gap: var(--spacing-sm);
     
     .page-title h1 {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
+    }
+    
+    .user-info {
+      .user-name {
+        display: none;
+      }
     }
   }
   
@@ -659,6 +710,7 @@
   
   .dashboard-cards {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
   }
   
   .chart-container,
@@ -703,5 +755,432 @@
     table {
       min-width: 600px;
     }
+  }
+}
+
+// Estilos para usuarios no admin
+.non-admin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary-color-very-light), var(--background-alt));
+  padding: var(--spacing-xl);
+}
+
+.access-denied {
+  background: var(--background-card);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-xl);
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+}
+
+.access-denied-header {
+  margin-bottom: var(--spacing-xl);
+  
+  .logo {
+    max-width: 80px;
+    height: auto;
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+  }
+  
+  h1 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+}
+
+.access-denied-content {
+  .access-denied-icon {
+    margin-bottom: var(--spacing-lg);
+    
+    i {
+      font-size: 4rem;
+      color: var(--error-color);
+      opacity: 0.8;
+    }
+  }
+  
+  h2 {
+    color: var(--text-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .main-message {
+    color: var(--text-color-light);
+    margin-bottom: var(--spacing-xl);
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+}
+
+.user-info-card {
+  background: var(--primary-color-very-light);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+  
+  h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .label {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    .value {
+      color: var(--text-color-light);
+      
+      &.role-badge {
+        background: var(--error-color);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: var(--border-radius-full);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition-normal);
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    
+    i {
+      font-size: 1.2rem;
+    }
+    
+    &.btn-primary {
+      background: var(--primary-color);
+      color: white;
+      
+      &:hover {
+        background: var(--primary-color-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+    }
+    
+    &.btn-secondary {
+      background: var(--accent-color);
+      color: white;
+      
+      &:hover {
+        background: var(--accent-color-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+    }
+    
+    &.btn-outline {
+      background: transparent;
+      color: var(--text-color-light);
+      border: 1px solid var(--gray-300);
+      
+      &:hover {
+        background: var(--gray-50);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+    }
+  }
+}
+
+.contact-admin {
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--gray-200);
+  
+  p {
+    color: var(--text-color-light);
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    
+    &:first-child {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+  }
+}
+
+// Loading container
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--background-color);
+}
+
+.loading-content {
+  text-align: center;
+  color: var(--text-color-light);
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--gray-200);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto var(--spacing-md);
+  }
+  
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .access-denied {
+    margin: var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+  
+  .actions {
+    .btn {
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Información del rol para usuarios no admin
+.role-info {
+  padding: var(--spacing-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+  
+  .role-badge {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-md);
+    
+    i {
+      margin-right: var(--spacing-sm);
+      font-size: 18px;
+    }
+    
+    span {
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+  }
+  
+  .role-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    opacity: 0.9;
+    margin: 0;
+  }
+}
+
+// Contenedor de loading
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--background-alt);
+  
+  .loading-content {
+    text-align: center;
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--primary-color-light);
+      border-top: 4px solid var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto var(--spacing-lg);
+    }
+    
+    p {
+      color: var(--text-color-light);
+      font-size: 1.1rem;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Badge de rol en la barra superior
+.user-role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-right: var(--spacing-md);
+  
+  &.admin {
+    background: var(--success-color);
+    color: white;
+  }
+  
+  &.user {
+    background: var(--info-color);
+    color: white;
+  }
+}
+
+// Ajustes al contenedor de información del usuario
+.user-info {
+  display: flex;
+  align-items: center;
+  
+  .user-name {
+    margin-right: var(--spacing-md);
+    color: var(--text-color-light);
+    font-weight: 500;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border-radius-full);
+    background-color: var(--primary-color-very-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    i {
+      color: var(--primary-color);
+      font-size: 22px;
+    }
+  }
+}
+
+// Selector de tema (solo para admin)
+.theme-testing {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  
+  .theme-selector-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+    
+    &.active {
+      background: linear-gradient(135deg, var(--accent-color), var(--primary-color-dark));
+      animation: pulse 2s infinite;
+    }
+    
+    .theme-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+// Overlay del selector de temas
+.theme-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 } 

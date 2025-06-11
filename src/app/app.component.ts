@@ -1,6 +1,7 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { ThemeService } from './servicios/theme.service';
 // Importar los componentes faltantes
 // import { MenuComponent } from './shared/menu/menu.component';
 // import { LoadingComponent } from './shared/loading/loading.component';
@@ -14,10 +15,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
   // Cuando tengas los componentes, descomenta estas líneas:
   // imports: [RouterOutlet, CommonModule, MenuComponent, LoadingComponent]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+
   constructor(
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private themeService: ThemeService
   ) {
     // Solo ejecutar este código en el navegador
     if (isPlatformBrowser(this.platformId)) {
@@ -27,6 +30,24 @@ export class AppComponent {
         document.documentElement.style.setProperty('--primary-color-rgb', `${rgb.r}, ${rgb.g}, ${rgb.b}`);
       }
     }
+  }
+
+  ngOnInit(): void {
+    // El nuevo ThemeService se sincroniza automáticamente
+    // No necesitamos verificaciones manuales
+    console.log('🚀 App iniciada - Sincronización automática activada');
+
+    // Función global para debug (solo para desarrollo)
+    if (typeof window !== 'undefined') {
+      (window as any).forceThemeReload = () => {
+        console.log('🔧 Recarga manual de tema solicitada...');
+        this.themeService.forceReload();
+      };
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Ya no necesitamos limpiar intervalos
   }
 
   private adjustBrightness(color: string, percent: number): string {

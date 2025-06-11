@@ -29,7 +29,29 @@ export class AuthService extends BaseApiService {
     private router: Router
   ) {
     super(http);
+    
+    // Limpiar localStorage corrupto al inicializar
+    this.cleanCorruptedStorage();
+    
     this.loadCurrentUser();
+  }
+
+  /**
+   * Limpia el localStorage si tiene formato corrupto del backend
+   */
+  private cleanCorruptedStorage(): void {
+    const userStr = localStorage.getItem('current_user');
+    if (userStr) {
+      try {
+        const stored = JSON.parse(userStr);
+        // Si tiene estructura de respuesta del backend, limpiarlo
+        if (stored && stored.status && stored.message && stored.data) {
+          localStorage.removeItem('current_user');
+        }
+      } catch (error) {
+        localStorage.removeItem('current_user');
+      }
+    }
   }
 
   // Registrar nuevo usuario
@@ -53,6 +75,7 @@ export class AuthService extends BaseApiService {
         })),
         tap(authResponse => {
           this.setToken(authResponse.access_token);
+          this.setUser(authResponse.user);
           this.currentUserSubject.next(authResponse.user);
           this.initializationSubject.next(true);
         })
@@ -86,6 +109,7 @@ export class AuthService extends BaseApiService {
           return response;
         }),
         tap(profile => {
+          this.setUser(profile);
           this.currentUserSubject.next(profile);
         })
       );
@@ -128,12 +152,66 @@ export class AuthService extends BaseApiService {
     localStorage.setItem('auth_token', token);
   }
 
+  private setUser(user: UserProfile): void {
+    // Extraer el usuario real si viene en formato de respuesta del backend
+    let actualUser = user;
+    
+    // Si es una respuesta del backend con estructura anidada
+    if (user && typeof user === 'object' && user !== null && 'data' in user) {
+      const userWithData = user as any;
+      if (userWithData.data && typeof userWithData.data === 'object') {
+        // El usuario está directamente en data
+        actualUser = userWithData.data;
+      }
+    }
+    
+    try {
+      localStorage.setItem('current_user', JSON.stringify(actualUser));
+    } catch (error) {
+      // Silenciar error
+    }
+  }
+
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
 
+  private getStoredUser(): UserProfile | null {
+    const userStr = localStorage.getItem('current_user');
+    if (userStr) {
+      try {
+        const stored = JSON.parse(userStr);
+        
+        // Si está en formato de respuesta del backend, extraer el usuario
+        if (stored && typeof stored === 'object' && stored !== null && 'data' in stored) {
+          const storedWithData = stored as any;
+          if (storedWithData.data && typeof storedWithData.data === 'object') {
+            // El usuario está directamente en data
+            const actualUser = storedWithData.data;
+            
+            // Actualizar localStorage con el formato correcto
+            this.setUser(actualUser);
+            return actualUser;
+          }
+        }
+        
+        // Si ya está en formato correcto, devolverlo
+        if (stored && stored.rol) {
+          return stored;
+        }
+        
+        return null;
+      } catch (error) {
+        localStorage.removeItem('current_user');
+        return null;
+      }
+    }
+    return null;
+  }
+
   private clearAuth(): void {
     localStorage.removeItem('auth_token');
+    localStorage.removeItem('current_user');
     this.currentUserSubject.next(null);
     this.initializationSubject.next(true);
     this.router.navigate(['/login']);
@@ -141,21 +219,42 @@ export class AuthService extends BaseApiService {
 
   private loadCurrentUser(): void {
     const token = this.getToken();
+    const storedUser = this.getStoredUser();
     
-    if (token) {
+    if (token && storedUser) {
+      // Usar el usuario almacenado inmediatamente
+      this.currentUserSubject.next(storedUser);
+      
+      // Solo intentar actualizar el perfil si el servidor está disponible
+      // y manejar errores sin limpiar la sesión local
       this.getProfile().subscribe({
         next: (profile) => {
+          // Solo actualizar si realmente hay cambios
+          if (profile && profile.rol) {
+            this.setUser(profile);
+            this.currentUserSubject.next(profile);
+          }
+          this.initializationSubject.next(true);
+        },
+        error: (error) => {
+          // NO limpiar auth, mantener el usuario local
+          this.initializationSubject.next(true);
+        }
+      });
+    } else if (token && !storedUser) {
+      // Solo si hay token pero no usuario almacenado
+      this.getProfile().subscribe({
+        next: (profile) => {
+          this.setUser(profile);
           this.currentUserSubject.next(profile);
           this.initializationSubject.next(true);
         },
         error: (error) => {
-          // Si el token es inválido, limpiar autenticación
-          localStorage.removeItem('auth_token');
-          this.currentUserSubject.next(null);
-          this.initializationSubject.next(true);
+          this.clearAuth();
         }
       });
     } else {
+      // Sin token ni usuario
       this.initializationSubject.next(true);
     }
   }
@@ -167,7 +266,16 @@ export class AuthService extends BaseApiService {
   }
 
   getCurrentUser(): UserProfile | null {
-    return this.currentUserSubject.value;
+    let user = this.currentUserSubject.value;
+    
+    if (!user) {
+      user = this.getStoredUser();
+      if (user) {
+        this.currentUserSubject.next(user);
+      }
+    }
+    
+    return user;
   }
 
   hasRole(role: string): boolean {
@@ -177,6 +285,21 @@ export class AuthService extends BaseApiService {
 
   isAdmin(): boolean {
     return this.hasRole('admin');
+  }
+
+  isAdminFromStorage(): boolean {
+    const user = this.getStoredUser();
+    return user?.rol === 'admin';
+  }
+
+  /**
+   * Fuerza la corrección del formato de usuario en localStorage
+   */
+  fixUserStorageFormat(): void {
+    const storedUser = this.getStoredUser();
+    if (storedUser) {
+      this.currentUserSubject.next(storedUser);
+    }
   }
 
   // Método para verificar si el servicio está inicializado
