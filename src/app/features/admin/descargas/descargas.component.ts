@@ -23,12 +23,19 @@ interface FormularioConConteo extends Formulario {
 export class DescargasComponent implements OnInit {
   postulaciones: FormularioConConteo[] = [];
   postulacionesFiltradas: FormularioConConteo[] = [];
+  postulacionesPaginadas: FormularioConConteo[] = [];
   seleccionadas: { [key: number]: boolean } = {};
   terminoBusqueda: string = '';
   fechaInicio: string = '';
   fechaTermino: string = '';
   cargando: boolean = false;
   error: string = '';
+
+  // Propiedades de paginación
+  paginaActual: number = 1;
+  registrosPorPagina: number = 10;
+  totalPaginas: number = 0;
+  opcionesRegistrosPorPagina: number[] = [5, 10, 15, 20];
 
   constructor(
     private formulariosService: FormulariosService
@@ -56,6 +63,8 @@ export class DescargasComponent implements OnInit {
         
         this.postulaciones = formularios;
         this.postulacionesFiltradas = [...formularios];
+        this.calcularTotalPaginas();
+        this.actualizarPostulacionesPaginadas();
         this.cargando = false;
       },
       error: (error) => {
@@ -104,6 +113,11 @@ export class DescargasComponent implements OnInit {
       
       return coincideTermino && cumpleFechaInicio && cumpleFechaTermino;
     });
+
+    // Resetear la paginación cuando se aplican filtros
+    this.paginaActual = 1;
+    this.calcularTotalPaginas();
+    this.actualizarPostulacionesPaginadas();
   }
 
   limpiarFiltros(): void {
@@ -111,10 +125,83 @@ export class DescargasComponent implements OnInit {
     this.fechaInicio = '';
     this.fechaTermino = '';
     this.postulacionesFiltradas = this.postulaciones;
+    this.paginaActual = 1;
+    this.calcularTotalPaginas();
+    this.actualizarPostulacionesPaginadas();
   }
 
-  hayFiltrosActivos(): boolean {
-    return !!(this.terminoBusqueda || this.fechaInicio || this.fechaTermino);
+  // Métodos de paginación
+  calcularTotalPaginas(): void {
+    this.totalPaginas = Math.ceil(this.postulacionesFiltradas.length / this.registrosPorPagina);
+  }
+
+  actualizarPostulacionesPaginadas(): void {
+    const inicio = (this.paginaActual - 1) * this.registrosPorPagina;
+    const fin = inicio + this.registrosPorPagina;
+    this.postulacionesPaginadas = this.postulacionesFiltradas.slice(inicio, fin);
+  }
+
+  cambiarPagina(pagina: number): void {
+    if (pagina >= 1 && pagina <= this.totalPaginas) {
+      this.paginaActual = pagina;
+      this.actualizarPostulacionesPaginadas();
+    }
+  }
+
+  onRegistrosPorPaginaChange(): void {
+    this.paginaActual = 1;
+    this.calcularTotalPaginas();
+    this.actualizarPostulacionesPaginadas();
+  }
+
+  obtenerPaginas(): number[] {
+    const paginas: number[] = [];
+    const totalBotones = 5; // Número máximo de botones a mostrar
+    
+    if (this.totalPaginas <= totalBotones) {
+      // Si hay menos páginas que botones, mostrar todas las páginas
+      for (let i = 1; i <= this.totalPaginas; i++) {
+        paginas.push(i);
+      }
+    } else {
+      // Siempre mostrar la primera página
+      paginas.push(1);
+      
+      // Calcular el rango de páginas a mostrar
+      let inicio = Math.max(2, this.paginaActual - 1);
+      let fin = Math.min(this.totalPaginas - 1, this.paginaActual + 1);
+      
+      // Ajustar el rango si estamos en los extremos
+      if (this.paginaActual <= 2) {
+        fin = 4;
+      } else if (this.paginaActual >= this.totalPaginas - 1) {
+        inicio = this.totalPaginas - 3;
+      }
+      
+      // Agregar puntos suspensivos después de la primera página si es necesario
+      if (inicio > 2) {
+        paginas.push(-1); // -1 representa los puntos suspensivos
+      }
+      
+      // Agregar las páginas del rango
+      for (let i = inicio; i <= fin; i++) {
+        paginas.push(i);
+      }
+      
+      // Agregar puntos suspensivos antes de la última página si es necesario
+      if (fin < this.totalPaginas - 1) {
+        paginas.push(-1);
+      }
+      
+      // Siempre mostrar la última página
+      paginas.push(this.totalPaginas);
+    }
+    
+    return paginas;
+  }
+
+  haySeleccionadas(): boolean {
+    return Object.values(this.seleccionadas).some(value => value);
   }
 
   toggleSeleccion(postulacion: FormularioConConteo): void {
@@ -124,15 +211,11 @@ export class DescargasComponent implements OnInit {
 
   seleccionarTodas(event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked;
-    this.postulacionesFiltradas.forEach(p => {
+    this.postulacionesPaginadas.forEach(p => {
       if (p.id) {
         this.seleccionadas[p.id] = isChecked;
       }
     });
-  }
-
-  haySeleccionadas(): boolean {
-    return Object.values(this.seleccionadas).some(value => value);
   }
 
   obtenerIdsSeleccionados(): number[] {

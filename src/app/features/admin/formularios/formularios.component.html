@@ -53,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let form of formularios" [class.postulacion-vencida]="esPostulacionVencida(form)">
+          <tr *ngFor="let form of formulariosPaginados" [class.postulacion-vencida]="esPostulacionVencida(form)">
             <td>{{ form.cargo }}</td>
             <td>{{ formatearFechaLocal(form.fechaInicio) }}</td>
             <td>{{ formatearFechaLocal(form.fechaTermino) }}</td>
@@ -93,6 +93,46 @@
           <button class="btn-limpiar-filtros" (click)="limpiarFiltros()">Limpiar filtros</button>
         </div>
       </ng-template>
+
+      <div class="paginacion-container">
+        <div class="registros-por-pagina">
+          <label>Registros por página:</label>
+          <select [(ngModel)]="registrosPorPagina" (change)="cambiarRegistrosPorPagina()">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+
+        <div class="paginador">
+          <button 
+            [disabled]="paginaActual === 1" 
+            (click)="cambiarPagina(paginaActual - 1)"
+            class="btn-pagina">
+            Anterior
+          </button>
+
+          <div class="botones-pagina">
+            <button 
+              *ngFor="let pagina of obtenerPaginas()" 
+              [class.active]="pagina === paginaActual"
+              [class.puntos]="pagina === -1"
+              [disabled]="pagina === -1"
+              (click)="pagina !== -1 && cambiarPagina(pagina)"
+              class="btn-numero">
+              {{ pagina === -1 ? '...' : pagina }}
+            </button>
+          </div>
+
+          <button 
+            [disabled]="paginaActual === totalPaginas" 
+            (click)="cambiarPagina(paginaActual + 1)"
+            class="btn-pagina">
+            Siguiente
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="acciones-container">

@@ -43,6 +43,17 @@
   </div>
 
   <div class="table-container">
+    <!-- Selector de registros por página -->
+    <div class="registros-por-pagina">
+      <label>Mostrar:</label>
+      <select [(ngModel)]="registrosPorPagina" (change)="onRegistrosPorPaginaChange()">
+        <option *ngFor="let opcion of opcionesRegistrosPorPagina" [value]="opcion">
+          {{ opcion }}
+        </option>
+      </select>
+      <span>registros por página</span>
+    </div>
+
     <table>
       <thead>
         <tr>
@@ -59,7 +70,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let postulacion of postulacionesFiltradas">
+        <tr *ngFor="let postulacion of postulacionesPaginadas">
           <td class="cargo-cell">
             <span>{{ postulacion.cargo }}</span>
           </td>
@@ -73,7 +84,7 @@
               (change)="toggleSeleccion(postulacion)">
           </td>
         </tr>
-        <tr *ngIf="postulacionesFiltradas.length === 0 && !cargando">
+        <tr *ngIf="postulacionesPaginadas.length === 0 && !cargando">
           <td colspan="5" class="no-results">No se encontraron postulaciones con los criterios de búsqueda.</td>
         </tr>
       </tbody>
@@ -82,6 +93,33 @@
     <div *ngIf="cargando" class="loading-container">
       <div class="spinner"></div>
       <span>Cargando información...</span>
+    </div>
+
+    <!-- Controles de paginación -->
+    <div class="paginacion-container" *ngIf="totalPaginas > 0">
+      <button 
+        class="btn-pagina" 
+        [disabled]="paginaActual === 1"
+        (click)="cambiarPagina(paginaActual - 1)">
+        Anterior
+      </button>
+
+      <button 
+        *ngFor="let pagina of obtenerPaginas()"
+        class="btn-pagina" 
+        [class.active]="pagina === paginaActual"
+        [class.dots]="pagina === -1"
+        [disabled]="pagina === -1"
+        (click)="cambiarPagina(pagina)">
+        {{ pagina === -1 ? '...' : pagina }}
+      </button>
+
+      <button 
+        class="btn-pagina" 
+        [disabled]="paginaActual === totalPaginas"
+        (click)="cambiarPagina(paginaActual + 1)">
+        Siguiente
+      </button>
     </div>
   </div>
 

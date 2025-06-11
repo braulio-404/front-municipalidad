@@ -33,6 +33,12 @@ export class DatosComponent implements OnInit {
   filtroTipo: string = '';
   filtroEstado: string = '';
 
+  // Propiedades para paginación
+  registrosPorPagina: number = 10;
+  paginaActual: number = 1;
+  totalPaginas: number = 0;
+  requisitosPaginados: Requisito[] = [];
+
   constructor(
     private requisitosService: RequisitosService,
     private route: ActivatedRoute,
@@ -79,6 +85,11 @@ export class DatosComponent implements OnInit {
       next: (data) => {
         this.requisitos = data;
         this.requisitosFiltrados = [...data];
+        
+        // Inicializar paginación
+        this.paginaActual = 1;
+        this.calcularTotalPaginas();
+        this.actualizarRequisitosPaginados();
       },
       error: (error) => {
         console.error('Error al cargar requisitos:', error);
@@ -123,6 +134,11 @@ export class DatosComponent implements OnInit {
     }
 
     this.requisitosFiltrados = requisitosFiltrados;
+    
+    // Actualizar paginación después de filtrar
+    this.paginaActual = 1;
+    this.calcularTotalPaginas();
+    this.actualizarRequisitosPaginados();
   }
 
   limpiarFiltros(): void {
@@ -130,6 +146,102 @@ export class DatosComponent implements OnInit {
     this.filtroTipo = '';
     this.filtroEstado = '';
     this.cargarRequisitos(); // Recarga todos los requisitos sin filtros
+    
+    // Resetear paginación
+    this.paginaActual = 1;
+    this.calcularTotalPaginas();
+    this.actualizarRequisitosPaginados();
+  }
+
+  /**
+   * Calcula el total de páginas basado en la cantidad de registros
+   */
+  private calcularTotalPaginas(): void {
+    this.totalPaginas = Math.ceil(this.requisitosFiltrados.length / this.registrosPorPagina);
+    this.paginaActual = Math.min(this.paginaActual, this.totalPaginas);
+    if (this.totalPaginas === 0) {
+      this.paginaActual = 1;
+      this.totalPaginas = 1;
+    }
+  }
+
+  /**
+   * Actualiza los requisitos mostrados según la página actual
+   */
+  private actualizarRequisitosPaginados(): void {
+    const inicio = (this.paginaActual - 1) * this.registrosPorPagina;
+    const fin = inicio + this.registrosPorPagina;
+    this.requisitosPaginados = this.requisitosFiltrados.slice(inicio, fin);
+  }
+
+  /**
+   * Cambia la página actual y actualiza los requisitos mostrados
+   */
+  cambiarPagina(nuevaPagina: number): void {
+    if (nuevaPagina >= 1 && nuevaPagina <= this.totalPaginas) {
+      this.paginaActual = nuevaPagina;
+      this.actualizarRequisitosPaginados();
+    }
+  }
+
+  /**
+   * Cambia la cantidad de registros por página y actualiza la vista
+   */
+  cambiarRegistrosPorPagina(): void {
+    this.paginaActual = 1;
+    this.calcularTotalPaginas();
+    this.actualizarRequisitosPaginados();
+  }
+
+  /**
+   * Genera un array con los números de página que se mostrarán
+   */
+  obtenerPaginas(): number[] {
+    const totalBotones = 5;
+    const paginas: number[] = [];
+    
+    if (this.totalPaginas <= totalBotones) {
+      // Si hay menos páginas que botones, mostrar todas las páginas
+      for (let i = 1; i <= this.totalPaginas; i++) {
+        paginas.push(i);
+      }
+    } else {
+      // Siempre incluir la primera página
+      paginas.push(1);
+      
+      // Calcular el rango alrededor de la página actual
+      let inicio = Math.max(2, this.paginaActual - 1);
+      let fin = Math.min(this.totalPaginas - 1, this.paginaActual + 1);
+      
+      // Ajustar el rango si estamos cerca del inicio o final
+      if (this.paginaActual <= 2) {
+        fin = 4;
+      } else if (this.paginaActual >= this.totalPaginas - 1) {
+        inicio = this.totalPaginas - 3;
+      }
+      
+      // Agregar puntos suspensivos después del 1 si es necesario
+      if (inicio > 2) {
+        paginas.push(-1); // -1 representa los puntos suspensivos
+      }
+      
+      // Agregar las páginas del rango
+      for (let i = inicio; i <= fin; i++) {
+        paginas.push(i);
+      }
+      
+      // Agregar puntos suspensivos antes de la última página si es necesario
+      if (fin < this.totalPaginas - 1) {
+        paginas.push(-1); // -1 representa los puntos suspensivos
+      }
+      
+      // Siempre incluir la última página
+      if (this.totalPaginas > 1) {
+        paginas.push(this.totalPaginas);
+      }
+    }
+    
+    return paginas;
   }
 
   // Método auxiliar para cargar requisito en formulario
