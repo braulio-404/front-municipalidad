@@ -45,6 +45,12 @@ export class EstadisticasComponent implements OnInit {
   // Inyectamos PLATFORM_ID para verificar si estamos en el navegador
   private platformId = inject(PLATFORM_ID);
 
+  // Variables de paginación
+  itemsPorPagina: number = 10;
+  paginaActual: number = 1;
+  totalPaginas: number = 1;
+  postulacionesPaginadas: any[] = [];
+
   constructor(
     private formulariosService: FormulariosService,
     private postulacionesService: PostulacionesService,
@@ -67,6 +73,7 @@ export class EstadisticasComponent implements OnInit {
         }, 100);
       }
     });
+    this.actualizarPaginacion();
   }
 
   cargarPostulaciones(): void {
@@ -80,6 +87,7 @@ export class EstadisticasComponent implements OnInit {
           cantidadPostulantes: p.cantidadPostulantes // Usar el conteo real
         }));
         this.postulacionesFiltradas = [...this.postulaciones];
+        this.actualizarPaginacion();
         this.cargando = false;
         
         // Solo inicializamos gráficos en el navegador
@@ -138,6 +146,7 @@ export class EstadisticasComponent implements OnInit {
     
     // Actualizar gráficos después de filtrar
     this.actualizarGraficos();
+    this.actualizarPaginacion();
   }
 
   limpiarFiltros(): void {
@@ -145,7 +154,8 @@ export class EstadisticasComponent implements OnInit {
     this.fechaInicio = '';
     this.fechaTermino = '';
     this.postulacionesFiltradas = [...this.postulaciones];
-    this.actualizarGraficos();
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
   }
 
   formatearFecha(fecha: string | Date): string {
@@ -405,5 +415,47 @@ export class EstadisticasComponent implements OnInit {
         this.inicializarGraficos();
       }, 50);
     }
+  }
+
+  // Métodos de paginación
+  actualizarPaginacion() {
+    if (this.postulacionesFiltradas.length === 0) {
+      this.postulacionesPaginadas = [];
+      this.totalPaginas = 1;
+      this.paginaActual = 1;
+      return;
+    }
+
+    const inicio = (this.paginaActual - 1) * this.itemsPorPagina;
+    const fin = inicio + this.itemsPorPagina;
+    
+    this.postulacionesPaginadas = [...this.postulacionesFiltradas.slice(inicio, fin)];
+    this.totalPaginas = Math.ceil(this.postulacionesFiltradas.length / this.itemsPorPagina);
+    
+    // Ajustar página actual si es necesario
+    if (this.paginaActual > this.totalPaginas) {
+      this.paginaActual = Math.max(1, this.totalPaginas);
+      this.actualizarPaginacion();
+    }
+  }
+
+  cambiarPagina(nuevaPagina: number) {
+    if (nuevaPagina >= 1 && nuevaPagina <= this.totalPaginas) {
+      this.paginaActual = nuevaPagina;
+      this.actualizarPaginacion();
+    }
+  }
+
+  cambiarItemsPorPagina() {
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  obtenerPaginas(): number[] {
+    const paginas: number[] = [];
+    for (let i = 1; i <= this.totalPaginas; i++) {
+      paginas.push(i);
+    }
+    return paginas;
   }
 } 

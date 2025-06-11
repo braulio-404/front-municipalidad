@@ -53,7 +53,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let postulacion of postulacionesFiltradas">
+        <tr *ngFor="let postulacion of postulacionesPaginadas">
           <td class="cargo-cell">{{ postulacion.cargo }}</td>
           <td class="postulantes-cell">{{ postulacion.cantidadPostulantes }}</td>
           <td class="fecha-cell">{{ formatearFecha(postulacion.fechaInicio) }}</td>
@@ -62,12 +62,57 @@
         <tr *ngIf="postulacionesFiltradas.length === 0 && !cargando">
           <td colspan="4" class="no-results">No se encontraron postulaciones con los criterios de búsqueda.</td>
         </tr>
+        <tr *ngIf="cargando">
+          <td colspan="4" class="loading">Cargando postulaciones...</td>
+        </tr>
       </tbody>
     </table>
     
     <div *ngIf="cargando" class="loading-container">
       <div class="spinner"></div>
       <span>Cargando información...</span>
+    </div>
+
+    <!-- Controles de paginación -->
+    <div class="paginacion-container" *ngIf="postulacionesFiltradas.length > 0">
+      <div class="items-por-pagina">
+        <span>Items por página:</span>
+        <select [(ngModel)]="itemsPorPagina" (change)="cambiarItemsPorPagina()">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+
+      <div class="info-paginacion">
+        Página {{ paginaActual }} de {{ totalPaginas }} ({{ postulacionesFiltradas.length }} resultados)
+      </div>
+      
+      <div class="controles-paginacion">
+        <button 
+          class="btn-pagina"
+          [disabled]="paginaActual === 1" 
+          (click)="cambiarPagina(paginaActual - 1)">
+          <span>‹ Anterior</span>
+        </button>
+
+        <div class="numeros-pagina">
+          <button 
+            *ngFor="let pagina of obtenerPaginas()"
+            [class.active]="pagina === paginaActual"
+            (click)="cambiarPagina(pagina)"
+            class="btn-numero">
+            {{ pagina }}
+          </button>
+        </div>
+        
+        <button 
+          class="btn-pagina"
+          [disabled]="paginaActual === totalPaginas" 
+          (click)="cambiarPagina(paginaActual + 1)">
+          <span>Siguiente ›</span>
+        </button>
+      </div>
     </div>
   </div>
 
