@@ -1,6 +1,6 @@
 [build]
   publish = "dist/proyecto-muni-frontend"
-  command = "npm install --force && npm run build"
+  command = "npm install --legacy-peer-deps && NODE_OPTIONS=--max_old_space_size=4096 npm run build"
 
 [[redirects]]
   from = "/*"
@@ -9,7 +9,8 @@
 
 [build.environment]
   NODE_VERSION = "18.18.0"
-  NPM_FLAGS = "--force"
+  NPM_FLAGS = "--legacy-peer-deps"
+  NODE_OPTIONS = "--max_old_space_size=4096"
 
 # Configuración de cache para mejor rendimiento
 [[headers]]
