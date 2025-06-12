@@ -550,5 +550,4 @@ export class FormulariosComponent implements OnInit {
     return paginas;
   }
 
-  // Métodos removidos - ahora se usa navegación por rutas
 } 
