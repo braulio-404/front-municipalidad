@@ -199,25 +199,310 @@ export const availableThemes = {
     }
   } as ThemeConfig,
 
-  // Municipalidad de Santiago (tema rojo)
-  santiago: {
+  // Municipalidad de Coinco
+  coinco: {
     ...defaultTheme,
     municipality: {
-      name: 'SANTIAGO',
-      fullName: 'Municipalidad de Santiago',
-      email: 'rrhh@santiago.cl',
-      logoPath: 'assets/images/logosantiago.png',
-      backgroundImagePath: 'assets/images/santiago-background.jpg'
+      name: 'COINCO',
+      fullName: 'Municipalidad de Coinco',
+      email: 'rrhh@coinco.cl',
+      logoPath: 'assets/images/coinco.png',
+      backgroundImagePath: 'assets/images/coinco.png'
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#dc2626', // Rojo
-      primaryLight: '#ef4444',
-      primaryDark: '#b91c1c',
-      primaryVeryLight: '#fef2f2',
-      primaryBorder: '#fecaca',
-      primaryRgb: '220, 38, 38',
+      primary: '#003E80', // Azul profundo
+      primaryLight: '#336CB3',
+      primaryDark: '#002C5C',
+      primaryVeryLight: '#E6EEF8',
+      primaryBorder: '#A3B9D6',
+      primaryRgb: '0, 62, 128',
+      accent: '#f59e0b' // Naranja de acento
+    }
+  } as ThemeConfig,
+
+   // Municipalidad de Huechuraba
+   huechuraba: {
+    ...defaultTheme,
+    municipality: {
+      name: 'HUECHURABA',
+      fullName: 'Municipalidad de Huechuraba',
+      email: 'rrhh@huechuraba.cl',
+      logoPath: 'assets/images/Huechuraba.png',
+      backgroundImagePath: 'assets/images/Huechuraba.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1E90FF', // Azul logo Huechuraba
+      primaryLight: '#63B3FF',
+      primaryDark: '#125CA8',
+      primaryVeryLight: '#E8F4FF',
+      primaryBorder: '#B8D9FF',
+      primaryRgb: '30, 144, 255',
+      accent: '#003E80' // Azul profundo de acento
+    }
+  } as ThemeConfig,
+  // Municipalidad de Lonquimay 
+  lonquimay: {
+    ...defaultTheme,
+    municipality: {
+      name: 'LONQUIMAY',
+      fullName: 'Municipalidad de Lonquimay',
+      email: 'rrhh@lonquimay.cl',
+      logoPath: 'assets/images/Lonquimay.png',
+      backgroundImagePath: 'assets/images/Lonquimay.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#45B4AF', // Turquesa base
+      primaryLight: '#6FD0CC',
+      primaryDark: '#32918D',
+      primaryVeryLight: '#E1F4F4',
+      primaryBorder: '#C0E8E7',
+      primaryRgb: '69, 180, 175',
       accent: '#2563eb' // Azul de acento
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Antuco
+  antuco: {
+    ...defaultTheme,
+    municipality: {
+      name: 'ANTUCO',
+      fullName: 'Municipalidad de Antuco',
+      email: 'rrhh@antuco.cl',
+      logoPath: 'assets/images/Antuco.png',
+      backgroundImagePath: 'assets/images/Antuco.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#30589C',
+      primaryLight: '#5F82BF',
+      primaryDark: '#21406B',
+      primaryVeryLight: '#E2E8F5',
+      primaryBorder: '#B6C5E3',
+      primaryRgb: '48, 88, 156',
+      accent: '#f59e0b'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Cañete
+  canete: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CANETE',
+      fullName: 'Municipalidad de Cañete',
+      email: 'rrhh@canete.cl',
+      logoPath: 'assets/images/Canete.png',
+      backgroundImagePath: 'assets/images/Canete.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#4CAF50',
+      primaryLight: '#80C77F',
+      primaryDark: '#35773A',
+      primaryVeryLight: '#E8F6E9',
+      primaryBorder: '#B5DAB6',
+      primaryRgb: '76, 175, 80',
+      accent: '#2563eb'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Cauquenes
+  cauquenes: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CAUQUENES',
+      fullName: 'Municipalidad de Cauquenes',
+      email: 'rrhh@cauquenes.cl',
+      logoPath: 'assets/images/Cauquenes.png',
+      backgroundImagePath: 'assets/images/Cauquenes.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#0D6BDF', // Azul institucional más suave
+      primaryLight: '#4A93E8',
+      primaryDark: '#084AA0',
+      primaryVeryLight: '#E6F0FC',
+      primaryBorder: '#A7C7F3',
+      primaryRgb: '13, 107, 223',
+      accent: '#f59e0b'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Chañaral
+  chanaral: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CHANARAL',
+      fullName: 'Municipalidad de Chañaral',
+      email: 'rrhh@chanaral.cl',
+      logoPath: 'assets/images/Chanaral.png',
+      backgroundImagePath: 'assets/images/Chanaral.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2F6FBC', // Azul medio contrastante
+      primaryLight: '#5F96D1',
+      primaryDark: '#204C7F',
+      primaryVeryLight: '#E5EEF8',
+      primaryBorder: '#AEC6E5',
+      primaryRgb: '47, 111, 188',
+      accent: '#f59e0b'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Chanco
+  chanco: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CHANCO',
+      fullName: 'Municipalidad de Chanco',
+      email: 'rrhh@chanco.cl',
+      logoPath: 'assets/images/Chanco.png',
+      backgroundImagePath: 'assets/images/Chanco.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#003E80', // Azul profundo especificado
+      primaryLight: '#336CB3',
+      primaryDark: '#002C5C',
+      primaryVeryLight: '#E6EEF8',
+      primaryBorder: '#A3B9D6',
+      primaryRgb: '0, 62, 128',
+      accent: '#f59e0b'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Constitución
+  constitucion: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CONSTITUCIÓN',
+      fullName: 'Municipalidad de Constitución',
+      email: 'rrhh@constitucion.cl',
+      logoPath: 'assets/images/Constitucion.png',
+      backgroundImagePath: 'assets/images/Constitucion.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#C8102E',
+      primaryLight: '#D94D60',
+      primaryDark: '#8E0B1F',
+      primaryVeryLight: '#F9E6E9',
+      primaryBorder: '#E7A6B0',
+      primaryRgb: '200, 16, 46',
+      accent: '#2563eb'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Contulmo
+  contulmo: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CONTULMO',
+      fullName: 'Municipalidad de Contulmo',
+      email: 'rrhh@contulmo.cl',
+      logoPath: 'assets/images/Contulmo.png',
+      backgroundImagePath: 'assets/images/Contulmo.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#00994D',
+      primaryLight: '#33B975',
+      primaryDark: '#006A35',
+      primaryVeryLight: '#E6F7ED',
+      primaryBorder: '#A6DDBF',
+      primaryRgb: '0, 153, 77',
+      accent: '#2563eb'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de Corral
+  corral: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CORRAL',
+      fullName: 'Municipalidad de Corral',
+      email: 'rrhh@corral.cl',
+      logoPath: 'assets/images/Corral.png',
+      backgroundImagePath: 'assets/images/Corral.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#00A5AE',
+      primaryLight: '#4CC5CC',
+      primaryDark: '#00757A',
+      primaryVeryLight: '#E6F8F9',
+      primaryBorder: '#A6DEE1',
+      primaryRgb: '0, 165, 174',
+      accent: '#f59e0b'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de El Bosque
+  el_bosque: {
+    ...defaultTheme,
+    municipality: {
+      name: 'BOSQUE',
+      fullName: 'Municipalidad de El Bosque',
+      email: 'rrhh@elbosque.cl',
+      logoPath: 'assets/images/El_Bosque.png',
+      backgroundImagePath: 'assets/images/El_Bosque.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#67B135',
+      primaryLight: '#90C76C',
+      primaryDark: '#478022',
+      primaryVeryLight: '#EFF7E9',
+      primaryBorder: '#C5DEAA',
+      primaryRgb: '103, 177, 53',
+      accent: '#662e8f' // Morado del logo interior
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de La Calera
+  la_calera: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CALERA',
+      fullName: 'Municipalidad La Calera',
+      email: 'rrhh@lacalera.cl',
+      logoPath: 'assets/images/La_Calera.png',
+      backgroundImagePath: 'assets/images/La_Calera.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#211C4C', // Color especificado
+      primaryLight: '#4D4889',
+      primaryDark: '#161139',
+      primaryVeryLight: '#E5E4EB',
+      primaryBorder: '#8B87A1',
+      primaryRgb: '33, 28, 76',
+      accent: '#f59e0b'
+    }
+  } as ThemeConfig,
+
+  // Municipalidad de La Florida
+  la_florida: {
+    ...defaultTheme,
+    municipality: {
+      name: 'FLORIDA',
+      fullName: 'Municipalidad de La Florida',
+      email: 'rrhh@laflorida.cl',
+      logoPath: 'assets/images/La_Florida.png',
+      backgroundImagePath: 'assets/images/La_Florida.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#0DAC3A',
+      primaryLight: '#4ACF6D',
+      primaryDark: '#0A7C2A',
+      primaryVeryLight: '#E8F8EC',
+      primaryBorder: '#A5E3B3',
+      primaryRgb: '13, 172, 58',
+      accent: '#2563eb'
     }
   } as ThemeConfig
 };

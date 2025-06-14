@@ -61,6 +61,20 @@ import { availableThemes } from '../../config/theme.config';
                 class="form-select theme-select">
                 <option value="conchali">🏛️ Conchalí - Morado y Verde</option>
                 <option value="concepcion">🏢 Concepción - Azul y Verde</option>
+                <option value="coinco">🏢 Coinco - Azul</option>
+                <option value="lonquimay">🏢 Lonquimay - Verde</option>
+                <option value="huechuraba">🏢 Huechuraba - Blanco y Azul</option>
+                <option value="antuco">🏢 Antuco - Azul</option>
+                <option value="canete">🏢 Cañete - Verde</option>
+                <option value="cauquenes">🏢 Cauquenes - Azul</option>
+                <option value="chanaral">🏢 Chañaral - Azul</option>
+                <option value="chanco">🏢 chanco - Azul</option>
+                <option value="constitucion">🏢 Constitución - Rojo</option>
+                <option value="contulmo">🏢 Contulmo - Verde</option>
+                <option value="corral">🏢 Corral - Celeste</option>
+                <option value="el_bosque">🏢 El Bosque - Verde</option>
+                <option value="la_calera">🏢 La Calera - Violeta</option>
+                <option value="la_florida">🏢 La Florida - Verde</option>
               </select>
             </div>
 
