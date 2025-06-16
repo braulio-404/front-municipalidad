@@ -1,3 +1,5 @@
+import { compileInjectable } from "@angular/compiler";
+
 export interface ThemeConfig {
   // Información de la Municipalidad
   municipality: {
@@ -459,6 +461,50 @@ export const availableThemes = {
       primaryBorder: '#C5DEAA',
       primaryRgb: '103, 177, 53',
       accent: '#662e8f' // Morado del logo interior
+    }
+  } as ThemeConfig,
+    // Municipalidad de Colina
+    compileInjectable: {
+      ...defaultTheme,
+      municipality: {
+        name: 'COLINA',
+        fullName: 'Municipalidad de Colina',
+        email: 'rrhh@colina.cl',
+        logoPath: 'assets/images/Colina.png',
+        backgroundImagePath: 'assets/images/Colina.jpg'
+      },
+      colors: {
+        ...defaultTheme.colors,
+        primary: '#67B135',
+        primaryLight: '#90C76C',
+        primaryDark: '#478022',
+        primaryVeryLight: '#EFF7E9',
+        primaryBorder: '#C5DEAA',
+        primaryRgb: '103, 177, 53',
+        accent: '#662e8f' // Morado del logo interior
+      }
+    } as ThemeConfig,
+      // Municipalidad de Providencia
+  providencia: {
+    ...defaultTheme,
+    municipality: {
+      name: 'PROVIDENCIA',
+      fullName: 'Municipalidad de Providencia',
+      email: 'rrhh@providencia.cl',
+      logoPath: 'assets/images/providencia.png',
+      backgroundImagePath: 'assets/images/providencia.jpg'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#01af40', // Verde base
+      primaryLight: '#33c46a',
+      primaryDark: '#017a2c',
+      primaryVeryLight: '#e6f7ed',
+      primaryBorder: '#a6e5c1',
+      primaryRgb: '1, 175, 64',
+      secondary: '#018f34',
+      accent: '#00e676',
+      accentLight: '#b2f5d6'
     }
   } as ThemeConfig,
 

@@ -75,6 +75,8 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="el_bosque">🏢 El Bosque - Verde</option>
                 <option value="la_calera">🏢 La Calera - Violeta</option>
                 <option value="la_florida">🏢 La Florida - Verde</option>
+                <option value="providencia">🏢 Providencia - Verde</option>
+                <option value="colina">🏢 Colina - Verde</option>
               </select>
             </div>
 
