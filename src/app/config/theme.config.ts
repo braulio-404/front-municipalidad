@@ -464,7 +464,7 @@ export const availableThemes = {
     }
   } as ThemeConfig,
     // Municipalidad de Colina
-    compileInjectable: {
+    colina: {
       ...defaultTheme,
       municipality: {
         name: 'COLINA',
@@ -549,6 +549,35 @@ export const availableThemes = {
       primaryBorder: '#A5E3B3',
       primaryRgb: '13, 172, 58',
       accent: '#2563eb'
+    }
+  } as ThemeConfig,
+
+   // Municipalidad de Romeral
+   romeral: {
+    ...defaultTheme,
+    municipality: {
+      name: 'ROMERAL',
+      fullName: 'Municipalidad de Romeral',
+      email: 'rrhh@romeral.cl',
+      logoPath: 'assets/images/RomeralLogo.png',
+      backgroundImagePath: 'assets/images/RomeralFondo.png'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#009999', // Verde principal nuevo
+      primaryLight: '#33bdbd', // Verde claro
+      primaryDark: '#006666', // Verde oscuro
+      primaryVeryLight: '#e0f7f7', // Verde muy claro
+      primaryBorder: '#66cccc', // Borde verde claro
+      primaryRgb: '0, 153, 153',
+      secondary: '#334155', // Gris oscuro para contraste
+      accent: '#FF9800', // Naranja cálido para acento
+      accentLight: '#FFE0B2',
+      error: '#dc2626',
+      success: '#16a34a',
+      warning: '#ea580c',
+      info: '#0066b3',
+      // Grises y fondos se mantienen igual
     }
   } as ThemeConfig
 };
