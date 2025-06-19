@@ -1,4 +1,4 @@
-import { compileInjectable } from "@angular/compiler";
+import { compileInjectable } from '@angular/compiler';
 
 export interface ThemeConfig {
   // Información de la Municipalidad
@@ -85,7 +85,7 @@ export const defaultTheme: ThemeConfig = {
     fullName: 'Municipalidad de Conchalí',
     email: 'rrhh@conchali.cl',
     logoPath: 'assets/images/logoconchali.png',
-    backgroundImagePath: 'assets/images/conchali-background.jpg'
+    backgroundImagePath: 'assets/images/conchali-background.jpg',
   },
 
   colors: {
@@ -130,7 +130,7 @@ export const defaultTheme: ThemeConfig = {
     // Colores de fondo
     backgroundColor: '#fcfaff',
     backgroundAlt: '#f5f5f5',
-    backgroundCard: '#ffffff'
+    backgroundCard: '#ffffff',
   },
 
   spacing: {
@@ -140,7 +140,7 @@ export const defaultTheme: ThemeConfig = {
     lg: '1.5rem',
     xl: '2rem',
     xxl: '2.5rem',
-    xxxl: '3rem'
+    xxxl: '3rem',
   },
 
   borderRadius: {
@@ -149,14 +149,14 @@ export const defaultTheme: ThemeConfig = {
     lg: '12px',
     xl: '16px',
     xxl: '20px',
-    full: '50%'
-  }
+    full: '50%',
+  },
 };
 
 // Configuraciones para diferentes municipalidades
 export const availableThemes = {
   conchali: defaultTheme,
-  
+
   // Municipalidad de Concepción (tema azul)
   concepcion: {
     ...defaultTheme,
@@ -165,7 +165,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Concepción',
       email: 'rrhh@concepcion.cl',
       logoPath: 'assets/images/logoconcepcion.png',
-      backgroundImagePath: 'assets/images/concepcion-background.jpg'
+      backgroundImagePath: 'assets/images/concepcion-background.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -175,8 +175,8 @@ export const availableThemes = {
       primaryVeryLight: '#eff6ff',
       primaryBorder: '#dbeafe',
       primaryRgb: '30, 64, 175',
-      accent: '#059669' // Verde diferente
-    }
+      accent: '#059669', // Verde diferente
+    },
   } as ThemeConfig,
 
   // Municipalidad de Valparaíso (tema verde)
@@ -187,7 +187,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Valparaíso',
       email: 'rrhh@valparaiso.cl',
       logoPath: 'assets/images/logovalparaiso.png',
-      backgroundImagePath: 'assets/images/valparaiso-background.jpg'
+      backgroundImagePath: 'assets/images/valparaiso-background.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -197,8 +197,8 @@ export const availableThemes = {
       primaryVeryLight: '#ecfdf5',
       primaryBorder: '#a7f3d0',
       primaryRgb: '5, 150, 105',
-      accent: '#f59e0b' // Naranja de acento
-    }
+      accent: '#f59e0b', // Naranja de acento
+    },
   } as ThemeConfig,
 
   // Municipalidad de Coinco
@@ -209,7 +209,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Coinco',
       email: 'rrhh@coinco.cl',
       logoPath: 'assets/images/coinco.png',
-      backgroundImagePath: 'assets/images/coinco.png'
+      backgroundImagePath: 'assets/images/coinco.png',
     },
     colors: {
       ...defaultTheme.colors,
@@ -219,19 +219,19 @@ export const availableThemes = {
       primaryVeryLight: '#E6EEF8',
       primaryBorder: '#A3B9D6',
       primaryRgb: '0, 62, 128',
-      accent: '#f59e0b' // Naranja de acento
-    }
+      accent: '#f59e0b', // Naranja de acento
+    },
   } as ThemeConfig,
 
-   // Municipalidad de Huechuraba
-   huechuraba: {
+  // Municipalidad de Huechuraba
+  huechuraba: {
     ...defaultTheme,
     municipality: {
       name: 'HUECHURABA',
       fullName: 'Municipalidad de Huechuraba',
       email: 'rrhh@huechuraba.cl',
       logoPath: 'assets/images/Huechuraba.png',
-      backgroundImagePath: 'assets/images/Huechuraba.jpg'
+      backgroundImagePath: 'assets/images/Huechuraba.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -241,10 +241,10 @@ export const availableThemes = {
       primaryVeryLight: '#E8F4FF',
       primaryBorder: '#B8D9FF',
       primaryRgb: '30, 144, 255',
-      accent: '#003E80' // Azul profundo de acento
-    }
+      accent: '#003E80', // Azul profundo de acento
+    },
   } as ThemeConfig,
-  // Municipalidad de Lonquimay 
+  // Municipalidad de Lonquimay
   lonquimay: {
     ...defaultTheme,
     municipality: {
@@ -252,7 +252,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Lonquimay',
       email: 'rrhh@lonquimay.cl',
       logoPath: 'assets/images/Lonquimay.png',
-      backgroundImagePath: 'assets/images/Lonquimay.jpg'
+      backgroundImagePath: 'assets/images/Lonquimay.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -262,8 +262,8 @@ export const availableThemes = {
       primaryVeryLight: '#E1F4F4',
       primaryBorder: '#C0E8E7',
       primaryRgb: '69, 180, 175',
-      accent: '#2563eb' // Azul de acento
-    }
+      accent: '#2563eb', // Azul de acento
+    },
   } as ThemeConfig,
 
   // Municipalidad de Antuco
@@ -274,7 +274,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Antuco',
       email: 'rrhh@antuco.cl',
       logoPath: 'assets/images/Antuco.png',
-      backgroundImagePath: 'assets/images/Antuco.jpg'
+      backgroundImagePath: 'assets/images/Antuco.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -284,8 +284,8 @@ export const availableThemes = {
       primaryVeryLight: '#E2E8F5',
       primaryBorder: '#B6C5E3',
       primaryRgb: '48, 88, 156',
-      accent: '#f59e0b'
-    }
+      accent: '#f59e0b',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Cañete
@@ -296,7 +296,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Cañete',
       email: 'rrhh@canete.cl',
       logoPath: 'assets/images/Canete.png',
-      backgroundImagePath: 'assets/images/Canete.jpg'
+      backgroundImagePath: 'assets/images/Canete.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -306,8 +306,8 @@ export const availableThemes = {
       primaryVeryLight: '#E8F6E9',
       primaryBorder: '#B5DAB6',
       primaryRgb: '76, 175, 80',
-      accent: '#2563eb'
-    }
+      accent: '#2563eb',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Cauquenes
@@ -318,7 +318,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Cauquenes',
       email: 'rrhh@cauquenes.cl',
       logoPath: 'assets/images/Cauquenes.png',
-      backgroundImagePath: 'assets/images/Cauquenes.jpg'
+      backgroundImagePath: 'assets/images/Cauquenes.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -328,8 +328,8 @@ export const availableThemes = {
       primaryVeryLight: '#E6F0FC',
       primaryBorder: '#A7C7F3',
       primaryRgb: '13, 107, 223',
-      accent: '#f59e0b'
-    }
+      accent: '#f59e0b',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Chañaral
@@ -340,7 +340,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Chañaral',
       email: 'rrhh@chanaral.cl',
       logoPath: 'assets/images/Chanaral.png',
-      backgroundImagePath: 'assets/images/Chanaral.jpg'
+      backgroundImagePath: 'assets/images/Chanaral.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -350,8 +350,8 @@ export const availableThemes = {
       primaryVeryLight: '#E5EEF8',
       primaryBorder: '#AEC6E5',
       primaryRgb: '47, 111, 188',
-      accent: '#f59e0b'
-    }
+      accent: '#f59e0b',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Chanco
@@ -362,7 +362,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Chanco',
       email: 'rrhh@chanco.cl',
       logoPath: 'assets/images/Chanco.png',
-      backgroundImagePath: 'assets/images/Chanco.jpg'
+      backgroundImagePath: 'assets/images/Chanco.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -372,8 +372,8 @@ export const availableThemes = {
       primaryVeryLight: '#E6EEF8',
       primaryBorder: '#A3B9D6',
       primaryRgb: '0, 62, 128',
-      accent: '#f59e0b'
-    }
+      accent: '#f59e0b',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Constitución
@@ -384,7 +384,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Constitución',
       email: 'rrhh@constitucion.cl',
       logoPath: 'assets/images/Constitucion.png',
-      backgroundImagePath: 'assets/images/Constitucion.jpg'
+      backgroundImagePath: 'assets/images/Constitucion.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -394,8 +394,8 @@ export const availableThemes = {
       primaryVeryLight: '#F9E6E9',
       primaryBorder: '#E7A6B0',
       primaryRgb: '200, 16, 46',
-      accent: '#2563eb'
-    }
+      accent: '#2563eb',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Contulmo
@@ -406,7 +406,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Contulmo',
       email: 'rrhh@contulmo.cl',
       logoPath: 'assets/images/Contulmo.png',
-      backgroundImagePath: 'assets/images/Contulmo.jpg'
+      backgroundImagePath: 'assets/images/Contulmo.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -416,8 +416,8 @@ export const availableThemes = {
       primaryVeryLight: '#E6F7ED',
       primaryBorder: '#A6DDBF',
       primaryRgb: '0, 153, 77',
-      accent: '#2563eb'
-    }
+      accent: '#2563eb',
+    },
   } as ThemeConfig,
 
   // Municipalidad de Corral
@@ -428,7 +428,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Corral',
       email: 'rrhh@corral.cl',
       logoPath: 'assets/images/Corral.png',
-      backgroundImagePath: 'assets/images/Corral.jpg'
+      backgroundImagePath: 'assets/images/Corral.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -438,8 +438,8 @@ export const availableThemes = {
       primaryVeryLight: '#E6F8F9',
       primaryBorder: '#A6DEE1',
       primaryRgb: '0, 165, 174',
-      accent: '#f59e0b'
-    }
+      accent: '#f59e0b',
+    },
   } as ThemeConfig,
 
   // Municipalidad de El Bosque
@@ -450,7 +450,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de El Bosque',
       email: 'rrhh@elbosque.cl',
       logoPath: 'assets/images/El_Bosque.png',
-      backgroundImagePath: 'assets/images/El_Bosque.jpg'
+      backgroundImagePath: 'assets/images/El_Bosque.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -460,31 +460,31 @@ export const availableThemes = {
       primaryVeryLight: '#EFF7E9',
       primaryBorder: '#C5DEAA',
       primaryRgb: '103, 177, 53',
-      accent: '#662e8f' // Morado del logo interior
-    }
+      accent: '#662e8f', // Morado del logo interior
+    },
   } as ThemeConfig,
-    // Municipalidad de Colina
-    colina: {
-      ...defaultTheme,
-      municipality: {
-        name: 'COLINA',
-        fullName: 'Municipalidad de Colina',
-        email: 'rrhh@colina.cl',
-        logoPath: 'assets/images/Colina.png',
-        backgroundImagePath: 'assets/images/Colina.jpg'
-      },
-      colors: {
-        ...defaultTheme.colors,
-        primary: '#67B135',
-        primaryLight: '#90C76C',
-        primaryDark: '#478022',
-        primaryVeryLight: '#EFF7E9',
-        primaryBorder: '#C5DEAA',
-        primaryRgb: '103, 177, 53',
-        accent: '#662e8f' // Morado del logo interior
-      }
-    } as ThemeConfig,
-      // Municipalidad de Providencia
+  // Municipalidad de Colina
+  colina: {
+    ...defaultTheme,
+    municipality: {
+      name: 'COLINA',
+      fullName: 'Municipalidad de Colina',
+      email: 'rrhh@colina.cl',
+      logoPath: 'assets/images/Colina.png',
+      backgroundImagePath: 'assets/images/Colina.jpg',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#67B135',
+      primaryLight: '#90C76C',
+      primaryDark: '#478022',
+      primaryVeryLight: '#EFF7E9',
+      primaryBorder: '#C5DEAA',
+      primaryRgb: '103, 177, 53',
+      accent: '#662e8f', // Morado del logo interior
+    },
+  } as ThemeConfig,
+  // Municipalidad de Providencia
   providencia: {
     ...defaultTheme,
     municipality: {
@@ -492,7 +492,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Providencia',
       email: 'rrhh@providencia.cl',
       logoPath: 'assets/images/providencia.png',
-      backgroundImagePath: 'assets/images/providencia.jpg'
+      backgroundImagePath: 'assets/images/providencia.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -504,8 +504,8 @@ export const availableThemes = {
       primaryRgb: '1, 175, 64',
       secondary: '#018f34',
       accent: '#00e676',
-      accentLight: '#b2f5d6'
-    }
+      accentLight: '#b2f5d6',
+    },
   } as ThemeConfig,
 
   // Municipalidad de La Calera
@@ -516,7 +516,7 @@ export const availableThemes = {
       fullName: 'Municipalidad La Calera',
       email: 'rrhh@lacalera.cl',
       logoPath: 'assets/images/La_Calera.png',
-      backgroundImagePath: 'assets/images/La_Calera.jpg'
+      backgroundImagePath: 'assets/images/La_Calera.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -526,8 +526,8 @@ export const availableThemes = {
       primaryVeryLight: '#E5E4EB',
       primaryBorder: '#8B87A1',
       primaryRgb: '33, 28, 76',
-      accent: '#f59e0b'
-    }
+      accent: '#f59e0b',
+    },
   } as ThemeConfig,
 
   // Municipalidad de La Florida
@@ -538,7 +538,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de La Florida',
       email: 'rrhh@laflorida.cl',
       logoPath: 'assets/images/La_Florida.png',
-      backgroundImagePath: 'assets/images/La_Florida.jpg'
+      backgroundImagePath: 'assets/images/La_Florida.jpg',
     },
     colors: {
       ...defaultTheme.colors,
@@ -548,19 +548,19 @@ export const availableThemes = {
       primaryVeryLight: '#E8F8EC',
       primaryBorder: '#A5E3B3',
       primaryRgb: '13, 172, 58',
-      accent: '#2563eb'
-    }
+      accent: '#2563eb',
+    },
   } as ThemeConfig,
 
-   // Municipalidad de Romeral
-   romeral: {
+  // Municipalidad de Romeral
+  romeral: {
     ...defaultTheme,
     municipality: {
       name: 'ROMERAL',
       fullName: 'Municipalidad de Romeral',
       email: 'rrhh@romeral.cl',
       logoPath: 'assets/images/RomeralLogo.png',
-      backgroundImagePath: 'assets/images/RomeralFondo.png'
+      backgroundImagePath: 'assets/images/RomeralFondo.png',
     },
     colors: {
       ...defaultTheme.colors,
@@ -578,13 +578,124 @@ export const availableThemes = {
       warning: '#ea580c',
       info: '#0066b3',
       // Grises y fondos se mantienen igual
-    }
-  } as ThemeConfig
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Romeral
+  saavedra: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SAAVEDRA',
+      fullName: 'Municipalidad de Saavedra',
+      email: 'rrhh@saavedra.cl',
+      logoPath: 'assets/images/Saavedra.png',
+      backgroundImagePath: 'assets/images/Saavedra.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1B5EA5', // Azul principal del escudo
+      primaryLight: '#3A8DDE', // Azul claro
+      primaryDark: '#0B2C4A', // Azul oscuro
+      primaryVeryLight: '#EAF4FB', // Azul muy claro para fondos
+      primaryBorder: '#A3C6E5', // Azul grisáceo claro
+      primaryRgb: '27, 94, 165',
+      secondary: '#FFD76A', // Amarillo dorado
+      accent: '#A12A1A', // Rojo oscuro
+      accentLight: '#F5C6C6', // Rojo claro
+      textColor: '#0B2C4A', // Azul oscuro para texto
+      textColorLight: '#3A8DDE', // Azul claro para texto secundario
+      textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Blanco
+      backgroundAlt: '#EAF4FB', // Azul muy claro
+      backgroundCard: '#FFFFFF', // Blanco
+      // Los colores de estado y grises se mantienen igual
+    },
+  } as ThemeConfig,
+  // Municipalidad de Santiago
+  santiago: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SANTIAGO',
+      fullName: 'Municipalidad de Santiago',
+      email: 'rrhh@santiago.cl',
+      logoPath: 'assets/images/Santiago.png',
+      backgroundImagePath: 'assets/images/Santiago.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1B5EA5', // Azul principal del escudo
+      primaryLight: '#3A8DDE', // Azul claro
+      primaryDark: '#0B2C4A', // Azul oscuro
+      primaryVeryLight: '#EAF4FB', // Azul muy claro para fondos
+      primaryBorder: '#A3C6E5', // Azul grisáceo claro
+      primaryRgb: '27, 94, 165',
+      secondary: '#FFD76A', // Amarillo dorado
+      accent: '#A12A1A', // Rojo oscuro
+      accentLight: '#F5C6C6', // Rojo claro
+      textColor: '#0B2C4A', // Azul oscuro para texto
+      textColorLight: '#3A8DDE', // Azul claro para texto secundario
+      textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Blanco
+      backgroundAlt: '#EAF4FB', // Azul muy claro
+      backgroundCard: '#FFFFFF', // Blanco
+    },
+  } as ThemeConfig,
+  llayllay: {
+    ...defaultTheme,
+    municipality: {
+      name: 'LLAYLLAY',
+      fullName: 'Municipalidad de Llayllay',
+      email: 'rrhh@llayllay.cl',
+      logoPath: 'assets/images/Llayllay.png',
+      backgroundImagePath: 'assets/images/Llayllay.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1B5EA5', // Azul principal del escudo
+      primaryLight: '#3A8DDE', // Azul claro
+      primaryDark: '#0B2C4A', // Azul oscuro
+      primaryVeryLight: '#EAF4FB', // Azul muy claro para fondos
+      primaryBorder: '#A3C6E5', // Azul grisáceo claro
+      primaryRgb: '27, 94, 165',
+      secondary: '#FFD76A', // Amarillo dorado
+      accent: '#A12A1A', // Rojo oscuro
+      accentLight: '#F5C6C6', // Rojo claro
+      textColor: '#0B2C4A', // Azul oscuro para texto
+      textColorLight: '#3A8DDE', // Azul claro para texto secundario
+      textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Blanco
+      backgroundAlt: '#EAF4FB', // Azul muy claro
+      backgroundCard: '#FFFFFF', // Blanco
+    },
+  } as ThemeConfig,
+
+  rioverde: {
+    ...defaultTheme,
+    municipality: {
+      name: 'RIO VERDE',
+      fullName: 'Municipalidad de Rio Verde',
+      email: 'rrhh@rioverde.cl',
+      logoPath: 'assets/images/RioVerde.png',
+      backgroundImagePath: 'assets/images/RioVerde.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#00994D',
+      primaryLight: '#33B975',
+      primaryDark: '#006A35',
+      primaryVeryLight: '#E6F7ED',
+      primaryBorder: '#A6DDBF',
+      primaryRgb: '0, 153, 77',
+      accent: '#2563eb',
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
 export function getCurrentTheme(): ThemeConfig {
   // Obtener tema desde localStorage con la clave correcta
   const themeName = localStorage.getItem('globalSelectedTheme') || 'conchali';
-  return availableThemes[themeName as keyof typeof availableThemes] || defaultTheme;
-} 
+  return (
+    availableThemes[themeName as keyof typeof availableThemes] || defaultTheme
+  );
+}
