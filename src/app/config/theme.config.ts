@@ -692,8 +692,8 @@ export const availableThemes = {
     pintana: {
       ...defaultTheme,
       municipality: {
-        name: 'RIO VERDE',
-        fullName: 'Municipalidad de Rio Verde',
+        name: 'LA PINTANA',
+        fullName: 'Municipalidad de La Pintana',
         email: 'rrhh@pintana.cl',
         logoPath: 'assets/images/pintana.png',
         backgroundImagePath: 'assets/images/pintana.png',
