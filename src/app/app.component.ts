@@ -2,6 +2,7 @@ import { Component, Inject, PLATFORM_ID, OnInit, OnDestroy } from '@angular/core
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ThemeService } from './servicios/theme.service';
+import { Title } from '@angular/platform-browser';
 // Importar los componentes faltantes
 // import { MenuComponent } from './shared/menu/menu.component';
 // import { LoadingComponent } from './shared/loading/loading.component';
@@ -20,7 +21,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private titleService: Title
   ) {
     // Solo ejecutar este código en el navegador
     if (isPlatformBrowser(this.platformId)) {
@@ -44,6 +46,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.themeService.forceReload();
       };
     }
+
+    // Actualizar el título dinámicamente según el municipio
+    this.themeService.currentTheme$.subscribe(theme => {
+      this.titleService.setTitle(theme.municipality.fullName);
+    });
   }
 
   ngOnDestroy(): void {

@@ -83,6 +83,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="llayllay">🏢 Llayllay - Azul</option>
                 <option value="rioverde">🏢 Rio Verde - Verde</option>
                 <option value="pintana">🏢 Pintana - Morado</option>
+                <option value="macul">🏢 Macul - Azul</option>
               </select>
             </div>
 

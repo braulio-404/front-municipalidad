@@ -710,6 +710,34 @@ export const availableThemes = {
       accent: '#FFD600'
       },
     } as ThemeConfig,
+  macul: {
+    ...defaultTheme,
+    municipality: {
+      name: 'MACUL',
+      fullName: 'Ilustre Municipalidad de Macul',
+      email: 'rrhh@macul.cl',
+      logoPath: 'assets/images/macul3.png',
+      backgroundImagePath: 'assets/images/macul3.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1177c8', // Azul principal del logo
+      primaryLight: '#336CB3', // Azul claro estilo Chanco
+      primaryDark: '#0a4d7a', // Azul oscuro
+      primaryVeryLight: '#E6EEF8', // Azul muy claro para fondos
+      primaryBorder: '#A3B9D6', // Azul claro para bordes
+      primaryRgb: '17, 119, 200',
+      secondary: '#003E80', // Azul profundo para contraste
+      accent: '#f59e0b', // Naranja de acento (puede usarse para botones o detalles)
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#0a4d7a', // Azul oscuro para texto
+      textColorLight: '#336CB3', // Azul claro para texto secundario
+      textColorMuted: '#A3B9D6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E6EEF8', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
