@@ -623,20 +623,20 @@ export const availableThemes = {
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#1B5EA5', // Azul principal del escudo
-      primaryLight: '#3A8DDE', // Azul claro
-      primaryDark: '#0B2C4A', // Azul oscuro
-      primaryVeryLight: '#EAF4FB', // Azul muy claro para fondos
-      primaryBorder: '#A3C6E5', // Azul grisáceo claro
-      primaryRgb: '27, 94, 165',
-      secondary: '#FFD76A', // Amarillo dorado
-      accent: '#A12A1A', // Rojo oscuro
-      accentLight: '#F5C6C6', // Rojo claro
-      textColor: '#0B2C4A', // Azul oscuro para texto
-      textColorLight: '#3A8DDE', // Azul claro para texto secundario
-      textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
+      primary: '#6C2184', // Morado principal
+      primaryLight: '#8E3CB0', // Morado claro
+      primaryDark: '#4B155A', // Morado oscuro
+      primaryVeryLight: '#F3E6F8', // Morado muy claro para fondos
+      primaryBorder: '#C9A4DB', // Borde morado claro
+      primaryRgb: '108, 33, 132',
+      secondary: '#2196F3', // Azul claro
+      accent: '#FFD600', // Amarillo dorado
+      accentLight: '#FFF9C4', // Amarillo muy claro
+      textColor: '#4B155A', // Morado oscuro para texto
+      textColorLight: '#8E3CB0', // Morado claro para texto secundario
+      textColorMuted: '#C9A4DB', // Morado claro para texto atenuado
       backgroundColor: '#FFFFFF', // Blanco
-      backgroundAlt: '#EAF4FB', // Azul muy claro
+      backgroundAlt: '#F3E6F8', // Morado muy claro
       backgroundCard: '#FFFFFF', // Blanco
     },
   } as ThemeConfig,
@@ -669,26 +669,47 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
-  rioverde: {
-    ...defaultTheme,
-    municipality: {
-      name: 'RIO VERDE',
-      fullName: 'Municipalidad de Rio Verde',
-      email: 'rrhh@rioverde.cl',
-      logoPath: 'assets/images/RioVerde.png',
-      backgroundImagePath: 'assets/images/RioVerde.png',
-    },
-    colors: {
-      ...defaultTheme.colors,
-      primary: '#00994D',
-      primaryLight: '#33B975',
-      primaryDark: '#006A35',
-      primaryVeryLight: '#E6F7ED',
-      primaryBorder: '#A6DDBF',
-      primaryRgb: '0, 153, 77',
-      accent: '#2563eb',
-    },
-  } as ThemeConfig,
+    rioverde: {
+      ...defaultTheme,
+      municipality: {
+        name: 'RIO VERDE',
+        fullName: 'Municipalidad de Rio Verde',
+        email: 'rrhh@rioverde.cl',
+        logoPath: 'assets/images/RioVerde.png',
+        backgroundImagePath: 'assets/images/RioVerde.png',
+      },
+      colors: {
+        ...defaultTheme.colors,
+        primary: '#00994D',
+        primaryLight: '#33B975',
+        primaryDark: '#006A35',
+        primaryVeryLight: '#E6F7ED',
+        primaryBorder: '#A6DDBF',
+        primaryRgb: '0, 153, 77',
+        accent: '#2563eb',
+      },
+    } as ThemeConfig,
+    pintana: {
+      ...defaultTheme,
+      municipality: {
+        name: 'RIO VERDE',
+        fullName: 'Municipalidad de Rio Verde',
+        email: 'rrhh@pintana.cl',
+        logoPath: 'assets/images/pintana.png',
+        backgroundImagePath: 'assets/images/pintana.png',
+      },
+      colors: {
+        ...defaultTheme.colors,
+        primary: '#6C2184', // Morado principal
+        primaryLight: '#8E3CB0', // Morado claro
+      primaryDark: '#4B155A', // Morado oscuro
+      primaryVeryLight: '#F3E6F8', // Morado muy claro para fondos
+      primaryBorder: '#C9A4DB', // Borde morado claro
+      primaryRgb: '108, 33, 132',
+      secondary: '#2196F3', // Azul claro
+      accent: '#FFD600'
+      },
+    } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
