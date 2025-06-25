@@ -692,7 +692,7 @@ export const availableThemes = {
     pintana: {
       ...defaultTheme,
       municipality: {
-        name: 'LA PINTANA',
+        name: 'LA PINTANA' ,
         fullName: 'Municipalidad de La Pintana',
         email: 'rrhh@pintana.cl',
         logoPath: 'assets/images/pintana.png',
