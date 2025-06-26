@@ -89,6 +89,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="traiguen">🏢 Traiguen - Verde</option>
                 <option value="talagante">🏢 Talagante - Rojo</option>
                 <option value="mostazal">🏢 Mostazal - Turquesa</option>
+                <option value="puchuncavi">🏢 Puchuncaví - Azul Marino</option>
               </select>
             </div>
 

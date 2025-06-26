@@ -913,6 +913,41 @@ export const availableThemes = {
       info: '#009688', // Turquesa información (mismo que primary)
     },
   } as ThemeConfig,
+
+  // Municipalidad de Puchuncaví
+  puchuncavi: {
+    ...defaultTheme,
+    municipality: {
+      name: 'PUCHUNCAVÍ',
+      fullName: 'Municipalidad de Puchuncaví',
+      email: 'rrhh@puchuncavi.cl',
+      logoPath: 'assets/images/puchuncavi.png',
+      backgroundImagePath: 'assets/images/puchuncavifondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1976D2', // Azul marino principal (representa el mar)
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul claro para bordes
+      primaryRgb: '25, 118, 210',
+      secondary: '#388E3C', // Verde natural (representa las montañas/naturaleza)
+      accent: '#4CAF50', // Verde acento
+      accentLight: '#C8E6C9', // Verde claro
+      textColor: '#0D47A1', // Azul oscuro para texto principal
+      textColorLight: '#1976D2', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E3F2FD', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#4CAF50', // Verde éxito (mismo que accent)
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#1976D2', // Azul información (mismo que primary)
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
