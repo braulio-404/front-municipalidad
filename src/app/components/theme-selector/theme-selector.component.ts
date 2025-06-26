@@ -86,6 +86,9 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="macul">🏢 Macul - Azul</option>
                 <option value="sanesteban">🏢 San Esteban - Azul</option>
                 <option value="victoria">🏢 Victoria - Azul</option>
+                <option value="traiguen">🏢 Traiguen - Verde</option>
+                <option value="talagante">🏢 Talagante - Rojo</option>
+                <option value="mostazal">🏢 Mostazal - Turquesa</option>
               </select>
             </div>
 

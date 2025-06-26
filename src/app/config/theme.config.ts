@@ -808,6 +808,111 @@ export const availableThemes = {
       info: '#1E6BB8', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
+
+  // Municipalidad de Traiguen
+  traiguen: {
+    ...defaultTheme,
+    municipality: {
+      name: 'TRAIGUEN',
+      fullName: 'Municipalidad de Traiguen',
+      email: 'rrhh@traiguen.cl',
+      logoPath: 'assets/images/traiguen.png',
+      backgroundImagePath: 'assets/images/traiguenfondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2E7D32', // Verde principal elegante
+      primaryLight: '#4CAF50', // Verde claro
+      primaryDark: '#1B5E20', // Verde oscuro
+      primaryVeryLight: '#E8F5E8', // Verde muy claro para fondos
+      primaryBorder: '#A5D6A7', // Verde claro para bordes
+      primaryRgb: '46, 125, 50',
+      secondary: '#1B5E20', // Verde oscuro para contraste
+      accent: '#FF9800', // Naranja de acento
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#1B5E20', // Verde oscuro para texto principal
+      textColorLight: '#4CAF50', // Verde medio para texto secundario
+      textColorMuted: '#81C784', // Verde claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E8F5E8', // Verde muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#4CAF50', // Verde éxito (mismo que primaryLight)
+      warning: '#FF9800', // Naranja advertencia (mismo que accent)
+      error: '#F44336', // Rojo error
+      info: '#2196F3', // Azul información
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Talagante
+  talagante: {
+    ...defaultTheme,
+    municipality: {
+      name: 'TALAGANTE',
+      fullName: 'Municipalidad de Talagante',
+      email: 'rrhh@talagante.cl',
+      logoPath: 'assets/images/talagante.png',
+      backgroundImagePath: 'assets/images/talagante.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#D32F2F', // Rojo principal institucional
+      primaryLight: '#F44336', // Rojo claro
+      primaryDark: '#B71C1C', // Rojo oscuro
+      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
+      primaryBorder: '#FFCDD2', // Rojo claro para bordes
+      primaryRgb: '211, 47, 47',
+      secondary: '#B71C1C', // Rojo oscuro para contraste
+      accent: '#FF9800', // Naranja dorado de acento
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#B71C1C', // Rojo oscuro para texto principal
+      textColorLight: '#D32F2F', // Rojo medio para texto secundario
+      textColorMuted: '#E57373', // Rojo claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#FFEBEE', // Rojo muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#4CAF50', // Verde éxito
+      warning: '#FF9800', // Naranja advertencia (mismo que accent)
+      error: '#D32F2F', // Rojo error (mismo que primary)
+      info: '#2196F3', // Azul información
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Mostazal
+  mostazal: {
+    ...defaultTheme,
+    municipality: {
+      name: 'MOSTAZAL',
+      fullName: 'Municipalidad de Mostazal',
+      email: 'rrhh@mostazal.cl',
+      logoPath: 'assets/images/mostazal.png',
+      backgroundImagePath: 'assets/images/mostazalfondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#009688', // Turquesa principal institucional
+      primaryLight: '#4DB6AC', // Turquesa claro
+      primaryDark: '#00695C', // Turquesa oscuro
+      primaryVeryLight: '#E0F2F1', // Turquesa muy claro para fondos
+      primaryBorder: '#B2DFDB', // Turquesa claro para bordes
+      primaryRgb: '0, 150, 136',
+      secondary: '#00695C', // Turquesa oscuro para contraste
+      accent: '#FF7043', // Naranja coral de acento
+      accentLight: '#FFCCBC', // Naranja coral claro
+      textColor: '#00695C', // Turquesa oscuro para texto principal
+      textColorLight: '#009688', // Turquesa medio para texto secundario
+      textColorMuted: '#80CBC4', // Turquesa claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E0F2F1', // Turquesa muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#4CAF50', // Verde éxito
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#009688', // Turquesa información (mismo que primary)
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
