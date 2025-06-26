@@ -581,7 +581,7 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
-  // Municipalidad de Romeral
+  // Municipalidad de Saavedra
   saavedra: {
     ...defaultTheme,
     municipality: {
@@ -736,6 +736,76 @@ export const availableThemes = {
       backgroundColor: '#FFFFFF', // Fondo blanco
       backgroundAlt: '#E6EEF8', // Azul muy claro alternativo
       backgroundCard: '#FFFFFF', // Blanco para tarjetas
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de San Esteban
+  sanesteban: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SAN ESTEBAN',
+      fullName: 'Municipalidad de San Esteban',
+      email: 'rrhh@sanesteban.cl',
+      logoPath: 'assets/images/sanesteban.png',
+      backgroundImagePath: 'assets/images/sanesteban.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#3B9AE1', // Azul claro principal
+      primaryLight: '#6BB4E8', // Azul más claro
+      primaryDark: '#2B7BB8', // Azul más oscuro
+      primaryVeryLight: '#EBF5FD', // Azul muy claro para fondos
+      primaryBorder: '#A3CEE8', // Azul claro para bordes
+      primaryRgb: '59, 154, 225',
+      secondary: '#1E40AF', // Azul profundo para contraste
+      accent: '#34D399', // Verde de acento
+      accentLight: '#A7F3D0', // Verde claro
+      textColor: '#1E3A8A', // Azul oscuro para texto principal
+      textColorLight: '#3B82F6', // Azul medio para texto secundario
+      textColorMuted: '#94A3B8', // Gris azulado para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#EBF5FD', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#10B981', // Verde éxito
+      warning: '#F59E0B', // Naranja advertencia
+      error: '#EF4444', // Rojo error
+      info: '#3B9AE1', // Azul información (mismo que primary)
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Victoria
+  victoria: {
+    ...defaultTheme,
+    municipality: {
+      name: 'VICTORIA',
+      fullName: 'Municipalidad de Victoria',
+      email: 'rrhh@victoria.cl',
+      logoPath: 'assets/images/victoria.png',
+      backgroundImagePath: 'assets/images/victoriafondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1E6BB8', // Azul principal elegante
+      primaryLight: '#4A8FD1', // Azul claro
+      primaryDark: '#155A9B', // Azul oscuro
+      primaryVeryLight: '#E8F2FB', // Azul muy claro para fondos
+      primaryBorder: '#A3C7E8', // Azul claro para bordes
+      primaryRgb: '30, 107, 184',
+      secondary: '#1B365D', // Azul marino para contraste
+      accent: '#F4A261', // Dorado/naranja de acento
+      accentLight: '#FAD5A5', // Dorado claro
+      textColor: '#1B365D', // Azul marino para texto principal
+      textColorLight: '#4A6B8A', // Azul gris para texto secundario
+      textColorMuted: '#94A3B8', // Gris para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E8F2FB', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#16A34A', // Verde éxito
+      warning: '#EA580C', // Naranja advertencia
+      error: '#DC2626', // Rojo error
+      info: '#1E6BB8', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
 };
