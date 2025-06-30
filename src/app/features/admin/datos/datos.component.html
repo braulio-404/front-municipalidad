@@ -104,19 +104,22 @@
         class="tab" 
         [class.active]="tipoSeleccionado === 'requisitos'"
         (click)="seleccionarTipo('requisitos')">
+        <i class="material-icons">fact_check</i>
         Requisitos
+      </button>
+      <button 
+        class="tab" 
+        [class.active]="tipoSeleccionado === 'postulantes'"
+        (click)="seleccionarTipo('postulantes')">
+        <i class="material-icons">people</i>
+        Estados de Postulantes
       </button>
       <button 
         class="tab" 
         [class.active]="tipoSeleccionado === 'categorias'"
         (click)="seleccionarTipo('categorias')">
+        <i class="material-icons">category</i>
         Categorías
-      </button>
-      <button 
-        class="tab" 
-        [class.active]="tipoSeleccionado === 'estados'"
-        (click)="seleccionarTipo('estados')">
-        Estados
       </button>
     </div>
 
@@ -244,22 +247,233 @@
       </div>
 
       <div class="acciones-container">
-        <button class="btn-crear" (click)="crearRequisito()">Crear Requisito</button>
+        <button class="btn-crear" (click)="crearRequisito()">
+          <i class="material-icons">add</i>
+          Crear Requisito
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección de Estados de Postulantes -->
+    <div *ngIf="tipoSeleccionado === 'postulantes'" class="seccion-datos">
+      <!-- Panel de estadísticas -->
+      <div class="estadisticas-panel" *ngIf="!cargandoEstadisticas">
+        <h3>Estadísticas de Estados</h3>
+        <div class="estadisticas-grid">
+          <div 
+            *ngFor="let estado of estadisticasEstados | keyvalue" 
+            class="estadistica-card"
+            [style.border-left-color]="getColorEstado(estado.key)">
+            <div class="estadistica-icon">
+              <i class="material-icons" [style.color]="getColorEstado(estado.key)">
+                {{ getIconoEstado(estado.key) }}
+              </i>
+            </div>
+            <div class="estadistica-info">
+              <span class="estadistica-label">{{ estado.key }}</span>
+              <span class="estadistica-valor">{{ estado.value }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros para postulantes -->
+      <div class="filtros-container">
+        <div class="filtro">
+          <label for="formularioFiltro">Formulario:</label>
+          <select id="formularioFiltro" [(ngModel)]="formularioSeleccionado" (change)="onFormularioChange()">
+            <option [ngValue]="null">Todos los formularios</option>
+            <option *ngFor="let formulario of formularios" [ngValue]="formulario.id">
+              {{ formulario.cargo }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filtro">
+          <label for="estadoFiltro">Estado:</label>
+          <select id="estadoFiltro" [(ngModel)]="estadoSeleccionado" (change)="onEstadoChange()">
+            <option value="">Todos los estados</option>
+            <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+              {{ estado }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filtro">
+          <label for="busquedaPostulante">Búsqueda:</label>
+          <input 
+            id="busquedaPostulante"
+            type="text" 
+            [(ngModel)]="terminoBusqueda" 
+            placeholder="Buscar por nombre, RUT o email">
+        </div>
+
+        <div class="filtro-accion">
+          <button class="btn-seleccion-multiple" (click)="toggleSeleccionMultiple()">
+            <i class="material-icons">{{ modoSeleccionMultiple ? 'clear' : 'select_all' }}</i>
+            {{ modoSeleccionMultiple ? 'Cancelar Selección' : 'Selección Múltiple' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Acciones en lote (solo si hay selección múltiple) -->
+      <div *ngIf="modoSeleccionMultiple && postulantesSeleccionados.length > 0" class="acciones-lote">
+        <div class="seleccionados-info">
+          <span>{{ postulantesSeleccionados.length }} postulantes seleccionados</span>
+          <button class="btn-link" (click)="limpiarSeleccion()">Limpiar selección</button>
+        </div>
+        <div class="cambiar-estado-lote">
+          <label for="estadoLote">Cambiar estado a:</label>
+          <select id="estadoLote" #estadoLoteSelect>
+            <option value="">Seleccionar estado</option>
+            <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+              {{ estado }}
+            </option>
+          </select>
+          <button 
+            class="btn-aplicar-lote" 
+            [disabled]="actualizandoEstado || !estadoLoteSelect.value"
+            (click)="cambiarEstadoLote(estadoLoteSelect.value)">
+            <i class="material-icons">batch_prediction</i>
+            Aplicar
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de postulantes -->
+      <div class="tabla-container" *ngIf="!cargando">
+        <div class="tabla-header" *ngIf="modoSeleccionMultiple">
+          <button class="btn-seleccionar-todos" (click)="seleccionarTodos()">
+            <i class="material-icons">
+              {{ postulantesSeleccionados.length === postulantes.length ? 'check_box' : 'check_box_outline_blank' }}
+            </i>
+            Seleccionar todos
+          </button>
+        </div>
+
+        <table class="postulantes-table">
+          <thead>
+            <tr>
+              <th *ngIf="modoSeleccionMultiple" class="col-checkbox">Seleccionar</th>
+              <th>Nombre Completo</th>
+              <th>RUT</th>
+              <th>Email</th>
+              <th>Formulario</th>
+              <th>Estado Actual</th>
+              <th>Fecha Registro</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let postulante of postulantesFiltrados; trackBy: trackByPostulante">
+              <td *ngIf="modoSeleccionMultiple" class="col-checkbox">
+                <input 
+                  type="checkbox" 
+                  [checked]="postulantesSeleccionados.includes(postulante.postulanteID!)"
+                  (change)="toggleSeleccionPostulante(postulante.postulanteID!)">
+              </td>
+              <td>{{ postulante.nombres }} {{ postulante.apellidoPaterno }}</td>
+              <td>{{ postulante.rut }}</td>
+              <td>{{ postulante.email }}</td>
+              <td>
+                <span *ngIf="postulante.formulario">{{ postulante.formulario.cargo }}</span>
+                <span *ngIf="!postulante.formulario" class="texto-muted">No disponible</span>
+              </td>
+              <td>
+                <span 
+                  class="badge estado-badge" 
+                  [style.background-color]="getColorEstado(postulante.estado || 'Pendiente')"
+                  [title]="postulante.estado || 'Pendiente'">
+                  <i class="material-icons">{{ getIconoEstado(postulante.estado || 'Pendiente') }}</i>
+                  {{ postulante.estado || 'Pendiente' }}
+                </span>
+              </td>
+              <td>{{ postulante.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td class="acciones">
+                <button 
+                  class="btn-accion btn-cambiar-estado" 
+                  title="Cambiar estado"
+                  (click)="abrirModalCambiarEstado(postulante)">
+                  <i class="material-icons">edit</i>
+                </button>
+                <button 
+                  class="btn-accion btn-ver-documentos" 
+                  title="Ver documentos"
+                  *ngIf="postulante.documentos && postulante.documentos.length > 0">
+                  <i class="material-icons">folder_open</i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="postulantesFiltrados.length === 0" class="no-datos">
+          <i class="material-icons">person_off</i>
+          <p>No se encontraron postulantes con los filtros aplicados</p>
+        </div>
+      </div>
+
+      <!-- Indicador de carga -->
+      <div *ngIf="cargando" class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando postulantes...</p>
       </div>
     </div>
 
     <!-- Sección de Categorías (placeholder) -->
     <div *ngIf="tipoSeleccionado === 'categorias'" class="seccion-datos">
       <div class="content-message">
+        <i class="material-icons">category</i>
         <p>Gestión de Categorías - En desarrollo</p>
       </div>
     </div>
+  </ng-template>
+</div>
 
-    <!-- Sección de Estados (placeholder) -->
-    <div *ngIf="tipoSeleccionado === 'estados'" class="seccion-datos">
-      <div class="content-message">
-        <p>Gestión de Estados - En desarrollo</p>
+<!-- Modal para cambiar estado individual -->
+<div class="modal-overlay" *ngIf="mostrarModalEstado" (click)="cerrarModalEstado()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Cambiar Estado del Postulante</h3>
+      <button class="btn-cerrar-modal" (click)="cerrarModalEstado()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="postulanteParaCambiarEstado">
+      <div class="postulante-info">
+        <h4>{{ postulanteParaCambiarEstado.nombres }} {{ postulanteParaCambiarEstado.apellidoPaterno }}</h4>
+        <p><strong>RUT:</strong> {{ postulanteParaCambiarEstado.rut }}</p>
+        <p><strong>Email:</strong> {{ postulanteParaCambiarEstado.email }}</p>
+        <p><strong>Estado actual:</strong> 
+          <span 
+            class="badge estado-badge" 
+            [style.background-color]="getColorEstado(postulanteParaCambiarEstado.estado || 'Pendiente')">
+            {{ postulanteParaCambiarEstado.estado || 'Pendiente' }}
+          </span>
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="nuevoEstadoModal">Nuevo Estado:</label>
+        <select id="nuevoEstadoModal" [(ngModel)]="nuevoEstado" class="form-control">
+          <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+            {{ estado }}
+          </option>
+        </select>
       </div>
     </div>
-  </ng-template>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModalEstado()">Cancelar</button>
+      <button 
+        class="btn-guardar" 
+        [disabled]="actualizandoEstado || !nuevoEstado"
+        (click)="cambiarEstadoIndividual()">
+        <i class="material-icons" *ngIf="actualizandoEstado">hourglass_empty</i>
+        <i class="material-icons" *ngIf="!actualizandoEstado">save</i>
+        {{ actualizandoEstado ? 'Actualizando...' : 'Cambiar Estado' }}
+      </button>
+    </div>
+  </div>
 </div> 

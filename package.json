@@ -20,13 +20,14 @@
     "@angular/forms": "^18.2.13",
     "@angular/platform-browser": "^18.2.13",
     "@angular/platform-browser-dynamic": "^18.2.13",
-    "@angular/platform-server": "^19.2.0",
+    "@angular/platform-server": "^18.2.13",
     "@angular/router": "^18.2.13",
-    "@angular/ssr": "^19.2.12",
+    "@angular/ssr": "^18.2.13",
     "chart.js": "^4.4.9",
+    "jszip": "^3.10.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "zone.js": "~0.14.10"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",
@@ -35,6 +36,7 @@
     "@types/chart.js": "^4.0.1",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
+    "@types/jszip": "^3.4.1",
     "@types/node": "^18.18.0",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",

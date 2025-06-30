@@ -623,4 +623,616 @@
       padding: 8px 10px;
     }
   }
+}
+
+// ========== NUEVOS ESTILOS PARA GESTIÓN DE ESTADOS ==========
+
+// Panel de estadísticas
+.estadisticas-panel {
+  background: linear-gradient(135deg, var(--primary-color-very-light) 0%, var(--background-card) 100%);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+  h3 {
+    color: var(--primary-color);
+    margin: 0 0 20px 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    &::before {
+      content: '📊';
+      font-size: 1.2em;
+    }
+  }
+}
+
+.estadisticas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.estadistica-card {
+  background: var(--background-card);
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.estadistica-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(var(--primary-color), 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .material-icons {
+    font-size: 24px;
+  }
+}
+
+.estadistica-info {
+  flex: 1;
+  
+  .estadistica-label {
+    display: block;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .estadistica-valor {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+  }
+}
+
+// Filtros mejorados para postulantes
+.filtros-container {
+  background: var(--background-card);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  border: 1px solid var(--gray-200);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  align-items: end;
+  
+  .filtro {
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.1);
+      }
+    }
+  }
+  
+  .filtro-accion {
+    display: flex;
+    gap: 10px;
+  }
+}
+
+// Botones específicos para postulantes
+.btn-seleccion-multiple {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: var(--accent-color-dark);
+    transform: translateY(-1px);
+  }
+  
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+// Acciones en lote
+.acciones-lote {
+  background: linear-gradient(135deg, #fff7e6 0%, #fff 100%);
+  border: 1px solid #ffd700;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  
+  .seleccionados-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    
+    span {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .btn-link {
+      background: none;
+      border: none;
+      color: var(--accent-color);
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 14px;
+      
+      &:hover {
+        color: var(--accent-color-dark);
+      }
+    }
+  }
+  
+  .cambiar-estado-lote {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    label {
+      font-weight: 500;
+      color: var(--text-color);
+      white-space: nowrap;
+    }
+    
+    select {
+      padding: 8px 12px;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      min-width: 150px;
+    }
+    
+    .btn-aplicar-lote {
+      background: var(--success-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      
+      &:hover:not(:disabled) {
+        background: var(--success-color-dark);
+        transform: translateY(-1px);
+      }
+      
+      &:disabled {
+        background: var(--gray-300);
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Tabla de postulantes
+.postulantes-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--background-card);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+  thead {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+    
+    th {
+      padding: 16px 12px;
+      text-align: left;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      
+      &.col-checkbox {
+        width: 80px;
+        text-align: center;
+      }
+    }
+  }
+  
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--gray-200);
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(var(--primary-color), 0.04);
+      }
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    td {
+      padding: 16px 12px;
+      vertical-align: middle;
+      
+      &.col-checkbox {
+        text-align: center;
+        
+        input[type="checkbox"] {
+          transform: scale(1.2);
+          accent-color: var(--primary-color);
+        }
+      }
+    }
+  }
+}
+
+// Badge para estados
+.estado-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  .material-icons {
+    font-size: 16px;
+  }
+}
+
+// Botones de acción específicos
+.btn-cambiar-estado {
+  background: var(--primary-color);
+  color: white;
+  
+  &:hover {
+    background: var(--primary-color-dark);
+  }
+}
+
+.btn-ver-documentos {
+  background: var(--info-color);
+  color: white;
+  
+  &:hover {
+    background: var(--info-color-dark);
+  }
+}
+
+// Seleccionar todos
+.tabla-header {
+  background: var(--gray-100);
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gray-200);
+  
+  .btn-seleccionar-todos {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    &:hover {
+      color: var(--primary-color-dark);
+    }
+    
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+}
+
+// Estado vacío
+.no-datos {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  
+  .material-icons {
+    font-size: 64px;
+    color: var(--gray-300);
+    margin-bottom: 20px;
+  }
+  
+  p {
+    font-size: 18px;
+    margin: 0;
+  }
+}
+
+// Loading
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--gray-200);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+  
+  p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Modal para cambiar estado
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-container {
+  background: var(--background-card);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+  color: white;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  h3 {
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .btn-cerrar-modal {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+    
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+}
+
+.modal-body {
+  padding: 24px;
+  
+  .postulante-info {
+    background: var(--gray-100);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    
+    h4 {
+      color: var(--primary-color);
+      margin: 0 0 12px 0;
+      font-weight: 600;
+    }
+    
+    p {
+      margin: 8px 0;
+      color: var(--text-color);
+      
+      strong {
+        color: var(--text-color);
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .form-group {
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      font-size: 14px;
+      
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.1);
+      }
+    }
+  }
+}
+
+.modal-footer {
+  background: var(--gray-100);
+  padding: 20px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  
+  .btn-cancelar, .btn-guardar {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-cancelar {
+    background: var(--gray-200);
+    color: var(--text-color);
+    
+    &:hover {
+      background: var(--gray-300);
+    }
+  }
+  
+  .btn-guardar {
+    background: var(--success-color);
+    color: white;
+    
+    &:hover:not(:disabled) {
+      background: var(--success-color-dark);
+      transform: translateY(-1px);
+    }
+    
+    &:disabled {
+      background: var(--gray-300);
+      cursor: not-allowed;
+    }
+    
+    .material-icons {
+      font-size: 18px;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Mejoras para tabs con iconos
+.tabs-container .tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  .material-icons {
+    font-size: 18px;
+  }
+}
+
+// Texto muted
+.texto-muted {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .filtros-container {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .acciones-lote .cambiar-estado-lote {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  .estadisticas-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .postulantes-table {
+    font-size: 14px;
+    
+    thead th, tbody td {
+      padding: 12px 8px;
+    }
+  }
+  
+  .modal-container {
+    width: 95%;
+    margin: 20px;
+  }
 } 

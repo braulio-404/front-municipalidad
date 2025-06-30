@@ -7,11 +7,13 @@ import { DatosComponent } from './features/admin/datos/datos.component';
 import { DescargasComponent } from './features/admin/descargas/descargas.component';
 import { EstadisticasComponent } from './features/admin/estadisticas/estadisticas.component';
 import { DashboardHomeComponent } from './features/admin/dashboard-home/dashboard-home.component';
+import { ConfiguracionComponent } from './features/admin/configuracion/configuracion.component';
 import { PostulacionesComponent } from './features/postulacion/postulaciones.component';
 import { FormularioPostulacionComponent } from './features/postulacion/formulario-postulacion/formulario-postulacion.component';
 import { ConfirmacionPostulacionComponent } from './features/postulacion/confirmacion-postulacion/confirmacion-postulacion.component';
 import { UnauthorizedComponent } from './features/unauthorized/unauthorized.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -34,7 +36,8 @@ export const routes: Routes = [
             { path: 'datos/requisitos/ver/:id', component: DatosComponent, data: { modo: 'ver', tipo: 'requisito' }, canActivate: [AuthGuard] },
             { path: 'datos/requisitos/editar/:id', component: DatosComponent, data: { modo: 'editar', tipo: 'requisito' }, canActivate: [AuthGuard] },
             { path: 'descargas', component: DescargasComponent, canActivate: [AuthGuard] },
-            { path: 'estadisticas', component: EstadisticasComponent, canActivate: [AuthGuard] }
+            { path: 'estadisticas', component: EstadisticasComponent, canActivate: [AuthGuard] },
+            { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AuthGuard] }
         ] 
     },
     { 

@@ -1,0 +1,406 @@
+<div class="configuracion-container">
+  <!-- Header de la página -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1>
+        <i class="material-icons">settings</i>
+        Configuración del Sistema
+      </h1>
+      <p>Gestiona los parámetros y configuración de la aplicación</p>
+    </div>
+    
+    <!-- Botón de prueba de correo -->
+    <div class="header-actions" *ngIf="categoriaActiva === 'correo'">
+      <button 
+        class="btn btn-test" 
+        (click)="toggleTestCorreo()"
+        [disabled]="!configuracionCorreo">
+        <i class="material-icons">email</i>
+        Probar Correo
+      </button>
+    </div>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="alerts-container">
+    <div class="alert alert-error" *ngIf="error">
+      <i class="material-icons">error</i>
+      {{ error }}
+    </div>
+    
+    <div class="alert alert-success" *ngIf="mensaje">
+      <i class="material-icons">check_circle</i>
+      {{ mensaje }}
+    </div>
+  </div>
+
+  <!-- Loading principal -->
+  <div class="loading-container" *ngIf="cargando">
+    <div class="spinner"></div>
+    <span>Cargando configuración...</span>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content" *ngIf="!cargando">
+    <!-- Navegación por categorías -->
+    <div class="categories-nav">
+      <div class="nav-tabs">
+        <button 
+          *ngFor="let categoria of categorias"
+          class="nav-tab"
+          [class.active]="categoriaActiva === categoria"
+          (click)="cambiarCategoria(categoria)">
+          <i class="material-icons">{{ getIconoCategoria(categoria) }}</i>
+          <span>{{ categoria | titlecase }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel de configuración de correo -->
+    <div class="config-panel" *ngIf="categoriaActiva === 'correo'">
+      <div class="panel-header">
+        <h2>
+          <i class="material-icons">email</i>
+          Configuración de Correo Electrónico
+        </h2>
+        
+        <!-- Estado de la configuración -->
+        <div class="config-status" *ngIf="configuracionCorreo">
+          <div class="status-item">
+            <span class="status-label">Servidor:</span>
+            <span class="status-value">{{ configuracionCorreo.host }}:{{ configuracionCorreo.puerto }}</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Usuario:</span>
+            <span class="status-value">{{ configuracionCorreo.usuario }}</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Remitente:</span>
+            <span class="status-value">{{ configuracionCorreo.fromName }} &lt;{{ configuracionCorreo.fromEmail }}&gt;</span>
+          </div>
+        </div>
+        
+        <div class="loading-mini" *ngIf="cargandoCorreo">
+          <div class="spinner-mini"></div>
+          <span>Cargando...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de herramientas -->
+    <div class="toolbar">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <i class="material-icons search-icon">search</i>
+          <input 
+            type="text" 
+            [(ngModel)]="terminoBusqueda"
+            placeholder="Buscar parámetros..."
+            class="search-input">
+          <button 
+            *ngIf="terminoBusqueda" 
+            class="clear-search"
+            (click)="terminoBusqueda = ''">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+      </div>
+      
+      <button 
+        class="btn btn-primary"
+        (click)="toggleFormularioNuevo()">
+        <i class="material-icons">add</i>
+        Nuevo Parámetro
+      </button>
+    </div>
+
+    <!-- Formulario para nuevo parámetro -->
+    <div class="form-card" *ngIf="mostrarFormularioNuevo">
+      <div class="form-header">
+        <h3>
+          <i class="material-icons">add_circle</i>
+          Agregar Nuevo Parámetro
+        </h3>
+        <button class="btn-close" (click)="limpiarFormularioNuevo()">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+      
+      <div class="form-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nuevaClave">Clave *</label>
+            <input 
+              id="nuevaClave"
+              type="text" 
+              [(ngModel)]="nuevoParametro.clave"
+              placeholder="ej: MAIL_HOST, SYSTEM_NAME..."
+              class="form-control"
+              [disabled]="guardandoParametro">
+          </div>
+          
+          <div class="form-group">
+            <label for="nuevoTipo">Tipo</label>
+            <select 
+              id="nuevoTipo"
+              [(ngModel)]="nuevoParametro.tipo" 
+              class="form-control"
+              [disabled]="guardandoParametro">
+              <option value="texto">Texto</option>
+              <option value="numero">Número</option>
+              <option value="password">Contraseña</option>
+              <option value="email">Email</option>
+              <option value="booleano">Booleano</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="nuevoValor">Valor *</label>
+          <input 
+            id="nuevoValor"
+            [type]="getTipoInput(nuevoParametro.tipo)"
+            [(ngModel)]="nuevoParametro.valor"
+            placeholder="Valor del parámetro"
+            class="form-control"
+            [disabled]="guardandoParametro">
+        </div>
+        
+        <div class="form-group">
+          <label for="nuevaDescripcion">Descripción</label>
+          <textarea 
+            id="nuevaDescripcion"
+            [(ngModel)]="nuevoParametro.descripcion"
+            placeholder="Descripción opcional del parámetro"
+            class="form-control"
+            rows="2"
+            [disabled]="guardandoParametro">
+          </textarea>
+        </div>
+      </div>
+      
+      <div class="form-footer">
+        <button 
+          class="btn btn-secondary"
+          (click)="limpiarFormularioNuevo()"
+          [disabled]="guardandoParametro">
+          Cancelar
+        </button>
+        <button 
+          class="btn btn-primary"
+          (click)="agregarParametro()"
+          [disabled]="guardandoParametro || !nuevoParametro.clave || !nuevoParametro.valor">
+          <i class="material-icons">{{ guardandoParametro ? 'hourglass_empty' : 'save' }}</i>
+          {{ guardandoParametro ? 'Guardando...' : 'Guardar Parámetro' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de parámetros -->
+    <div class="parameters-grid">
+      <div class="parameter-card" *ngFor="let parametro of parametrosFiltrados; trackBy: trackByParametro">
+        <!-- Modo visualización -->
+        <div class="parameter-content" *ngIf="parametroEditando?.id !== parametro.id">
+          <div class="parameter-header">
+            <div class="parameter-key">
+              <i class="material-icons parameter-icon">{{ getIconoCategoria(parametro.categoria) }}</i>
+              <span class="key-text">{{ parametro.clave }}</span>
+              <span class="parameter-type">{{ parametro.tipo }}</span>
+            </div>
+            
+            <div class="parameter-actions">
+              <button 
+                class="btn-action btn-edit"
+                (click)="editarParametro(parametro)"
+                title="Editar parámetro">
+                <i class="material-icons">edit</i>
+              </button>
+              <button 
+                class="btn-action btn-delete"
+                (click)="eliminarParametro(parametro)"
+                title="Eliminar parámetro">
+                <i class="material-icons">delete</i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="parameter-value">
+            <span class="value-label">Valor:</span>
+            <span class="value-text" [class.password]="parametro.tipo === 'password'">
+              {{ parametro.tipo === 'password' ? '••••••••' : parametro.valor }}
+            </span>
+          </div>
+          
+          <div class="parameter-description" *ngIf="parametro.descripcion">
+            <span class="desc-label">Descripción:</span>
+            <span class="desc-text">{{ parametro.descripcion }}</span>
+          </div>
+          
+          <div class="parameter-meta">
+            <span class="meta-item" *ngIf="parametro.fechaActualizacion">
+              <i class="material-icons">schedule</i>
+              Actualizado: {{ formatearFecha(parametro.fechaActualizacion) }}
+            </span>
+            <span class="meta-item" *ngIf="parametro.esEncriptado">
+              <i class="material-icons">security</i>
+              Encriptado
+            </span>
+          </div>
+        </div>
+
+        <!-- Modo edición -->
+        <div class="parameter-edit" *ngIf="parametroEditando?.id === parametro.id">
+          <div class="edit-header">
+            <h4>
+              <i class="material-icons">edit</i>
+              Editando: {{ parametro.clave }}
+            </h4>
+          </div>
+          
+          <div class="edit-body">
+            <div class="form-group">
+              <label>Valor</label>
+              <input 
+                [type]="getTipoInput(parametro.tipo)"
+                [(ngModel)]="parametroEditando!.valor"
+                class="form-control"
+                [disabled]="guardandoParametro">
+            </div>
+            
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea 
+                [(ngModel)]="parametroEditando!.descripcion"
+                class="form-control"
+                rows="2"
+                [disabled]="guardandoParametro">
+              </textarea>
+            </div>
+          </div>
+          
+          <div class="edit-footer">
+            <button 
+              class="btn btn-secondary"
+              (click)="cancelarEdicion()"
+              [disabled]="guardandoParametro">
+              Cancelar
+            </button>
+            <button 
+              class="btn btn-primary"
+              (click)="guardarParametro()"
+              [disabled]="guardandoParametro">
+              <i class="material-icons">{{ guardandoParametro ? 'hourglass_empty' : 'save' }}</i>
+              {{ guardandoParametro ? 'Guardando...' : 'Guardar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div class="empty-state" *ngIf="parametrosFiltrados.length === 0 && !cargando">
+      <div class="empty-content">
+        <i class="material-icons empty-icon">settings</i>
+        <h3>No se encontraron parámetros</h3>
+        <p *ngIf="terminoBusqueda">
+          No hay parámetros que coincidan con "{{ terminoBusqueda }}" en la categoría {{ categoriaActiva }}.
+        </p>
+        <p *ngIf="!terminoBusqueda">
+          No hay parámetros configurados en la categoría {{ categoriaActiva }}.
+        </p>
+        <button 
+          class="btn btn-primary"
+          (click)="toggleFormularioNuevo()">
+          <i class="material-icons">add</i>
+          Agregar Primer Parámetro
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de prueba de correo -->
+<div class="modal-overlay" *ngIf="mostrarTestCorreo" (click)="toggleTestCorreo()">
+  <div class="modal-container modal-test-correo" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <i class="material-icons">email</i>
+        Probar Configuración de Correo
+      </h3>
+      <button class="btn-close" (click)="toggleTestCorreo()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="test-form">
+        <div class="form-group">
+          <label for="emailDestino">Email de destino *</label>
+          <input 
+            id="emailDestino"
+            type="email" 
+            [(ngModel)]="testCorreo.emailDestino"
+            placeholder="ejemplo@correo.com"
+            class="form-control"
+            [disabled]="probandoCorreo">
+        </div>
+        
+        <div class="form-group">
+          <label for="asuntoTest">Asunto</label>
+          <input 
+            id="asuntoTest"
+            type="text" 
+            [(ngModel)]="testCorreo.asunto"
+            class="form-control"
+            [disabled]="probandoCorreo">
+        </div>
+        
+        <div class="form-group">
+          <label for="mensajeTest">Mensaje</label>
+          <textarea 
+            id="mensajeTest"
+            [(ngModel)]="testCorreo.mensaje"
+            class="form-control"
+            rows="3"
+            [disabled]="probandoCorreo">
+          </textarea>
+        </div>
+      </div>
+
+      <!-- Resultado de la prueba -->
+      <div class="test-result" *ngIf="resultadoTest">
+        <div class="result-header" [class.success]="resultadoTest.success || resultadoTest.exito" [class.error]="!(resultadoTest.success || resultadoTest.exito)">
+          <i class="material-icons">{{ (resultadoTest.success || resultadoTest.exito) ? 'check_circle' : 'error' }}</i>
+          <span>{{ (resultadoTest.success || resultadoTest.exito) ? 'Prueba Exitosa' : 'Prueba Fallida' }}</span>
+        </div>
+        
+        <div class="result-message">
+          {{ resultadoTest.message || resultadoTest.mensaje }}
+        </div>
+        
+        <div class="result-details" *ngIf="resultadoTest.detalles || resultadoTest.config">
+          <details>
+            <summary>Ver detalles técnicos</summary>
+            <pre>{{ (resultadoTest.config || resultadoTest.detalles) | json }}</pre>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button 
+        class="btn btn-secondary"
+        (click)="toggleTestCorreo()"
+        [disabled]="probandoCorreo">
+        Cerrar
+      </button>
+      <button 
+        class="btn btn-primary"
+        (click)="probarCorreo()"
+        [disabled]="probandoCorreo || !testCorreo.emailDestino">
+        <i class="material-icons">{{ probandoCorreo ? 'hourglass_empty' : 'send' }}</i>
+        {{ probandoCorreo ? 'Enviando...' : 'Enviar Prueba' }}
+      </button>
+    </div>
+  </div>
+</div> 

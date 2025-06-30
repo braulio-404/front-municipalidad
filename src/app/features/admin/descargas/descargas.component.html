@@ -66,7 +66,8 @@
           <th>N° Postulantes</th>
           <th>Fecha Inicio</th>
           <th>Fecha Fin</th>
-          <th>Añadir a descarga</th>
+          <th>Acciones</th>
+          <th>Agregar a descarga</th>
         </tr>
       </thead>
       <tbody>
@@ -77,6 +78,15 @@
           <td class="id-cell">{{ postulacion.cantidadPostulantes || 0 }}</td>
           <td class="fecha-cell">{{ formatearFecha(postulacion.fechaInicio) }}</td>
           <td class="fecha-cell">{{ formatearFecha(postulacion.fechaTermino) }}</td>
+          <td class="actions-cell">
+            <button 
+              class="btn-action btn-view" 
+              [disabled]="(postulacion.cantidadPostulantes || 0) === 0"
+              [title]="(postulacion.cantidadPostulantes || 0) === 0 ? 'No hay postulantes para mostrar' : 'Ver postulantes'"
+              (click)="verPostulantes(postulacion)">
+              <i class="material-icons">visibility</i>
+            </button>
+          </td>
           <td class="checkbox-cell">
             <input 
               type="checkbox" 
@@ -85,7 +95,7 @@
           </td>
         </tr>
         <tr *ngIf="postulacionesPaginadas.length === 0 && !cargando">
-          <td colspan="5" class="no-results">No se encontraron postulaciones con los criterios de búsqueda.</td>
+          <td colspan="6" class="no-results">No se encontraron postulaciones con los criterios de búsqueda.</td>
         </tr>
       </tbody>
     </table>
@@ -130,5 +140,642 @@
       (click)="descargarDocumentos()">
       <i class="material-icons">download</i> Descargar Documentos
     </button>
+  </div>
+</div>
+
+<!-- Modal para ver postulantes -->
+<div class="modal-overlay" *ngIf="mostrarModalPostulantes" (click)="cerrarModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <i class="material-icons">people</i>
+        Postulantes de {{ postulacionSeleccionada?.cargo }}
+      </h3>
+      <button class="btn-close" (click)="cerrarModal()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Información de la postulación -->
+      <div class="info-postulacion">
+        <div class="info-item">
+          <strong>Cargo:</strong> {{ postulacionSeleccionada?.cargo }}
+        </div>
+        <div class="info-item">
+          <strong>Total Postulantes:</strong> {{ postulantes.length }}
+        </div>
+        <div class="info-item">
+          <strong>Período:</strong> 
+          {{ formatearFecha(postulacionSeleccionada?.fechaInicio) }} - 
+          {{ formatearFecha(postulacionSeleccionada?.fechaTermino) }}
+        </div>
+      </div>
+
+      <!-- Buscador de postulantes -->
+      <div class="search-container">
+        <div class="input-group">
+          <i class="material-icons">search</i>
+          <input 
+            type="text" 
+            [(ngModel)]="busquedaPostulante"
+            placeholder="Buscar por nombre, RUT o email..."
+            (input)="filtrarPostulantes()">
+          <button *ngIf="busquedaPostulante" class="btn-clear-search" (click)="limpiarBusquedaPostulante()">
+            <i class="material-icons">clear</i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="cargandoPostulantes" class="loading-modal">
+        <div class="spinner"></div>
+        <span>Cargando postulantes para {{ postulacionSeleccionada?.cargo }}...</span>
+      </div>
+
+      <!-- Lista de postulantes -->
+      <div *ngIf="!cargandoPostulantes" class="postulantes-container">
+        <div *ngIf="postulantesFiltrados.length === 0" class="no-postulantes">
+          <i class="material-icons">people_outline</i>
+          <p>{{ busquedaPostulante ? 'No se encontraron postulantes con el criterio de búsqueda' : 'No hay postulantes registrados para esta postulación' }}</p>
+          <small *ngIf="!busquedaPostulante">
+            Total de postulantes cargados: {{ postulantes.length }}
+          </small>
+        </div>
+
+        <div class="postulantes-list" *ngIf="postulantesFiltrados.length > 0">
+          <div class="postulante-card" 
+               *ngFor="let postulante of postulantesFiltrados; let i = index; trackBy: trackByPostulante"
+               [class.selected]="postulantesSeleccionados[getPostulanteIdForTemplate(postulante)]"
+               [class.procesable]="postulantePuedeSerProcesado(postulante)"
+               [class.ya-procesado]="!postulantePuedeSerProcesado(postulante)">
+            <div class="postulante-checkbox">
+              <input 
+                type="checkbox" 
+                [checked]="postulantesSeleccionados[getPostulanteIdForTemplate(postulante)]"
+                (change)="toggleSeleccionPostulante(postulante)"
+                class="checkbox-postulante">
+            </div>
+            <div class="postulante-info">
+              <div class="postulante-header">
+                <h4>{{ postulante.nombres || 'Sin nombre' }} {{ postulante.apellidoPaterno || '' }}</h4>
+                <span class="postulante-date" *ngIf="postulante.fechaRegistro">
+                  {{ formatearFechaCompleta(postulante.fechaRegistro) }}
+                </span>
+              </div>
+              <div class="postulante-details">
+                <div class="detail-item" *ngIf="postulante.rut">
+                  <i class="material-icons">badge</i>
+                  <span>{{ postulante.rut }}</span>
+                </div>
+                <div class="detail-item" *ngIf="postulante.email">
+                  <i class="material-icons">email</i>
+                  <span>{{ postulante.email }}</span>
+                </div>
+                <div class="detail-item" *ngIf="postulante.telefono">
+                  <i class="material-icons">phone</i>
+                  <span>{{ postulante.telefono }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="material-icons">assignment</i>
+                  <span class="estado-badge" [ngClass]="getEstadoClass(postulante.estado || 'Pendiente')">
+                    {{ postulante.estado || 'Pendiente' }}
+                  </span>
+                </div>
+                <div class="detail-item" *ngIf="postulante.documentos && postulante.documentos.length > 0">
+                  <i class="material-icons">attach_file</i>
+                  <span>{{ postulante.documentos.length }} documento(s)</span>
+                </div>
+                <div class="detail-item" *ngIf="postulante.postulanteID || postulante.id">
+                  <i class="material-icons">fingerprint</i>
+                  <span>ID: {{ postulante.postulanteID || postulante.id }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="postulante-actions">
+              <button 
+                class="btn-postulante btn-view" 
+                (click)="verDocumentosPostulante(postulante)"
+                [disabled]="!postulante.documentos || postulante.documentos.length === 0"
+                [title]="!postulante.documentos || postulante.documentos.length === 0 ? 'No hay documentos' : 'Ver documentos'">
+                <i class="material-icons">visibility</i>
+              </button>
+              <button 
+                *ngIf="(postulante.estado || 'Pendiente') === 'Pendiente'"
+                class="btn-postulante btn-revision" 
+                (click)="marcarEnRevision(postulante)"
+                title="Marcar como En Revisión">
+                <i class="material-icons">rate_review</i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <div class="footer-left">
+        <button class="btn btn-secondary" (click)="seleccionarTodosPostulantes()">
+          <i class="material-icons">{{ todosSeleccionados ? 'deselect' : 'select_all' }}</i>
+          {{ todosSeleccionados ? 'Deseleccionar Todos' : 'Seleccionar Todos' }}
+        </button>
+      </div>
+      
+      <div class="footer-center">
+        <button 
+          class="btn btn-success" 
+          [disabled]="!hayPostulantesSeleccionadosParaProcesar()"
+          (click)="confirmarAprobarPostulaciones()"
+          title="Seleccionar postulaciones pendientes o en revisión">
+          <i class="material-icons">check_circle</i>
+          Seleccionar ({{ contarSeleccionadosParaProcesar() }})
+        </button>
+        <button 
+          class="btn btn-danger" 
+          [disabled]="!hayPostulantesSeleccionadosParaProcesar()"
+          (click)="confirmarRechazarPostulaciones()"
+          title="Marcar como no seleccionados (solo pendientes o en revisión)">
+          <i class="material-icons">cancel</i>
+          No Seleccionar ({{ contarSeleccionadosParaProcesar() }})
+        </button>
+      </div>
+      
+      <div class="footer-right">
+        <button class="btn btn-secondary" (click)="cerrarModal()">
+          Cerrar
+        </button>
+        <button 
+          class="btn btn-info" 
+          [disabled]="!hayPostulantesSeleccionados()"
+          (click)="descargarDocumentosSeleccionados()"
+          title="Descargar documentos de postulantes seleccionados">
+          <i class="material-icons">download</i>
+          Descargar ({{ contarSeleccionados() }})
+        </button>
+        <button 
+          class="btn btn-primary" 
+          [disabled]="postulantesFiltrados.length === 0"
+          (click)="exportarExcelPostulantes()">
+          <i class="material-icons">table_chart</i>
+          Excel ({{ postulantesFiltrados.length }})
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para ver documentos PDF -->
+<div class="modal-overlay" *ngIf="mostrarModalDocumentos" (click)="cerrarModalDocumentos()">
+  <div class="modal-container modal-documentos" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <i class="material-icons">description</i>
+        Documentos de {{ postulanteSeleccionadoDoc?.nombres }} {{ postulanteSeleccionadoDoc?.apellidoPaterno }}
+      </h3>
+      <button class="btn-close" (click)="cerrarModalDocumentos()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body modal-body-docs">
+      <!-- Información del postulante -->
+      <div class="info-postulacion">
+        <div class="postulante-header">
+          <div class="postulante-avatar">
+            <i class="material-icons">person</i>
+          </div>
+          <div class="postulante-datos">
+            <h4>{{ postulanteSeleccionadoDoc?.nombres }} {{ postulanteSeleccionadoDoc?.apellidoPaterno }}</h4>
+            <div class="postulante-rut">RUT: {{ postulanteSeleccionadoDoc?.rut }}</div>
+            <div class="postulante-email">{{ postulanteSeleccionadoDoc?.email }}</div>
+          </div>
+        </div>
+        
+        <div class="info-stats">
+          <div class="stat-item">
+            <div class="stat-label">
+              <i class="material-icons">work</i>
+              Cargo Postulado
+            </div>
+            <div class="stat-value">{{ postulacionSeleccionada?.cargo }}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">
+              <i class="material-icons">description</i>
+              Total Documentos
+            </div>
+                         <div class="stat-value">{{ getTotalDocumentosParaDescarga() }}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">
+              <i class="material-icons">calendar_today</i>
+              Fecha Postulación
+            </div>
+            <div class="stat-value">{{ formatearFecha(postulanteSeleccionadoDoc?.fechaRegistro) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mostrar indicador de carga para descompresión -->
+      <div *ngIf="cargandoDescompresion" class="loading-documentos">
+        <div class="spinner"></div>
+        <span>Descomprimiendo archivos ZIP...</span>
+      </div>
+
+      <!-- Mostrar mensaje si no hay documentos -->
+      <div *ngIf="!cargandoDescompresion && documentosPostulante.length === 0 && archivosDescomprimidos.length === 0" class="no-documentos">
+        <i class="material-icons">description</i>
+        <p>Este postulante no tiene documentos asociados</p>
+      </div>
+
+      <!-- Mostrar documentos originales si no hay archivos descomprimidos -->
+      <div class="documentos-grid" *ngIf="!cargandoDescompresion && archivosDescomprimidos.length === 0 && documentosPostulante.length > 0">
+        <div class="documento-item" *ngFor="let documento of documentosPostulante">
+          <div class="documento-info">
+            <div class="documento-header">
+              <i class="material-icons" [ngClass]="{
+                'text-red': documento.tipoArchivo === 'application/zip',
+                'text-blue': documento.tipoArchivo === 'application/pdf'
+              }">
+                {{ documento.tipoArchivo === 'application/zip' ? 'folder_zip' : 'picture_as_pdf' }}
+              </i>
+              <div class="documento-details">
+                <h4>{{ documento.nombreArchivo }}</h4>
+                <span class="documento-tipo">{{ documento.tipoArchivo }}</span>
+              </div>
+            </div>
+            <div class="documento-meta">
+              <span class="documento-fecha">{{ formatearFechaCompleta(documento.fechaSubida) }}</span>
+              <span class="documento-tamano" *ngIf="documento.tamano">{{ formatearTamano(documento.tamano) }}</span>
+            </div>
+          </div>
+          <div class="documento-actions">
+            <button 
+              class="btn-documento btn-view" 
+              (click)="abrirDocumento(documento)"
+              [disabled]="documento.tipoArchivo === 'application/zip'"
+              title="{{ documento.tipoArchivo === 'application/zip' ? 'No se puede visualizar ZIP' : 'Ver documento' }}">
+              <i class="material-icons">visibility</i>
+            </button>
+            <button 
+              class="btn-documento btn-download" 
+              (click)="descargarDocumento(documento)"
+              title="Descargar documento">
+              <i class="material-icons">download</i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mostrar archivos descomprimidos -->
+      <div class="documentos-grid" *ngIf="!cargandoDescompresion && archivosDescomprimidos.length > 0">
+        <!-- Sección para archivos ZIP originales -->
+        <div class="seccion-documentos" *ngFor="let documento of documentosPostulante">
+          <div class="seccion-header" *ngIf="documento.tipoArchivo === 'application/zip'">
+            <i class="material-icons">folder_zip</i>
+            <h4>{{ documento.nombreArchivo }} ({{ getArchivosDescomprimidosPorDocumento(documento).length }} archivos)</h4>
+          </div>
+
+          <!-- Archivos extraídos del ZIP -->
+          <div class="archivos-extraidos" *ngIf="documento.tipoArchivo === 'application/zip'">
+            <div class="documento-item archivo-extraido" 
+                 *ngFor="let archivo of getArchivosDescomprimidosPorDocumento(documento)">
+              <div class="documento-info">
+                <div class="documento-header">
+                  <i class="material-icons" [ngClass]="{
+                    'text-blue': archivo.tipoArchivo === 'application/pdf',
+                    'text-green': archivo.tipoArchivo.startsWith('image/'),
+                    'text-orange': archivo.tipoArchivo.includes('word') || archivo.tipoArchivo.includes('document')
+                  }">
+                    {{ getIconoTipoArchivo(archivo.tipoArchivo) }}
+                  </i>
+                  <div class="documento-details">
+                    <h5>{{ archivo.nombreArchivo }}</h5>
+                    <span class="documento-tipo">{{ archivo.tipoArchivo }}</span>
+                    <span class="archivo-extraido-badge">Extraído</span>
+                  </div>
+                </div>
+                <div class="documento-meta">
+                  <span class="documento-fecha">{{ formatearFechaCompleta(archivo.fechaSubida) }}</span>
+                </div>
+              </div>
+              <div class="documento-actions">
+                <button 
+                  class="btn-documento btn-view" 
+                  (click)="abrirDocumento(archivo)"
+                  [disabled]="!archivo.tipoArchivo.includes('pdf') && !archivo.tipoArchivo.startsWith('image/')"
+                  title="Ver archivo">
+                  <i class="material-icons">visibility</i>
+                </button>
+                <button 
+                  class="btn-documento btn-download" 
+                  (click)="descargarDocumento(archivo)"
+                  title="Descargar archivo">
+                  <i class="material-icons">download</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Archivos individuales (no ZIP) -->
+        <div class="documento-item" *ngFor="let archivo of getArchivosIndividuales()">
+          <div class="documento-info">
+            <div class="documento-header">
+              <i class="material-icons text-blue">picture_as_pdf</i>
+              <div class="documento-details">
+                <h4>{{ archivo.nombreArchivo }}</h4>
+                <span class="documento-tipo">{{ archivo.tipoArchivo }}</span>
+              </div>
+            </div>
+            <div class="documento-meta">
+              <span class="documento-fecha">{{ formatearFechaCompleta(archivo.fechaSubida) }}</span>
+            </div>
+          </div>
+          <div class="documento-actions">
+            <button 
+              class="btn-documento btn-view" 
+              (click)="abrirDocumento(archivo)"
+              title="Ver documento">
+              <i class="material-icons">visibility</i>
+            </button>
+            <button 
+              class="btn-documento btn-download" 
+              (click)="descargarDocumento(archivo)"
+              title="Descargar documento">
+              <i class="material-icons">download</i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalDocumentos()">
+        Cerrar
+      </button>
+      <button 
+        class="btn btn-primary" 
+        [disabled]="getTotalDocumentosParaDescarga() === 0"
+        (click)="descargarTodosDocumentos()">
+        <i class="material-icons">archive</i>
+        Descargar Todos ({{ getTotalDocumentosParaDescarga() }})
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para visualizar documentos -->
+<div class="modal-overlay" *ngIf="mostrarVisorPDF" (click)="cerrarVisorPDF()">
+  <div class="modal-container modal-pdf-viewer" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <i class="material-icons">{{ getIconoTipoArchivo(documentoActual?.tipoArchivo || '') }}</i>
+        {{ documentoActual?.nombreArchivo }}
+      </h3>
+      <button class="btn-close" (click)="cerrarVisorPDF()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body modal-body-pdf">
+      <div *ngIf="cargandoPDF" class="loading-pdf">
+        <div class="spinner"></div>
+        <span>Cargando {{ documentoActual?.nombreArchivo || 'documento' }}...</span>
+      </div>
+      
+      <iframe 
+        *ngIf="!cargandoPDF && urlDocumento" 
+        [src]="urlDocumento" 
+        class="pdf-viewer"
+        frameborder="0"
+        (error)="manejarErrorVisualizacion()"
+        (load)="verificarCargaDocumento()">
+      </iframe>
+      
+      <div *ngIf="!cargandoPDF && !urlDocumento" class="error-pdf">
+        <i class="material-icons">error</i>
+        <p>No se pudo cargar el documento</p>
+        <small>Verifique que el archivo esté disponible o intente descargándolo directamente</small>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarVisorPDF()">
+        Cerrar
+      </button>
+      <button 
+        class="btn btn-primary" 
+        (click)="descargarDocumento(documentoActual!)"
+        *ngIf="documentoActual">
+        <i class="material-icons">download</i>
+        Descargar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para aprobar postulaciones -->
+<div class="modal-overlay" *ngIf="mostrarConfirmacionAprobar" (click)="cerrarConfirmaciones()">
+  <div class="modal-container modal-confirmacion" (click)="$event.stopPropagation()">
+    <div class="modal-header modal-header-success">
+      <h3>
+        <i class="material-icons">check_circle</i>
+        Confirmar Selección de Postulantes
+      </h3>
+      <button class="btn-close" (click)="cerrarConfirmaciones()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body modal-body-confirmacion">
+      <div class="confirmacion-resumen">
+        <div class="resumen-header">
+          <h4>Resumen de Postulantes a Seleccionar</h4>
+          <div class="resumen-stats">
+            <span class="stat-item">
+              <i class="material-icons">people</i>
+              {{ getPostulantesSeleccionadosParaProcesar().length }} postulantes
+            </span>
+            <span class="stat-item">
+              <i class="material-icons">work</i>
+              {{ postulacionSeleccionada?.cargo }}
+            </span>
+          </div>
+        </div>
+
+        <div class="postulantes-resumen">
+          <div class="postulante-resumen-item" *ngFor="let postulante of getPostulantesSeleccionadosParaProcesar()">
+            <div class="postulante-avatar">
+              <i class="material-icons">person</i>
+            </div>
+            <div class="postulante-datos">
+              <h5>{{ postulante.nombres }} {{ postulante.apellidoPaterno }}</h5>
+              <div class="postulante-detalles">
+                <span><i class="material-icons">badge</i> {{ postulante.rut }}</span>
+                <span><i class="material-icons">email</i> {{ postulante.email }}</span>
+              </div>
+            </div>
+            <div class="postulante-status status-aprobar">
+              <i class="material-icons">check_circle</i>
+              <span>A SELECCIONAR</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="accion-descripcion">
+          <h5><i class="material-icons">mail</i> Acción a realizar:</h5>
+          <p>Se enviará un correo electrónico de <strong>selección</strong> a cada postulante con:</p>
+          <ul>
+            <li>Notificación de selección en el proceso</li>
+            <li>Pasos a seguir en el proceso</li>
+            <li>Información de contacto y fechas importantes</li>
+            <li>Documentación adicional requerida (si aplica)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarConfirmaciones()">
+        Cancelar
+      </button>
+      <button 
+        class="btn btn-success" 
+        (click)="enviarAprobaciones()"
+        [disabled]="enviandoCorreos">
+        <i class="material-icons">{{ enviandoCorreos ? 'hourglass_empty' : 'send' }}</i>
+        {{ enviandoCorreos ? 'Enviando...' : 'Confirmar y Enviar Correos' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para rechazar postulaciones -->
+<div class="modal-overlay" *ngIf="mostrarConfirmacionRechazar" (click)="cerrarConfirmaciones()">
+  <div class="modal-container modal-confirmacion" (click)="$event.stopPropagation()">
+    <div class="modal-header modal-header-danger">
+      <h3>
+        <i class="material-icons">cancel</i>
+        Confirmar No Selección de Postulantes
+      </h3>
+      <button class="btn-close" (click)="cerrarConfirmaciones()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body modal-body-confirmacion">
+      <div class="confirmacion-resumen">
+        <div class="resumen-header">
+          <h4>Resumen de Postulantes a No Seleccionar</h4>
+          <div class="resumen-stats">
+            <span class="stat-item">
+              <i class="material-icons">people</i>
+              {{ getPostulantesSeleccionadosParaProcesar().length }} postulantes
+            </span>
+            <span class="stat-item">
+              <i class="material-icons">work</i>
+              {{ postulacionSeleccionada?.cargo }}
+            </span>
+          </div>
+        </div>
+
+        <div class="postulantes-resumen">
+          <div class="postulante-resumen-item" *ngFor="let postulante of getPostulantesSeleccionadosParaProcesar()">
+            <div class="postulante-avatar">
+              <i class="material-icons">person</i>
+            </div>
+            <div class="postulante-datos">
+              <h5>{{ postulante.nombres }} {{ postulante.apellidoPaterno }}</h5>
+              <div class="postulante-detalles">
+                <span><i class="material-icons">badge</i> {{ postulante.rut }}</span>
+                <span><i class="material-icons">email</i> {{ postulante.email }}</span>
+              </div>
+            </div>
+            <div class="postulante-status status-rechazar">
+              <i class="material-icons">cancel</i>
+              <span>NO SELECCIONAR</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="motivo-rechazo">
+          <h5><i class="material-icons">edit</i> Motivo de la no selección (opcional):</h5>
+          <textarea 
+            [(ngModel)]="motivoRechazo"
+            placeholder="Escriba el motivo de la no selección que se incluirá en el correo..."
+            class="textarea-motivo"
+            rows="3">
+          </textarea>
+        </div>
+
+        <div class="accion-descripcion">
+          <h5><i class="material-icons">mail</i> Acción a realizar:</h5>
+          <p>Se enviará un correo electrónico de <strong>no selección</strong> a cada postulante con:</p>
+          <ul>
+            <li>Notificación de no selección en el proceso</li>
+            <li>Motivo de la no selección (si se especifica)</li>
+            <li>Agradecimiento por su participación</li>
+            <li>Información sobre futuros procesos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarConfirmaciones()">
+        Cancelar
+      </button>
+      <button 
+        class="btn btn-danger" 
+        (click)="enviarRechazos()"
+        [disabled]="enviandoCorreos">
+        <i class="material-icons">{{ enviandoCorreos ? 'hourglass_empty' : 'send' }}</i>
+        {{ enviandoCorreos ? 'Enviando...' : 'Confirmar y Enviar Correos' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de resultados de operaciones -->
+<div class="modal-overlay" *ngIf="mostrarModalResultado" (click)="cerrarModalResultado()">
+  <div class="modal-container modal-resultado" (click)="$event.stopPropagation()">
+    <div class="modal-header" [ngClass]="{
+      'modal-header-success': resultadoOperacion?.tipo === 'success',
+      'modal-header-error': resultadoOperacion?.tipo === 'error',
+      'modal-header-warning': resultadoOperacion?.tipo === 'warning'
+    }">
+      <h3>
+        <i class="material-icons">
+          {{ resultadoOperacion?.tipo === 'success' ? 'check_circle' : 
+             resultadoOperacion?.tipo === 'error' ? 'error' : 'warning' }}
+        </i>
+        {{ resultadoOperacion?.titulo }}
+      </h3>
+      <button class="btn-close" (click)="cerrarModalResultado()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body modal-body-resultado">
+      <div class="resultado-mensaje">
+        <p>{{ resultadoOperacion?.mensaje }}</p>
+      </div>
+
+      <div class="resultado-detalles" *ngIf="resultadoOperacion?.detalles as detalles">
+        <div class="detalles-list">
+          <div *ngFor="let detalle of detalles" class="detalle-item">
+            {{ detalle }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="cerrarModalResultado()">
+        <i class="material-icons">check</i>
+        Aceptar
+      </button>
+    </div>
   </div>
 </div> 

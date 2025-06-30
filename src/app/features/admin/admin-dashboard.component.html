@@ -48,6 +48,15 @@
             <i class="material-icons menu-icon">bar_chart</i>
             <span class="menu-text">Estadísticas</span>
           </div>
+          
+          <!-- Configuración (solo para administradores) -->
+          <div class="menu-item" 
+            *ngIf="isUserAdmin()"
+            (click)="navigateToRoute('/admin/configuracion')"
+            [class.active-menu-item]="router.url.startsWith('/admin/configuracion')">
+            <i class="material-icons menu-icon">settings</i>
+            <span class="menu-text">Configuración</span>
+          </div>
         </div>
         
         <!-- Información del rol para usuarios no admin -->

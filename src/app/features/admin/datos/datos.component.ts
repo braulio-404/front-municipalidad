@@ -6,6 +6,16 @@ import { Location } from '@angular/common';
 
 import { RequisitosService } from '../../../servicios/requisitos.service';
 import { Requisito } from '../../../interfaces/requisito.interface';
+import { PostulantesService } from '../../../servicios/postulantes.service';
+import { FormulariosService } from '../../../servicios/formularios.service';
+import { 
+  Postulante, 
+  UpdateEstadoDto, 
+  UpdateEstadoLoteDto, 
+  EstadisticasEstados,
+  PostulantePorEstado
+} from '../../../interfaces/postulante.interface';
+import { Formulario } from '../../../interfaces/formulario.interface';
 
 @Component({
   selector: 'app-datos',
@@ -19,7 +29,7 @@ import { Requisito } from '../../../interfaces/requisito.interface';
 })
 export class DatosComponent implements OnInit {
   // Control de pestañas y vistas
-  tipoSeleccionado: 'requisitos' | 'categorias' | 'estados' = 'requisitos';
+  tipoSeleccionado: 'requisitos' | 'categorias' | 'postulantes' = 'requisitos';
   mostrarFormulario: boolean = false;
   modoFormulario: 'nuevo' | 'editar' | 'ver' = 'nuevo';
 
@@ -39,11 +49,41 @@ export class DatosComponent implements OnInit {
   totalPaginas: number = 0;
   requisitosPaginados: Requisito[] = [];
 
+  // Estados y datos
+  postulantes: Postulante[] = [];
+  formularios: Formulario[] = [];
+  estadisticasEstados: EstadisticasEstados = {};
+  postulantesPorEstado: PostulantePorEstado[] = [];
+  
+  // Filtros y búsqueda
+  formularioSeleccionado: number | null = null;
+  estadoSeleccionado: string = '';
+  terminoBusqueda: string = '';
+  
+  // Estados del componente
+  cargando = false;
+  cargandoEstadisticas = false;
+  actualizandoEstado = false;
+  
+  // Selección múltiple
+  postulantesSeleccionados: string[] = [];
+  modoSeleccionMultiple = false;
+  
+  // Modal de cambio de estado
+  mostrarModalEstado = false;
+  nuevoEstado = '';
+  postulanteParaCambiarEstado: Postulante | null = null;
+  
+  // Estados disponibles
+  estadosDisponibles: string[] = [];
+
   constructor(
     private requisitosService: RequisitosService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private postulantesService: PostulantesService,
+    private formulariosService: FormulariosService
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +106,9 @@ export class DatosComponent implements OnInit {
     } else {
       this.cargarRequisitos();
     }
+
+    this.cargarDatos();
+    this.estadosDisponibles = this.postulantesService.getEstadosDisponibles();
   }
 
   // Métodos de inicialización
@@ -98,10 +141,12 @@ export class DatosComponent implements OnInit {
   }
 
   // Métodos de gestión de pestañas
-  seleccionarTipo(tipo: 'requisitos' | 'categorias' | 'estados'): void {
+  seleccionarTipo(tipo: 'requisitos' | 'categorias' | 'postulantes'): void {
     this.tipoSeleccionado = tipo;
     if (tipo === 'requisitos') {
       this.cargarRequisitos();
+    } else if (tipo === 'postulantes') {
+      this.cargarDatos();
     }
     // Aquí se pueden agregar más casos para otros tipos de datos
   }
@@ -365,5 +410,214 @@ export class DatosComponent implements OnInit {
     } else {
       alert(`❌ ${mensaje}`);
     }
+  }
+
+  cargarDatos(): void {
+    this.cargando = true;
+    
+    // Cargar formularios
+    this.formulariosService.findAll().subscribe({
+      next: (formularios) => {
+        this.formularios = formularios;
+      },
+      error: (error) => {
+        console.error('Error al cargar formularios:', error);
+      }
+    });
+
+    // Cargar postulantes
+    this.cargarPostulantes();
+    
+    // Cargar estadísticas
+    this.cargarEstadisticas();
+  }
+
+  cargarPostulantes(): void {
+    const observable = this.formularioSeleccionado 
+      ? this.postulantesService.findByFormulario(this.formularioSeleccionado)
+      : this.postulantesService.findAll();
+
+    observable.subscribe({
+      next: (postulantes) => {
+        this.postulantes = postulantes;
+        this.cargando = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar postulantes:', error);
+        this.cargando = false;
+      }
+    });
+  }
+
+  cargarEstadisticas(): void {
+    this.cargandoEstadisticas = true;
+    
+    this.postulantesService.getEstadisticasEstados(this.formularioSeleccionado || undefined).subscribe({
+      next: (estadisticas) => {
+        this.estadisticasEstados = estadisticas;
+        this.cargandoEstadisticas = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar estadísticas:', error);
+        this.cargandoEstadisticas = false;
+      }
+    });
+
+    this.postulantesService.getPostulantesAgrupadosPorEstado(this.formularioSeleccionado || undefined).subscribe({
+      next: (agrupados) => {
+        this.postulantesPorEstado = agrupados;
+      },
+      error: (error) => {
+        console.error('Error al cargar postulantes agrupados:', error);
+      }
+    });
+  }
+
+  // Filtros
+  onFormularioChange(): void {
+    this.cargarPostulantes();
+    this.cargarEstadisticas();
+    this.limpiarSeleccion();
+  }
+
+  onEstadoChange(): void {
+    if (this.estadoSeleccionado) {
+      this.postulantesService.findByEstado(this.estadoSeleccionado, this.formularioSeleccionado || undefined).subscribe({
+        next: (postulantes) => {
+          this.postulantes = postulantes;
+        },
+        error: (error) => {
+          console.error('Error al filtrar por estado:', error);
+        }
+      });
+    } else {
+      this.cargarPostulantes();
+    }
+    this.limpiarSeleccion();
+  }
+
+  // Gestión de estados individuales
+  abrirModalCambiarEstado(postulante: Postulante): void {
+    this.postulanteParaCambiarEstado = postulante;
+    this.nuevoEstado = postulante.estado || 'Pendiente';
+    this.mostrarModalEstado = true;
+  }
+
+  cambiarEstadoIndividual(): void {
+    if (!this.postulanteParaCambiarEstado?.postulanteID || !this.nuevoEstado) return;
+    
+    this.actualizandoEstado = true;
+    const updateDto: UpdateEstadoDto = { estado: this.nuevoEstado };
+    
+    this.postulantesService.updateEstado(this.postulanteParaCambiarEstado.postulanteID, updateDto).subscribe({
+      next: (postulanteActualizado) => {
+        // Actualizar en la lista local
+        const index = this.postulantes.findIndex(p => p.postulanteID === postulanteActualizado.postulanteID);
+        if (index !== -1) {
+          this.postulantes[index] = postulanteActualizado;
+        }
+        
+        this.cerrarModalEstado();
+        this.cargarEstadisticas(); // Recargar estadísticas
+        this.actualizandoEstado = false;
+      },
+      error: (error) => {
+        console.error('Error al cambiar estado:', error);
+        this.actualizandoEstado = false;
+      }
+    });
+  }
+
+  // Gestión de selección múltiple
+  toggleSeleccionMultiple(): void {
+    this.modoSeleccionMultiple = !this.modoSeleccionMultiple;
+    if (!this.modoSeleccionMultiple) {
+      this.limpiarSeleccion();
+    }
+  }
+
+  toggleSeleccionPostulante(postulanteId: string): void {
+    const index = this.postulantesSeleccionados.indexOf(postulanteId);
+    if (index > -1) {
+      this.postulantesSeleccionados.splice(index, 1);
+    } else {
+      this.postulantesSeleccionados.push(postulanteId);
+    }
+  }
+
+  seleccionarTodos(): void {
+    if (this.postulantesSeleccionados.length === this.postulantes.length) {
+      this.limpiarSeleccion();
+    } else {
+      this.postulantesSeleccionados = this.postulantes
+        .filter(p => p.postulanteID)
+        .map(p => p.postulanteID!);
+    }
+  }
+
+  limpiarSeleccion(): void {
+    this.postulantesSeleccionados = [];
+  }
+
+  // Actualización en lote
+  cambiarEstadoLote(nuevoEstado: string): void {
+    if (this.postulantesSeleccionados.length === 0) return;
+    
+    this.actualizandoEstado = true;
+    const updateDto: UpdateEstadoLoteDto = {
+      postulantesIds: this.postulantesSeleccionados,
+      estado: nuevoEstado
+    };
+    
+    this.postulantesService.updateEstadoLote(updateDto).subscribe({
+      next: (resultado) => {
+        // Actualizar postulantes en la lista local
+        resultado.postulantes.forEach(postulanteActualizado => {
+          const index = this.postulantes.findIndex(p => p.postulanteID === postulanteActualizado.postulanteID);
+          if (index !== -1) {
+            this.postulantes[index] = postulanteActualizado;
+          }
+        });
+        
+        this.limpiarSeleccion();
+        this.cargarEstadisticas();
+        this.actualizandoEstado = false;
+        alert(`Se actualizaron ${resultado.actualizados} postulantes al estado: ${nuevoEstado}`);
+      },
+      error: (error) => {
+        console.error('Error al cambiar estado en lote:', error);
+        this.actualizandoEstado = false;
+      }
+    });
+  }
+
+  // Utilidades
+  cerrarModalEstado(): void {
+    this.mostrarModalEstado = false;
+    this.postulanteParaCambiarEstado = null;
+    this.nuevoEstado = '';
+  }
+
+  getColorEstado(estado: string): string {
+    return this.postulantesService.getColorEstado(estado);
+  }
+
+  getIconoEstado(estado: string): string {
+    return this.postulantesService.getIconoEstado(estado);
+  }
+
+  get postulantesFiltrados(): Postulante[] {
+    if (!this.terminoBusqueda) return this.postulantes;
+    
+    return this.postulantes.filter(p => 
+      p.nombres.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
+      p.apellidoPaterno.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
+      p.rut.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
+      p.email.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
+    );
+  }
+
+  trackByPostulante(index: number, postulante: Postulante): any {
+    return postulante.postulanteID || index;
   }
 } 

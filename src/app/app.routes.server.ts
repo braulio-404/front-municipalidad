@@ -1,37 +1,7 @@
-import { RenderMode, ServerRoute } from '@angular/ssr';
+// Configuración básica de rutas del servidor para Angular 18
+// En Angular 18, la configuración de SSR se maneja de forma diferente
 
-export const serverRoutes: ServerRoute[] = [
-  // Rutas con parámetros que deben usar SSR en lugar de prerender
-  // Rutas que usan SSR
-  {
-    path: 'admin/formularios/ver/:id',
-    renderMode: RenderMode.Server
-  },
-  {
-    path: 'admin/formularios/editar/:id',
-    renderMode: RenderMode.Server
-  },
-  {
-    path: 'admin/datos/requisitos/ver/:id',
-    renderMode: RenderMode.Server
-  },
-  {
-    path: 'admin/datos/requisitos/editar/:id',
-    renderMode: RenderMode.Server
-  },
-  {
-    path: 'postulacion/formulario/:id',
-    renderMode: RenderMode.Server
-  },
-  // Ruta que está causando problemas de prerenderizado
-  {
-    path: 'postulacion',
-    renderMode: RenderMode.Server
-  },
-  // Todas las demás rutas usan prerender
-  
-  {
-    path: '**',
-    renderMode: RenderMode.Prerender
-  }
+export const serverRoutes = [
+  // Las rutas se configuran principalmente en app.routes.ts
+  // Este archivo se mantiene para compatibilidad futura
 ];

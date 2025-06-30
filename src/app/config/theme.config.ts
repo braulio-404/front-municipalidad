@@ -948,6 +948,41 @@ export const availableThemes = {
       info: '#1976D2', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
+
+  // Municipalidad de Los Ángeles
+  losangeles: {
+    ...defaultTheme,
+    municipality: {
+      name: 'LOS ÁNGELES',
+      fullName: 'Municipalidad de Los Ángeles',
+      email: 'rrhh@losangeles.cl',
+      logoPath: 'assets/images/losangeles.png',
+      backgroundImagePath: 'assets/images/losangeles.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1565C0', // Azul principal institucional
+      primaryLight: '#1976D2', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul claro para bordes
+      primaryRgb: '21, 101, 192',
+      secondary: '#0277BD', // Azul secundario más profundo
+      accent: '#FF8F00', // Dorado/naranja de acento
+      accentLight: '#FFE0B2', // Dorado claro
+      textColor: '#0D47A1', // Azul oscuro para texto principal
+      textColorLight: '#1565C0', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E3F2FD', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado personalizados
+      success: '#4CAF50', // Verde éxito
+      warning: '#FF8F00', // Naranja advertencia (mismo que accent)
+      error: '#F44336', // Rojo error
+      info: '#1565C0', // Azul información (mismo que primary)
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)

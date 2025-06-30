@@ -24,6 +24,33 @@ export interface DescargarDocumentosDto {
   ids: number[];
 }
 
+export interface DescargarDocumentosPostulantesDto {
+  formularioId: number;
+  postulanteIds: (number | string)[];
+}
+
+export interface EnviarAprobacionesDto {
+  formularioId: number;
+  postulanteIds: (number | string)[];
+}
+
+export interface EnviarRechazosDto {
+  formularioId: number;
+  postulanteIds: (number | string)[];
+  motivo?: string;
+}
+
+export interface CorreoRespuesta {
+  enviados: number;
+  fallidos: number;
+  detalles: {
+    postulanteId: number | string;
+    email: string;
+    estado: 'enviado' | 'fallido';
+    error?: string;
+  }[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -70,6 +97,11 @@ export class FormulariosService extends BaseApiService {
     return this.http.post(`${this.apiUrl}/formularios/descargar`, descargarDocumentosDto, { responseType: 'blob' });
   }
 
+  // Descargar documentos de postulantes seleccionados
+  descargarDocumentosPostulantes(descargarDto: DescargarDocumentosPostulantesDto): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/formularios/descargar-postulantes`, descargarDto, { responseType: 'blob' });
+  }
+
   // Métodos de compatibilidad con código existente
 
   // Obtener todos los formularios (método de compatibilidad)
@@ -100,5 +132,20 @@ export class FormulariosService extends BaseApiService {
   // Eliminar un formulario (método de compatibilidad)
   eliminarFormulario(id: number): Observable<any> {
     return this.remove(id);
+  }
+
+  // Obtener postulantes por formulario
+  getPostulantesByFormulario(formularioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/formularios/${formularioId}/postulantes`);
+  }
+
+  // Enviar correos de aprobación
+  enviarAprobaciones(enviarAprobacionesDto: EnviarAprobacionesDto): Observable<CorreoRespuesta> {
+    return this.http.post<CorreoRespuesta>(`${this.apiUrl}/formularios/enviar-aprobaciones`, enviarAprobacionesDto);
+  }
+
+  // Enviar correos de rechazo
+  enviarRechazos(enviarRechazosDto: EnviarRechazosDto): Observable<CorreoRespuesta> {
+    return this.http.post<CorreoRespuesta>(`${this.apiUrl}/formularios/enviar-rechazos`, enviarRechazosDto);
   }
 } 

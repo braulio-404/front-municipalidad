@@ -1,4 +1,5 @@
 export interface Postulante {
+  id?: number;
   postulanteID?: string;
   nombres: string;
   apellidoPaterno: string;
@@ -7,6 +8,7 @@ export interface Postulante {
   telefono?: string;
   fechaRegistro?: Date | string;
   formulario_id: number;
+  estado?: string;
   documentos?: DocumentoPostulante[];
   formulario?: any; // Relación con Formulario
 }
@@ -65,4 +67,32 @@ export interface PostulacionFormData {
     tipoDocumento: string;
     archivo: File;
   }>;
+}
+
+export interface UpdateEstadoDto {
+  estado: string;
+}
+
+export interface UpdateEstadoLoteDto {
+  postulantesIds: string[];
+  estado: string;
+}
+
+export interface UpdatePostulanteDto {
+  nombres?: string;
+  apellidoPaterno?: string;
+  rut?: string;
+  email?: string;
+  telefono?: string;
+  estado?: string;
+}
+
+export interface EstadisticasEstados {
+  [estado: string]: number;
+}
+
+export interface PostulantePorEstado {
+  estado: string;
+  postulantes: Postulante[];
+  total: number;
 } 
