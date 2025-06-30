@@ -983,6 +983,52 @@ export const availableThemes = {
       info: '#1565C0', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
+
+  // Municipalidad de La Unión
+  launion: {
+    ...defaultTheme,
+    municipality: {
+      name: 'LA UNIÓN',
+      fullName: 'Municipalidad de La Unión',
+      email: 'rrhh@launion.cl',
+      logoPath: 'assets/images/launion.png',
+      backgroundImagePath: 'assets/images/launionfondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#5B2C87', // Violeta que coincide más con el logo del escudo
+      primaryLight: '#7C3AED', // Violeta claro más acorde al logo
+      primaryDark: '#4A1A69', // Violeta oscuro que complementa el logo
+      primaryVeryLight: '#F5F3FF', // Violeta muy claro para fondos, compatible con logo
+      primaryBorder: '#E0E7FF', // Violeta muy suave para bordes
+      primaryRgb: '91, 44, 135',
+      secondary: '#1F2937', // Gris oscuro neutro
+      accent: '#10B981', // Verde que coincide con el círculo verde del logo
+      accentLight: '#D1FAE5', // Verde claro suave
+      textColor: '#1F2937', // Gris oscuro para texto principal
+      textColorLight: '#4B5563', // Gris medio para texto secundario
+      textColorMuted: '#6B7280', // Gris medio para texto atenuado
+      backgroundColor: '#FEFFFE', // Fondo casi blanco con ligero tinte
+      backgroundAlt: '#F8FAFC', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco puro para tarjetas
+      // Colores de estado balanceados con el tema
+      success: '#10B981', // Verde éxito (mismo que accent del logo)
+      warning: '#F59E0B', // Naranja advertencia equilibrado
+      error: '#EF4444', // Rojo error estándar
+      info: '#3B82F6', // Azul información neutro
+      // Grises optimizados para el tema violeta-verde
+      gray50: '#F8FAFC',
+      gray100: '#F1F5F9',
+      gray200: '#E2E8F0',
+      gray300: '#CBD5E1',
+      gray400: '#94A3B8',
+      gray500: '#64748B',
+      gray600: '#475569',
+      gray700: '#334155',
+      gray800: '#1E293B',
+      gray900: '#0F172A',
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)

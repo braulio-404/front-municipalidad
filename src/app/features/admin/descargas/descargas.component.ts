@@ -1330,6 +1330,69 @@ export class DescargasComponent implements OnInit {
   }
 
       // Método mejorado para exportar a Excel profesional
+  // Método para generar estadísticas HTML del reporte
+  private generarEstadisticasHTML(): string {
+    const totalPostulantes = this.postulantesFiltrados.length;
+    
+    // Estadísticas por estado
+    const estadisticasPorEstado = this.calcularEstadisticasPorEstado();
+    
+    // Estadísticas de documentos
+    const conDocumentos = this.postulantesFiltrados.filter(p => (p.documentos?.length || 0) > 0).length;
+    const sinDocumentos = totalPostulantes - conDocumentos;
+    const promedioDocumentos = totalPostulantes > 0 ? 
+      Math.round((this.postulantesFiltrados.reduce((sum, p) => sum + (p.documentos?.length || 0), 0) / totalPostulantes) * 100) / 100 : 0;
+    
+    // Estadísticas de documentos
+    const totalDocumentos = this.postulantesFiltrados.reduce((sum, p) => sum + (p.documentos?.length || 0), 0);
+
+    return `
+      <div class="estadisticas-contenedor">
+        <div class="estadisticas-seccion">
+          <h4>📋 POR ESTADO DEL POSTULANTE</h4>
+          ${estadisticasPorEstado}
+        </div>
+        
+        <div class="estadisticas-seccion">
+          <h4>📁 DOCUMENTACIÓN</h4>
+          <p><strong>Postulantes con documentos:</strong> ${conDocumentos} (${Math.round((conDocumentos / totalPostulantes) * 100)}%)</p>
+          <p><strong>Postulantes sin documentos:</strong> ${sinDocumentos} (${Math.round((sinDocumentos / totalPostulantes) * 100)}%)</p>
+          <p><strong>Promedio de documentos por postulante:</strong> ${promedioDocumentos}</p>
+        </div>
+        
+        <div class="estadisticas-seccion">
+          <h4>📊 RESUMEN GENERAL</h4>
+          <p><strong>Total de documentos:</strong> ${totalDocumentos}</p>
+          <p><strong>Promedio por postulante:</strong> ${promedioDocumentos}</p>
+        </div>
+        
+
+      </div>
+    `;
+  }
+
+  // Método para calcular estadísticas por estado del postulante
+  private calcularEstadisticasPorEstado(): string {
+    const estadosCount: { [estado: string]: number } = {};
+    const totalPostulantes = this.postulantesFiltrados.length;
+    
+    this.postulantesFiltrados.forEach(postulante => {
+      const estado = postulante.estado || 'Pendiente';
+      estadosCount[estado] = (estadosCount[estado] || 0) + 1;
+    });
+    
+    let html = '';
+    Object.entries(estadosCount).forEach(([estado, cantidad]) => {
+      const porcentaje = totalPostulantes > 0 ? Math.round((cantidad / totalPostulantes) * 100) : 0;
+      const claseEstado = this.getEstadoClass(estado);
+      html += `<p><strong>${estado}:</strong> ${cantidad} postulantes (${porcentaje}%)</p>`;
+    });
+    
+    return html || '<p>No hay datos de estados disponibles</p>';
+  }
+
+
+
   async exportarExcelPostulantes(): Promise<void> {
     if (this.postulantesFiltrados.length === 0) {
       return;
@@ -1342,18 +1405,21 @@ export class DescargasComponent implements OnInit {
       day: 'numeric'
     });
 
-    // Preparar datos con formato mejorado para Excel
-    const datosExcel = this.postulantesFiltrados.map((postulante, index) => ({
-      'N°': index + 1,
-      'Nombre Completo': `${postulante.nombres} ${postulante.apellidoPaterno}`.trim(),
-      'RUT': postulante.rut,
-      'Email': postulante.email,
-      'Teléfono': postulante.telefono || 'No especificado',
-      'Fecha de Postulación': this.formatearFecha(postulante.fechaRegistro),
-      'Hora de Postulación': this.formatearHora(postulante.fechaRegistro),
-      'Documentos Adjuntos': postulante.documentos?.length || 0,
-      'Estado de Selección': this.postulantesSeleccionados[postulante.postulanteID?.toString() || ''] ? 'Seleccionado' : 'No seleccionado'
-    }));
+          // Preparar datos con formato mejorado para Excel
+    const datosExcel = this.postulantesFiltrados.map((postulante, index) => {
+      return {
+        'N°': index + 1,
+        'Nombre Completo': `${postulante.nombres} ${postulante.apellidoPaterno}`.trim(),
+        'RUT': postulante.rut,
+        'Email': postulante.email,
+        'Teléfono': postulante.telefono || 'No especificado',
+        'Estado del Postulante': postulante.estado || 'Pendiente',
+        'Fecha de Postulación': this.formatearFecha(postulante.fechaRegistro),
+        'Hora de Postulación': this.formatearHora(postulante.fechaRegistro),
+
+        'Total Documentos': postulante.documentos?.length || 0
+      };
+    });
 
     // Crear header con información del reporte
     let xlsContent = `
@@ -1361,38 +1427,55 @@ export class DescargasComponent implements OnInit {
       <head>
         <meta charset="UTF-8">
         <style>
-          body { font-family: Arial, sans-serif; }
-          .header { background: linear-gradient(135deg, #1976D2, #42A5F5); color: white; padding: 20px; text-align: center; }
-          .logo { font-size: 24px; margin-bottom: 10px; }
-          .title { font-size: 20px; font-weight: bold; margin: 10px 0; }
-          .info { background: #F5F5F5; padding: 15px; margin: 10px 0; }
-          .info-item { margin: 5px 0; font-weight: bold; }
-          table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-          th { background: #424242; color: white; padding: 12px; text-align: center; border: 1px solid #ddd; font-weight: bold; }
-          td { padding: 8px; border: 1px solid #ddd; text-align: left; }
+          body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+          .header { background: linear-gradient(135deg, #1976D2, #42A5F5); color: white; padding: 25px; text-align: left; border-radius: 8px; margin-bottom: 15px; }
+          .logo { font-size: 28px; margin-bottom: 15px; text-align: left; }
+          .title { font-size: 22px; font-weight: bold; margin: 15px 0; text-align: left; }
+          .info { background: #F8F9FA; padding: 20px; margin: 10px 0; border-radius: 8px; border-left: 6px solid #1976D2; }
+          .info-item { margin: 8px 0; font-weight: bold; margin-left: 20px; color: #424242; }
+          table.info-header-table { border: none; margin-bottom: 20px; }
+          table.info-header-table td { border: none; padding: 0; }
+          table { border-collapse: collapse; width: 100%; margin-top: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+          th { background: #424242; color: white; padding: 15px 10px; text-align: center; border: 1px solid #ddd; font-weight: bold; font-size: 13px; }
+          td { padding: 12px 10px; border: 1px solid #ddd; text-align: left; font-size: 12px; }
           .selected { background: #E8F5E8 !important; }
-          .number { text-align: center; font-weight: bold; }
-          .estado-seleccionado { color: #2E7D32; font-weight: bold; }
-          .estado-no-seleccionado { color: #757575; font-weight: bold; }
-          tr:nth-child(even) { background: #F8F9FA; }
-          .stats { background: #E3F2FD; padding: 15px; margin: 20px 0; border-radius: 5px; }
-          .stats h3 { color: #1976D2; margin-top: 0; }
-          .footer { text-align: center; margin-top: 30px; color: #666; font-style: italic; }
+          .number { text-align: center; font-weight: bold; color: #1976D2; }
+          tr:nth-child(even) { background: #FAFAFA; }
+          tr:hover { background: #F0F7FF; }
+          .stats { background: #E3F2FD; padding: 20px; margin: 25px 0; border-radius: 8px; border-left: 6px solid #1976D2; }
+          .stats h3 { color: #1976D2; margin-top: 0; margin-bottom: 15px; }
+          .estadisticas-contenedor { display: flex; flex-wrap: wrap; gap: 15px; }
+          .estadisticas-seccion { flex: 1; min-width: 200px; background: #FFFFFF; padding: 15px; border-radius: 6px; border-left: 4px solid #1976D2; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+          .estadisticas-seccion h4 { color: #1976D2; margin: 0 0 12px 0; font-size: 14px; }
+          .estadisticas-seccion p { margin: 6px 0; font-size: 13px; }
+          .estado-pendiente { background: #FFF3E0; color: #F57C00; font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+          .estado-en-revision { background: #E3F2FD; color: #1976D2; font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+          .estado-seleccionado { background: #E8F5E8; color: #388E3C; font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+          .estado-no-seleccionado { background: #FFEBEE; color: #D32F2F; font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+          .estado-retirado { background: #F5F5F5; color: #757575; font-weight: bold; padding: 4px 8px; border-radius: 4px; }
+          .footer { text-align: center; margin-top: 35px; color: #666; font-style: italic; padding: 15px; background: #F8F9FA; border-radius: 6px; }
         </style>
       </head>
       <body>
-        <div class="header">
-          <div class="logo">🏛️ MUNICIPALIDAD</div>
-          <div class="title">REPORTE DE POSTULANTES</div>
-        </div>
-        
-        <div class="info">
-          <div class="info-item">Cargo: ${this.postulacionSeleccionada?.cargo || 'No especificado'}</div>
-          <div class="info-item">Período: ${this.formatearFecha(this.postulacionSeleccionada?.fechaInicio)} - ${this.formatearFecha(this.postulacionSeleccionada?.fechaTermino)}</div>
-          <div class="info-item">Total de Postulantes: ${this.postulantesFiltrados.length}</div>
-          <div class="info-item">Postulantes Seleccionados: ${this.contarSeleccionados()}</div>
-          <div class="info-item">Fecha del Reporte: ${fechaReporte}</div>
-        </div>
+        <table class="info-header-table" style="width: 100%; border: none; margin-bottom: 20px;">
+          <tr>
+            <td style="width: 60%; vertical-align: top; padding: 0; border: none;">
+              <div class="header">
+                <div class="logo">🏛️ MUNICIPALIDAD</div>
+                <div class="title">REPORTE DE POSTULANTES</div>
+              </div>
+              
+              <div class="info">
+                <div class="info-item">Cargo: ${this.postulacionSeleccionada?.cargo || 'No especificado'}</div>
+                <div class="info-item">Período: ${this.formatearFecha(this.postulacionSeleccionada?.fechaInicio)} - ${this.formatearFecha(this.postulacionSeleccionada?.fechaTermino)}</div>
+                <div class="info-item">Total de Postulantes: ${this.postulantesFiltrados.length}</div>
+                <div class="info-item">Total de Documentos: ${this.postulantesFiltrados.reduce((sum, p) => sum + (p.documentos?.length || 0), 0)}</div>
+                <div class="info-item">Fecha del Reporte: ${fechaReporte}</div>
+              </div>
+            </td>
+            <td style="width: 40%; border: none;"></td>
+          </tr>
+        </table>
 
         <table>
           <thead>
@@ -1408,18 +1491,18 @@ export class DescargasComponent implements OnInit {
     // Agregar datos
     datosExcel.forEach((fila, index) => {
       const postulante = this.postulantesFiltrados[index];
-      const estaSeleccionado = postulante && this.postulantesSeleccionados[postulante.postulanteID?.toString() || ''];
-      const rowClass = estaSeleccionado ? 'selected' : '';
+      const estadoPostulante = postulante?.estado || 'Pendiente';
+      const estadoClass = this.getEstadoClass(estadoPostulante);
       
-      xlsContent += `<tr class="${rowClass}">`;
+      xlsContent += `<tr>`;
       headers.forEach((header, colIndex) => {
         const valor = fila[header as keyof typeof fila];
         let cellClass = '';
         
         if (header === 'N°') {
           cellClass = 'number';
-        } else if (header === 'Estado de Selección') {
-          cellClass = estaSeleccionado ? 'estado-seleccionado' : 'estado-no-seleccionado';
+                } else if (header === 'Estado del Postulante') {
+          cellClass = estadoClass;
         }
         
         xlsContent += `<td class="${cellClass}">${valor}</td>`;
@@ -1432,10 +1515,7 @@ export class DescargasComponent implements OnInit {
 
         <div class="stats">
           <h3>📊 ESTADÍSTICAS DEL PROCESO</h3>
-          <p><strong>Postulantes con documentos:</strong> ${this.postulantesFiltrados.filter(p => (p.documentos?.length || 0) > 0).length}</p>
-          <p><strong>Postulantes sin documentos:</strong> ${this.postulantesFiltrados.filter(p => (p.documentos?.length || 0) === 0).length}</p>
-          <p><strong>Promedio de documentos por postulante:</strong> ${Math.round((this.postulantesFiltrados.reduce((sum, p) => sum + (p.documentos?.length || 0), 0) / this.postulantesFiltrados.length) * 100) / 100}</p>
-          <p><strong>Porcentaje de seleccionados:</strong> ${Math.round((this.contarSeleccionados() / this.postulantesFiltrados.length) * 100)}%</p>
+          ${this.generarEstadisticasHTML()}
         </div>
 
         <div class="footer">
