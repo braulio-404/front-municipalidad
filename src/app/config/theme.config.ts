@@ -623,21 +623,26 @@ export const availableThemes = {
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#6C2184', // Morado principal
-      primaryLight: '#8E3CB0', // Morado claro
-      primaryDark: '#4B155A', // Morado oscuro
-      primaryVeryLight: '#F3E6F8', // Morado muy claro para fondos
-      primaryBorder: '#C9A4DB', // Borde morado claro
-      primaryRgb: '108, 33, 132',
-      secondary: '#2196F3', // Azul claro
-      accent: '#FFD600', // Amarillo dorado
-      accentLight: '#FFF9C4', // Amarillo muy claro
-      textColor: '#4B155A', // Morado oscuro para texto
-      textColorLight: '#8E3CB0', // Morado claro para texto secundario
-      textColorMuted: '#C9A4DB', // Morado claro para texto atenuado
-      backgroundColor: '#FFFFFF', // Blanco
-      backgroundAlt: '#F3E6F8', // Morado muy claro
-      backgroundCard: '#FFFFFF', // Blanco
+      primary: '#30589C', // Azul principal como Antuco
+      primaryLight: '#5F82BF', // Azul claro
+      primaryDark: '#21406B', // Azul oscuro
+      primaryVeryLight: '#E2E8F5', // Azul muy claro para fondos
+      primaryBorder: '#B6C5E3', // Borde azul claro
+      primaryRgb: '48, 88, 156',
+      secondary: '#37474F', // Gris azulado para contraste
+      accent: '#f59e0b', // Naranja dorado como Antuco
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#263238', // Gris oscuro para mejor legibilidad
+      textColorLight: '#455A64', // Gris medio para texto secundario
+      textColorMuted: '#78909C', // Gris azulado para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro
+      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado armonizados
+      success: '#4CAF50', // Verde éxito
+      warning: '#f59e0b', // Naranja advertencia (mismo que accent)
+      error: '#F44336', // Rojo error
+      info: '#30589C', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
   llayllay: {
