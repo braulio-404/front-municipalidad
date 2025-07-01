@@ -92,6 +92,8 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="puchuncavi">🏢 Puchuncaví - Azul Marino</option>
                 <option value="losangeles">🏢 Los Angeles - Azul</option>
                 <option value="launion">🏛️ La Unión - Violeta y Verde</option>
+                <option value="mariapinto">🏢 María Pinto - Azul Lindo</option>
+                <option value="quemchi">🏢 Quemchi - Rojo Suave</option>
               </select>
             </div>
 

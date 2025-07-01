@@ -1029,6 +1029,98 @@ export const availableThemes = {
       gray900: '#0F172A',
     },
   } as ThemeConfig,
+
+  // Municipalidad de María Pinto
+  mariapinto: {
+    ...defaultTheme,
+    municipality: {
+      name: 'MARÍA PINTO',
+      fullName: 'Ilustre Municipalidad de María Pinto',
+      email: 'rrhh@mariapinto.cl',
+      logoPath: 'assets/images/mariapinto.png',
+      backgroundImagePath: undefined, // Sin imagen de fondo para mejor visibilidad del logo
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1976D2', // Azul lindo y vibrante
+      primaryLight: '#42A5F5', // Azul claro hermoso
+      primaryDark: '#0D47A1', // Azul oscuro elegante
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '25, 118, 210',
+      secondary: '#37474F', // Gris azulado para contraste
+      accent: '#4CAF50', // Verde natural de acento
+      accentLight: '#C8E6C9', // Verde claro suave
+      textColor: '#263238', // Gris oscuro para mejor legibilidad
+      textColorLight: '#455A64', // Gris medio para texto secundario
+      textColorMuted: '#78909C', // Gris azulado para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro para mejor contraste con logo
+      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco puro para tarjetas
+      // Colores de estado armonizados con mejor contraste
+      success: '#4CAF50', // Verde éxito vibrante
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#1976D2', // Azul información (mismo que primary)
+      // Grises optimizados para mejor legibilidad
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Quemchi
+  quemchi: {
+    ...defaultTheme,
+    municipality: {
+      name: 'QUEMCHI',
+      fullName: 'Municipalidad de Quemchi',
+      email: 'rrhh@quemchi.cl',
+      logoPath: 'assets/images/quemchi.png',
+      backgroundImagePath: undefined, // Sin imagen de fondo para mejor visibilidad del logo
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#C85450', // Rojo más suave y elegante
+      primaryLight: '#E57373', // Rojo claro más suave
+      primaryDark: '#B71C1C', // Rojo oscuro para contraste
+      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
+      primaryBorder: '#FFCDD2', // Rojo suave para bordes
+      primaryRgb: '200, 84, 80',
+      secondary: '#37474F', // Gris azulado para mejor contraste
+      accent: '#4CAF50', // Verde más vibrante para acentos
+      accentLight: '#C8E6C9', // Verde claro suave
+      textColor: '#263238', // Gris oscuro para mejor legibilidad
+      textColorLight: '#455A64', // Gris medio para texto secundario
+      textColorMuted: '#90A4AE', // Gris claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro para mejor contraste con logo
+      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco puro para tarjetas
+      // Colores de estado armonizados con mejor contraste
+      success: '#4CAF50', // Verde éxito más vibrante
+      warning: '#FF9800', // Naranja advertencia
+      error: '#C85450', // Rojo error (mismo que primary)
+      info: '#2196F3', // Azul información neutral
+      // Grises optimizados para mejor legibilidad
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
