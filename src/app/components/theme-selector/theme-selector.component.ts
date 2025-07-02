@@ -95,6 +95,9 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="mariapinto">🏢 María Pinto - Azul Lindo</option>
                 <option value="quemchi">🏢 Quemchi - Rojo Suave</option>
                 <option value="sanantonio">🏢 San Antonio - Verde</option>
+                <option value="sanjose">🏢 San José - Azul</option>
+                <option value="donihue">🏢 Doñihue - Azul</option>
+                <option value="sanfabian">🏢 San Fabián - Azul</option>
               </select>
             </div>
 

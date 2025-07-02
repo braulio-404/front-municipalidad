@@ -1156,6 +1156,96 @@ export const availableThemes = {
       // Grises y fondos igual que defaultTheme
     },
   } as ThemeConfig,
+
+  // Municipalidad de Doñihue (tema azul oscuro y rojo)
+  donihue: {
+    ...defaultTheme,
+    municipality: {
+      name: 'DOÑIHUE',
+      fullName: 'Ilustre Municipalidad de Doñihue',
+      email: 'contacto@donihue.cl',
+      logoPath: 'assets/images/Donihue.png',
+      backgroundImagePath: undefined, // Puedes agregar fondo si tienes uno, ej: 'assets/images/DonihueFondo.png'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1A2233', // Azul oscuro principal (del fondo)
+      primaryLight: '#3B4252',
+      primaryDark: '#101624',
+      primaryVeryLight: '#E5E9F2',
+      primaryBorder: '#AAB4C8',
+      primaryRgb: '26, 34, 51',
+      accent: '#B71C1C', // Rojo del logo
+      accentLight: '#FFCDD2',
+      secondary: '#1976D2', // Azul secundario
+      // Colores de estado
+      success: '#388E3C',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Santa Juana (azul, verde y naranja sobrio)
+  santajuana: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SANTA JUANA',
+      fullName: 'Municipalidad de Santa Juana',
+      email: 'contacto@santajuana.cl',
+      logoPath: 'assets/images/santajuana.png',
+      backgroundImagePath: 'assets/images/santajuanafondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1565C0', // Azul sobrio
+      primaryLight: '#5E92F3',
+      primaryDark: '#003c8f',
+      primaryVeryLight: '#E3F2FD',
+      primaryBorder: '#90CAF9',
+      primaryRgb: '21, 101, 192',
+      accent: '#388E3C', // Verde del texto SANTA JUANA
+      accentLight: '#C8E6C9',
+      secondary: '#F57C00', // Naranja de la franja
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de San Fabián (azul fondo del logo, sobrio)
+  sanfabian: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SAN FABIÁN',
+      fullName: 'Municipalidad de San Fabián',
+      email: 'contacto@sanfabian.cl',
+      logoPath: 'assets/images/sanfabian.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#292E54', // Azul fondo del logo
+      primaryLight: '#444A6D',
+      primaryDark: '#181B2F',
+      primaryVeryLight: '#F3F4FA',
+      primaryBorder: '#BFC3D9',
+      primaryRgb: '41, 46, 84',
+      accent: '#FFFFFF', // Blanco para detalles y textos
+      accentLight: '#F3F4FA',
+      secondary: '#444A6D', // Un azul más claro para contraste
+      // Colores de estado
+      success: '#388E3C',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
