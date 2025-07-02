@@ -1246,6 +1246,156 @@ export const availableThemes = {
       // Grises y fondos igual que defaultTheme
     },
   } as ThemeConfig,
+
+  // Municipalidad de Rauco (morado degradado y rosado)
+  rauco: {
+    ...defaultTheme,
+    municipality: {
+      name: 'RAUCO',
+      fullName: 'Ilustre Municipalidad de Rauco',
+      email: 'contacto@rauco.cl',
+      logoPath: 'assets/images/rauco.png',
+      backgroundImagePath: 'assets/images/raucofondo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#8E24AA', // Morado principal
+      primaryLight: '#C158DC',
+      primaryDark: '#5C007A',
+      primaryVeryLight: '#F3E5F5',
+      primaryBorder: '#E1BEE7',
+      primaryRgb: '142, 36, 170',
+      accent: '#EC407A', // Rosado del degradado
+      accentLight: '#F8BBD0',
+      secondary: '#512DA8', // Morado más oscuro
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Pica (azul vibrante tipo Santiago, acento dorado)
+  pica: {
+    ...defaultTheme,
+    municipality: {
+      name: 'PICA',
+      fullName: 'Ilustre Municipalidad de Pica',
+      email: 'contacto@pica.cl',
+      logoPath: 'assets/images/pica.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1565C0', // Azul vibrante tipo Santiago
+      primaryLight: '#5E92F3',
+      primaryDark: '#003c8f',
+      primaryVeryLight: '#E3F2FD',
+      primaryBorder: '#90CAF9',
+      primaryRgb: '21, 101, 192',
+      accent: '#FFC107', // Amarillo/dorado del escudo
+      accentLight: '#FFF8E1',
+      secondary: '#1976D2', // Azul secundario
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Placilla (azul sobrio, amarillo y blanco)
+  placilla: {
+    ...defaultTheme,
+    municipality: {
+      name: 'PLACILLA',
+      fullName: 'Ilustre Municipalidad de Placilla',
+      email: 'contacto@placilla.cl',
+      logoPath: 'assets/images/placilla.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1A237E', // Azul sobrio
+      primaryLight: '#5C6BC0',
+      primaryDark: '#0D133D',
+      primaryVeryLight: '#E8EAF6',
+      primaryBorder: '#C5CAE9',
+      primaryRgb: '26, 35, 126',
+      accent: '#FFD600', // Amarillo del logo
+      accentLight: '#FFF9C4',
+      secondary: '#FFFFFF', // Blanco para detalles
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Toltén (azul fuerte y amarillo)
+  tolten: {
+    ...defaultTheme,
+    municipality: {
+      name: 'TOLTÉN',
+      fullName: 'Ilustre Municipalidad de Toltén',
+      email: 'contacto@tolten.cl',
+      logoPath: 'assets/images/tolten.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#0D47A1', // Azul fuerte
+      primaryLight: '#5472D3',
+      primaryDark: '#002171',
+      primaryVeryLight: '#E3F2FD',
+      primaryBorder: '#90CAF9',
+      primaryRgb: '13, 71, 161',
+      accent: '#FFD600', // Amarillo del escudo
+      accentLight: '#FFF9C4',
+      secondary: '#1976D2', // Azul secundario
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Putaendo (celeste del logo, sobrio)
+  putaendo: {
+    ...defaultTheme,
+    municipality: {
+      name: 'PUTAENDO',
+      fullName: 'Ilustre Municipalidad de Putaendo',
+      email: 'contacto@putaendo.cl',
+      logoPath: 'assets/images/puteaendo.png',
+      backgroundImagePath: 'assets/images/puteaendo.png',
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#7EC3E6', // Celeste del logo
+      primaryLight: '#B3E5FC',
+      primaryDark: '#4696B8',
+      primaryVeryLight: '#E1F5FE',
+      primaryBorder: '#B3E5FC',
+      primaryRgb: '126, 195, 230',
+      accent: '#FFFFFF', // Blanco para detalles y textos
+      accentLight: '#F3F4FA',
+      secondary: '#4696B8', // Celeste más oscuro para contraste
+      // Colores de estado
+      success: '#388E3C',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
