@@ -94,6 +94,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="launion">🏛️ La Unión - Violeta y Verde</option>
                 <option value="mariapinto">🏢 María Pinto - Azul Lindo</option>
                 <option value="quemchi">🏢 Quemchi - Rojo Suave</option>
+                <option value="sanantonio">🏢 San Antonio - Verde</option>
               </select>
             </div>
 

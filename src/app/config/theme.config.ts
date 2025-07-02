@@ -1126,6 +1126,36 @@ export const availableThemes = {
       gray900: '#212121',
     },
   } as ThemeConfig,
+
+  // Municipalidad de San Antonio (tema verde)
+  sanantonio: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SAN ANTONIO',
+      fullName: 'Ilustre Municipalidad de San Antonio',
+      email: 'contacto@sanantonio.cl',
+      logoPath: 'assets/images/sanantonio.png',
+      backgroundImagePath: undefined, // Puedes agregar fondo si tienes uno
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#4CAF50', // Verde principal
+      primaryLight: '#81C784',
+      primaryDark: '#388E3C',
+      primaryVeryLight: '#E8F5E9',
+      primaryBorder: '#A5D6A7',
+      primaryRgb: '76, 175, 80',
+      accent: '#FFD600', // Amarillo de la flor del logo
+      accentLight: '#FFF9C4',
+      secondary: '#1976D2', // Azul del logo
+      // Puedes ajustar los colores de estado si lo deseas
+      success: '#43A047',
+      error: '#E53935',
+      warning: '#FBC02D',
+      info: '#0288D1',
+      // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
