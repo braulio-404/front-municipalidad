@@ -98,6 +98,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="sanjose">🏢 San José - Azul</option>
                 <option value="donihue">🏢 Doñihue - Azul</option>
                 <option value="sanfabian">🏢 San Fabián - Azul</option>
+                <option value="santajuana">🏢 Santa Juana - Azul</option>
               </select>
             </div>
 
