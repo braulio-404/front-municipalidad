@@ -606,7 +606,7 @@ export const availableThemes = {
       textColorLight: '#3A8DDE', // Azul claro para texto secundario
       textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
       backgroundColor: '#FFFFFF', // Blanco
-      backgroundAlt: '#EAF4FB', // Azul muy claro
+      backgroundAlt: '#EAF4FB', // Azul muy claro alternativo
       backgroundCard: '#FFFFFF', // Blanco
       // Los colores de estado y grises se mantienen igual
     },
@@ -1394,6 +1394,42 @@ export const availableThemes = {
       warning: '#FBC02D',
       info: '#1976D2',
       // Grises y fondos igual que defaultTheme
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Curarrehue (ajustado: rosado pastel, fondo blanco, menú morado)
+  curarrehue: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CURARREHUE',
+      fullName: 'Municipalidad de Curarrehue',
+      email: 'contacto@curarrehue.cl',
+      logoPath: 'assets/images/curarrehuelogo.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#B388D8', // Morado suave (para menú lateral)
+      primaryLight: '#E1BEE7', // Morado claro
+      primaryDark: '#6B2FA0', // Morado del logo
+      primaryVeryLight: '#F8E1F0',
+      primaryBorder: '#E1BEE7',
+      primaryRgb: '179, 136, 216',
+      accent: '#FFD600', // Amarillo
+      accentLight: '#FFF9C4',
+      secondary: '#E573A6', // Rosado pastel para detalles
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+      textColor: '#FFFFFF', // Texto blanco sobre el menú
+      textColorLight: '#F8E1F0',
+      textColorMuted: '#E1BEE7',
+      backgroundColor: '#FFFFFF', // Fondo blanco para el contenido principal
+      backgroundAlt: '#F8E1F0', // Alternativo muy suave
+      backgroundCard: '#FFFFFF',
     },
   } as ThemeConfig,
 };

@@ -104,6 +104,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="tolten">🏢 Tolten- Azul</option>
                 <option value="placilla">🏢 Placilla- Azul</option>
                 <option value="putaendo">🏢 Putaendo- Celeste</option>
+                <option value="curarrehue">🏢 Curarrehue- Rosado</option>
               </select>
             </div>
 
