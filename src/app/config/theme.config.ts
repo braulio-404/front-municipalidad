@@ -1397,7 +1397,7 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
-  // Municipalidad de Curarrehue (ajustado: rosado pastel, fondo blanco, menú morado)
+  // Municipalidad de Curarrehue (ajustado: rosa más oscuro pero elegante)
   curarrehue: {
     ...defaultTheme,
     municipality: {
@@ -1409,26 +1409,26 @@ export const availableThemes = {
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#B388D8', // Morado suave (para menú lateral)
-      primaryLight: '#E1BEE7', // Morado claro
-      primaryDark: '#6B2FA0', // Morado del logo
-      primaryVeryLight: '#F8E1F0',
-      primaryBorder: '#E1BEE7',
-      primaryRgb: '179, 136, 216',
-      accent: '#FFD600', // Amarillo
-      accentLight: '#FFF9C4',
-      secondary: '#E573A6', // Rosado pastel para detalles
+      primary: '#9B5BA8', // Rosa morado más oscuro para mejor contraste
+      primaryLight: '#C688D4', // Rosa morado claro
+      primaryDark: '#6B4C93', // Morado más oscuro
+      primaryVeryLight: '#F3E8F5',
+      primaryBorder: '#D4A5DC',
+      primaryRgb: '155, 91, 168',
+      accent: '#E57373', // Rosa coral elegante
+      accentLight: '#FFCDD2',
+      secondary: '#C2559B', // Rosa más definido para detalles
       // Colores de estado
       success: '#43A047',
       error: '#D32F2F',
       warning: '#FBC02D',
       info: '#1976D2',
       // Grises y fondos igual que defaultTheme
-      textColor: '#FFFFFF', // Texto blanco sobre el menú
-      textColorLight: '#F8E1F0',
-      textColorMuted: '#E1BEE7',
+      textColor: '#2D2D2D', // Texto oscuro para mejor legibilidad
+      textColorLight: '#6B4C93',
+      textColorMuted: '#9B5BA8',
       backgroundColor: '#FFFFFF', // Fondo blanco para el contenido principal
-      backgroundAlt: '#F8E1F0', // Alternativo muy suave
+      backgroundAlt: '#F9F5FA', // Alternativo muy suave con tinte rosa
       backgroundCard: '#FFFFFF',
     },
   } as ThemeConfig,
