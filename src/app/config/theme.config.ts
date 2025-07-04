@@ -642,7 +642,7 @@ export const availableThemes = {
       success: '#4CAF50', // Verde éxito
       warning: '#f59e0b', // Naranja advertencia (mismo que accent)
       error: '#F44336', // Rojo error
-      info: '#30589C', // Azul información (mismo que primary)
+      info: '#3B82F6', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
   llayllay: {
@@ -1430,6 +1430,41 @@ export const availableThemes = {
       backgroundColor: '#FFFFFF', // Fondo blanco para el contenido principal
       backgroundAlt: '#F9F5FA', // Alternativo muy suave con tinte rosa
       backgroundCard: '#FFFFFF',
+    },
+  } as ThemeConfig,
+  // Municipalidad de Vilcún (ajustado: rosa más oscuro pero elegante)
+  vilcun: {
+    ...defaultTheme,
+    municipality: {
+      name: 'VILCÚN',
+      fullName: 'Municipalidad de Vilcún',
+      email: 'contacto@vilcun.cl',
+      logoPath: 'assets/images/vilcun.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#226d3a', // Verde oscuro del texto "Vilcún"
+      primaryLight: '#7fc242', // Verde claro de los campos
+      primaryDark: '#1a4d2a', // Verde más profundo de los campos
+      primaryVeryLight: '#ffe97a', // Amarillo claro del sol y espiga
+      primaryBorder: '#fff7c2', // Amarillo suave para bordes
+      primaryRgb: '34, 109, 58',
+      secondary: '#2d6eb6', // Azul de la montaña
+      accent: '#8b5c2a', // Marrón del tractor
+      accentLight: '#cfa66b', // Marrón claro del tractor
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos igual que defaultTheme
+      textColor: '#226d3a', // Verde oscuro para texto principal
+      textColorLight: '#7fc242', // Verde claro para texto secundario
+      textColorMuted: '#b7cbb2', // Gris verdoso suave para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#eaf6fb', // Celeste muy claro del cielo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
     },
   } as ThemeConfig,
 };
