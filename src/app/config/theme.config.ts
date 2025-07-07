@@ -1467,6 +1467,41 @@ export const availableThemes = {
       backgroundCard: '#ffffff', // Blanco para tarjetas
     },
   } as ThemeConfig,
+
+  rancagua: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Rancagua',
+      fullName: 'Municipalidad de Rancagua',
+      email: 'contacto@rancagua.cl',
+      logoPath: 'assets/images/Rancagua2.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#d32f2f', // Rojo institucional
+      primaryLight: '#e57373', // Rojo claro (hover/bordes)
+      primaryDark: '#b71c1c', // Rojo oscuro (contraste)
+      primaryVeryLight: '#ffebee', // Rojo muy claro (fondos suaves)
+      primaryBorder: '#ffcdd2', // Rojo pastel (bordes)
+      primaryRgb: '211, 47, 47',
+      secondary: '#b71c1c', // Rojo oscuro para títulos o detalles
+      accent: '#37474f', // Gris azulado oscuro para botones/acento
+      accentLight: '#b0bec5', // Gris claro para hover/acento suave
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos
+      textColor: '#b71c1c', // Rojo oscuro para texto principal sobre fondo blanco
+      textColorLight: '#37474f', // Gris azulado oscuro para texto secundario
+      textColorMuted: '#90a4ae', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f5f5f5', // Gris muy claro para fondo alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+    },
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)

@@ -106,6 +106,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="putaendo">🏢 Putaendo- Celeste</option>
                 <option value="curarrehue">🏢 Curarrehue- Rosado</option>
                 <option value="vilcun">🏢 Vilcun- Verde</option>
+                <option value="rancagua">🏢 Rancagua- Rojo</option>
               </select>
             </div>
 
