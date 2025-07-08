@@ -1563,11 +1563,11 @@ export const availableThemes = {
   torresPaine: { 
     ...defaultTheme,
     municipality: {
-      name: 'Torres Paine',
+      name: 'Torres del Paine',
       fullName: 'Municipalidad de Torres del Paine',
       email: 'contacto@torrespaine.cl',
-      logoPath: 'assets/images/torresPaine.png',
-      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+      logoPath: 'assets/images/torresPaine2.png',
+      backgroundImagePath: 'assets/images/torresPaine2.png',
     },
     colors: {
       ...defaultTheme.colors,
