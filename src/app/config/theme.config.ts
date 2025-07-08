@@ -1502,6 +1502,93 @@ export const availableThemes = {
       backgroundCard: '#ffffff', // Blanco para tarjetas
     },
   } as ThemeConfig,
+  coyhaique: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Coyhaique',
+      fullName: 'Municipalidad de Coyhaique',
+      email: 'contacto@coyhaique.cl',
+      logoPath: 'assets/images/coyhaique.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1976D2', // Azul cielo y fondo de montañas
+      primaryLight: '#63A4FF', // Azul claro
+      primaryDark: '#174EA6', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#B3D1F7', // Azul suave para bordes
+      primaryRgb: '25, 118, 210',
+      secondary: '#FFD600', // Dorado de la corona
+      accent: '#F57C00', // Naranja del árbol
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#174EA6', // Azul oscuro para texto
+      textColorLight: '#1976D2', // Azul medio para texto secundario
+      textColorMuted: '#90A4AE', // Gris azulado para texto atenuado
+      backgroundColor: '#FFFFFF', // Blanco
+      backgroundAlt: '#E3F2FD', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado y grises se mantienen igual
+    }, 
+  } as ThemeConfig,
+  rioClaro: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Rio Claro',
+      fullName: 'Municipalidad de Rio Claro',
+      email: 'contacto@rioclaro.cl',
+      logoPath: 'assets/images/rioClaro.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#223A57', // Azul profundo (río y cerros)
+      primaryLight: '#3B5A7A', // Azul intermedio
+      primaryDark: '#16263A', // Azul muy oscuro
+      primaryVeryLight: '#EAF4F8', // Azul muy claro para fondos
+      primaryBorder: '#B3C7D8', // Azul suave para bordes
+      primaryRgb: '34, 58, 87',
+      secondary: '#C46B47', // Marrón de la montaña
+      accent: '#E2A93B', // Dorado del sol
+      accentLight: '#FFE0B2', // Amarillo claro
+      textColor: '#16263A', // Azul muy oscuro para texto
+      textColorLight: '#3B5A7A', // Azul intermedio para texto secundario
+      textColorMuted: '#90A4AE', // Gris azulado para texto atenuado
+      backgroundColor: '#F1F8FA', // Azul muy claro de fondo
+      backgroundAlt: '#EAF4F8', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado y grises se mantienen igual
+    }, 
+  } as ThemeConfig,
+  torresPaine: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Torres Paine',
+      fullName: 'Municipalidad de Torres del Paine',
+      email: 'contacto@torrespaine.cl',
+      logoPath: 'assets/images/torresPaine.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#4FC3F7', // Azul cielo
+      primaryLight: '#81D4FA', // Azul claro
+      primaryDark: '#263859', // Azul montaña
+      primaryVeryLight: '#E3F6FD', // Azul muy claro
+      primaryBorder: '#B3E5FC', // Azul suave
+      primaryRgb: '79, 195, 247',
+      secondary: '#6CBF43', // Verde pradera
+      accent: '#B77B3B', // Marrón guanaco/cerro
+      accentLight: '#FFE082', // Amarillo claro
+      textColor: '#263859', // Azul montaña
+      textColorLight: '#4FC3F7', // Azul cielo
+      textColorMuted: '#90A4AE', // Gris azulado
+      backgroundColor: '#FFFFFF', // Blanco
+      backgroundAlt: '#E3F6FD', // Azul muy claro
+      backgroundCard: '#FFFFFF', // Blanco
+      // Colores de estado y grises se mantienen igual
+    }, 
+  } as ThemeConfig,
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
