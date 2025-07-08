@@ -107,9 +107,9 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="curarrehue">🏢 Curarrehue- Rosado</option>
                 <option value="vilcun">🏢 Vilcun- Verde</option>
                 <option value="rancagua">🏢 Rancagua- Rojo</option>
-                <option value="coyhaique">🏢 Coyhaique- Rojo</option>
-                <option value="rioClaro">🏢 Rio Claro- Rojo</option>
-                <option value="torresPaine">🏢 Torres Paine- Rojo</option>
+                <option value="coyhaique">🏢 Coyhaique- Azul</option>
+                <option value="rioClaro">🏢 Rio Claro- Gris</option>
+                <option value="torresPaine">🏢 Torres Paine- Celeste</option>
               </select>
             </div>
 

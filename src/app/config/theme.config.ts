@@ -1537,7 +1537,7 @@ export const availableThemes = {
       name: 'Rio Claro',
       fullName: 'Municipalidad de Rio Claro',
       email: 'contacto@rioclaro.cl',
-      logoPath: 'assets/images/rioClaro.png',
+      logoPath: 'assets/images/rioClaro2.png',
       backgroundImagePath: undefined, // Sin fondo, solo color/degradado
     },
     colors: {
@@ -1589,6 +1589,7 @@ export const availableThemes = {
       // Colores de estado y grises se mantienen igual
     }, 
   } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
