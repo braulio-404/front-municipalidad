@@ -1679,7 +1679,7 @@ export const availableThemes = {
       fullName: 'Municipalidad de Ñinhue',
       email: 'contacto@ninhue.cl',
       logoPath: 'assets/images/ninhue.png',
-      backgroundImagePath: undefined,
+      backgroundImagePath: 'assets/images/ninhue.png',
     },
     colors: {
       ...defaultTheme.colors,
