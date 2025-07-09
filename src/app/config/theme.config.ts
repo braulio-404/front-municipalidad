@@ -1675,8 +1675,8 @@ export const availableThemes = {
   ninhue: {
     ...defaultTheme,
     municipality: {
-      name: 'ÑINHUE',
-      fullName: 'Municipalidad de Ñinhue',
+      name: 'NINHUE',
+      fullName: 'Municipalidad de Ninhue',
       email: 'contacto@ninhue.cl',
       logoPath: 'assets/images/ninhue.png',
       backgroundImagePath: 'assets/images/ninhue.png',
