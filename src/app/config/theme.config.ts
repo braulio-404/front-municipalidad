@@ -1590,6 +1590,194 @@ export const availableThemes = {
     }, 
   } as ThemeConfig,
 
+  // Municipalidad de Temuco (colores del logo: azul, verde, naranja)
+  temuco: {
+    ...defaultTheme,
+    municipality: {
+      name: 'TEMUCO',
+      fullName: 'Municipalidad de Temuco',
+      email: 'contacto@temuco.cl',
+      logoPath: 'assets/images/temuco.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2E5BBA', // Azul principal del logo
+      primaryLight: '#5A8EF0', // Azul claro
+      primaryDark: '#1E4088', // Azul oscuro
+      primaryVeryLight: '#E8F2FF', // Azul muy claro para fondos
+      primaryBorder: '#A8C7F0', // Azul suave para bordes
+      primaryRgb: '46, 91, 186',
+      secondary: '#4CAF50', // Verde del logo (hoja)
+      accent: '#FF6B35', // Naranja/rojo del logo
+      accentLight: '#FFB8A1', // Naranja claro
+      textColor: '#1E4088', // Azul oscuro para texto principal
+      textColorLight: '#2E5BBA', // Azul medio para texto secundario
+      textColorMuted: '#7B9AD0', // Azul grisáceo para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#F8FAFF', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado armonizados
+      success: '#4CAF50', // Verde éxito (mismo que secondary)
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#2E5BBA', // Azul información (mismo que primary)
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Iquique (colores del desierto y mar)
+  iquique: {
+    ...defaultTheme,
+    municipality: {
+      name: 'IQUIQUE',
+      fullName: 'Municipalidad de Iquique',
+      email: 'contacto@iquique.cl',
+      logoPath: 'assets/images/iquique.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#0077BE', // Azul mar/océano
+      primaryLight: '#42A5F5', // Azul claro del cielo
+      primaryDark: '#004F7F', // Azul profundo del océano
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '0, 119, 190',
+      secondary: '#D4AF37', // Dorado del desierto/arena
+      accent: '#FF8F00', // Naranja del atardecer/desierto
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#004F7F', // Azul oscuro para texto principal
+      textColorLight: '#0077BE', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#F8FAFF', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado del desierto y mar
+      success: '#388E3C', // Verde oasis
+      warning: '#FF8F00', // Naranja advertencia (mismo que accent)
+      error: '#D32F2F', // Rojo error
+      info: '#0077BE', // Azul información (mismo que primary)
+      // Grises ajustados para el tema del desierto
+      gray50: '#FAFBFC',
+      gray100: '#F5F7FA',
+      gray200: '#E4E8ED',
+      gray300: '#CFD8E3',
+      gray400: '#9FB3C8',
+      gray500: '#6B7F95',
+      gray600: '#556B7D',
+      gray700: '#3F5364',
+      gray800: '#2A3D4B',
+      gray900: '#1A2932',
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Ñinhue (rojo, azul, amarillo y verde del escudo)
+  ninhue: {
+    ...defaultTheme,
+    municipality: {
+      name: 'ÑINHUE',
+      fullName: 'Municipalidad de Ñinhue',
+      email: 'contacto@ninhue.cl',
+      logoPath: 'assets/images/ninhue.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#D32F2F', // Rojo principal del escudo
+      primaryLight: '#E57373', // Rojo claro
+      primaryDark: '#B71C1C', // Rojo oscuro
+      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
+      primaryBorder: '#FFCDD2', // Rojo suave para bordes
+      primaryRgb: '211, 47, 47',
+      secondary: '#1976D2', // Azul del escudo
+      accent: '#FFD600', // Amarillo dorado de la corona y cinta
+      accentLight: '#FFF9C4', // Amarillo claro
+      textColor: '#B71C1C', // Rojo oscuro para texto principal
+      textColorLight: '#1976D2', // Azul para texto secundario
+      textColorMuted: '#90A4AE', // Gris para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado
+      success: '#4CAF50', // Verde del árbol
+      warning: '#FFD600', // Amarillo advertencia (mismo que accent)
+      error: '#D32F2F', // Rojo error (mismo que primary)
+      info: '#1976D2', // Azul información (mismo que secondary)
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Ñiquén (azul del agua y dorado del trigo)
+  niquen: {
+    ...defaultTheme,
+    municipality: {
+      name: 'ÑIQUÉN',
+      fullName: 'Municipalidad de Ñiquén',
+      email: 'contacto@niquen.cl',
+      logoPath: 'assets/images/Niquen.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1976D2', // Azul principal del agua/río
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '25, 118, 210',
+      secondary: '#F5F5F5', // Blanco/plata de la sección central
+      accent: '#FFB300', // Dorado de la corona y trigo
+      accentLight: '#FFE082', // Dorado claro
+      textColor: '#0D47A1', // Azul oscuro para texto principal
+      textColorLight: '#1976D2', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro
+      backgroundAlt: '#F8FAFF', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado del río y agricultura
+      success: '#8BC34A', // Verde agricultura
+      warning: '#FFB300', // Dorado advertencia (mismo que accent)
+      error: '#F44336', // Rojo error
+      info: '#1976D2', // Azul información (mismo que primary)
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Chile Chico (azul, rojo, amarillo y verde)
+  chilechico: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CHILE CHICO',
+      fullName: 'Municipalidad de Chile Chico',
+      email: 'contacto@chilechico.cl',
+      logoPath: 'assets/images/chilechico.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1565C0', // Azul principal del lago/agua
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '21, 101, 192',
+      secondary: '#388E3C', // Verde de las montañas/naturaleza
+      accent: '#FFD600', // Amarillo de la sección superior y corona
+      accentLight: '#FFF9C4', // Amarillo claro
+      textColor: '#0D47A1', // Azul oscuro para texto principal
+      textColorLight: '#1565C0', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#F8FAFF', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado de la naturaleza patagónica
+      success: '#388E3C', // Verde éxito (mismo que secondary)
+      warning: '#FF9800', // Naranja advertencia
+      error: '#D32F2F', // Rojo error
+      info: '#1565C0', // Azul información (mismo que primary)
+      // Detalle especial para Chile Chico - rojo de la red/malla
+      gray700: '#B71C1C', // Incorporamos el rojo del escudo en grises oscuros
+    },
+  } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)

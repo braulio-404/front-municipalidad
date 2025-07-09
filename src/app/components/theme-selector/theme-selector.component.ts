@@ -110,6 +110,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="coyhaique">🏢 Coyhaique- Azul</option>
                 <option value="rioClaro">🏢 Rio Claro- Gris</option>
                 <option value="torresPaine">🏢 Torres Paine- Celeste</option>
+                <option value="iquique">🏢 Iquique- Azul</option>
               </select>
             </div>
 
