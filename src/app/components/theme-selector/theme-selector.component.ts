@@ -111,6 +111,9 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="rioClaro">🏢 Rio Claro- Gris</option>
                 <option value="torresPaine">🏢 Torres Paine- Celeste</option>
                 <option value="iquique">🏢 Iquique- Azul</option>
+                <option value="ninhue">🏢 ninhue- rojo</option>
+                <option value="niquen">🏢 niquen- Azul</option>
+                <option value="chilechico">🏢 chilechico- Azul</option>
               </select>
             </div>
 

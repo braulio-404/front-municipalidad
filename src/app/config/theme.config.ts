@@ -1671,7 +1671,7 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
-  // Municipalidad de Ñinhue (rojo, azul, amarillo y verde del escudo)
+  // Municipalidad de Ñinhue (colores suavizados y elegantes)
   ninhue: {
     ...defaultTheme,
     municipality: {
@@ -1683,26 +1683,37 @@ export const availableThemes = {
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#D32F2F', // Rojo principal del escudo
-      primaryLight: '#E57373', // Rojo claro
-      primaryDark: '#B71C1C', // Rojo oscuro
-      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
-      primaryBorder: '#FFCDD2', // Rojo suave para bordes
-      primaryRgb: '211, 47, 47',
-      secondary: '#1976D2', // Azul del escudo
-      accent: '#FFD600', // Amarillo dorado de la corona y cinta
-      accentLight: '#FFF9C4', // Amarillo claro
-      textColor: '#B71C1C', // Rojo oscuro para texto principal
-      textColorLight: '#1976D2', // Azul para texto secundario
-      textColorMuted: '#90A4AE', // Gris para texto atenuado
-      backgroundColor: '#FFFFFF', // Fondo blanco
-      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
-      backgroundCard: '#FFFFFF', // Blanco para tarjetas
-      // Colores de estado
-      success: '#4CAF50', // Verde del árbol
-      warning: '#FFD600', // Amarillo advertencia (mismo que accent)
-      error: '#D32F2F', // Rojo error (mismo que primary)
-      info: '#1976D2', // Azul información (mismo que secondary)
+      primary: '#8B4B68', // Rojo borgoña más suave y elegante
+      primaryLight: '#A66B7A', // Rojo rosado claro
+      primaryDark: '#6D3651', // Borgoña oscuro
+      primaryVeryLight: '#F5F0F2', // Rosa muy suave para fondos
+      primaryBorder: '#D4B8C0', // Rosa grisáceo para bordes
+      primaryRgb: '139, 75, 104',
+      secondary: '#4A6B8A', // Azul grisáceo más suave
+      accent: '#B8860B', // Dorado oscuro más elegante
+      accentLight: '#F0E68C', // Dorado suave
+      textColor: '#2C1B25', // Gris muy oscuro para texto principal
+      textColorLight: '#4A6B8A', // Azul grisáceo para texto secundario
+      textColorMuted: '#8B8B8B', // Gris medio para texto atenuado
+      backgroundColor: '#FEFEFE', // Fondo blanco puro
+      backgroundAlt: '#F8F6F7', // Gris rosado muy suave alternativo
+      backgroundCard: '#FFFFFF', // Blanco puro para tarjetas
+      // Colores de estado suavizados
+      success: '#5D8A5D', // Verde oliva suave
+      warning: '#B8860B', // Dorado oscuro advertencia (mismo que accent)
+      error: '#A0545C', // Rojo suave para errores
+      info: '#4A6B8A', // Azul grisáceo información (mismo que secondary)
+      // Grises ajustados para mejor armonía
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
     },
   } as ThemeConfig,
 
