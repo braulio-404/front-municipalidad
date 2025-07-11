@@ -1789,6 +1789,76 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
+  laGranja: {
+    ...defaultTheme,
+    municipality: {
+      name: 'LA GRANJA',
+      fullName: 'Municipalidad de La Granja',
+      email: 'contacto@laGranja.cl',
+      logoPath: 'assets/images/LaGranja.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#0057B7', // Azul fuerte del escudo
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#003366', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '0, 87, 183',
+      secondary: '#FFD600', // Dorado/amarillo de la corona y conchas
+      accent: '#C62828', // Rojo del fondo superior
+      accentLight: '#FFCDD2', // Rojo claro
+      textColor: '#003366', // Azul oscuro para texto principal
+      textColorLight: '#1565C0', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#F8FAFF', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      success: '#388E3C', // Verde de las hojas y cuadros
+      warning: '#FFD600', // Amarillo/dorado
+      error: '#C62828', // Rojo fuerte
+      info: '#0057B7', // Azul información
+      gray700: '#B71C1C', // Rojo oscuro para detalles
+    },
+  } as ThemeConfig,
+
+  rioNegro: {
+    ...defaultTheme,
+    municipality: {
+      name: 'RIO NEGRO',
+      fullName: 'Municipalidad de Rio Negro',
+      email: 'contacto@rioNegro.cl',
+      logoPath: 'assets/images/rioNegro.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1565C0', // Azul principal del lago/agua
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '21, 101, 192',
+      secondary: '#388E3C', // Verde de las montañas/naturaleza
+      accent: '#FFD600', // Amarillo de la sección superior y corona
+      accentLight: '#FFF9C4', // Amarillo claro
+      textColor: '#0D47A1', // Azul oscuro para texto principal
+      textColorLight: '#1565C0', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#F8FAFF', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado de la naturaleza patagónica
+      success: '#388E3C', // Verde éxito (mismo que secondary)
+      warning: '#FF9800', // Naranja advertencia
+      error: '#D32F2F', // Rojo error
+      info: '#1565C0', // Azul información (mismo que primary)
+      // Detalle especial para Chile Chico - rojo de la red/malla
+      gray700: '#B71C1C', // Incorporamos el rojo del escudo en grises oscuros
+    },
+  } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)

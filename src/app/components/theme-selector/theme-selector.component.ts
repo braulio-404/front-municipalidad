@@ -115,6 +115,8 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="niquen">🏢 niquen- Azul</option>
                 <option value="chilechico">🏢 chilechico- Azul</option>
                 <option value="temuco">🏢 Temuco- Azul</option>
+                <option value="laGranja">🏢 La Granja- Azul</option>
+                <option value="rioNegro">🏢 Rio Negro- Azul</option>
               </select>
             </div>
 
