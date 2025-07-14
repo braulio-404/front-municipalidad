@@ -645,6 +645,40 @@ export const availableThemes = {
       info: '#3B82F6', // Azul información (mismo que primary)
     },
   } as ThemeConfig,
+
+  // Tema Andacollo (azul)
+  andacollo: {
+    ...defaultTheme,
+    municipality: {
+      name: 'ANDACOLLO',
+      fullName: 'Municipalidad de Andacollo',
+      email: 'contacto@andacollo.cl',
+      logoPath: 'assets/images/andacollo.png',
+      backgroundImagePath: undefined, // Puedes agregar fondo si tienes uno
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#30589C', // Azul principal
+      primaryLight: '#5F82BF', // Azul claro
+      primaryDark: '#21406B', // Azul oscuro
+      primaryVeryLight: '#E2E8F5', // Azul muy claro para fondos
+      primaryBorder: '#B6C5E3', // Borde azul claro
+      primaryRgb: '48, 88, 156',
+      secondary: '#37474F', // Gris azulado para contraste
+      accent: '#f59e0b', // Naranja dorado para acento
+      accentLight: '#FFE0B2', // Naranja claro
+      textColor: '#263238', // Gris oscuro para mejor legibilidad
+      textColorLight: '#455A64', // Gris medio para texto secundario
+      textColorMuted: '#78909C', // Gris azulado para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro
+      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      success: '#4CAF50',
+      warning: '#f59e0b',
+      error: '#F44336',
+      info: '#3B82F6',
+    },
+  } as ThemeConfig,
   llayllay: {
     ...defaultTheme,
     municipality: {
