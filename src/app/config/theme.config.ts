@@ -607,7 +607,7 @@ export const availableThemes = {
       textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
       backgroundColor: '#FFFFFF', // Blanco
       backgroundAlt: '#EAF4FB', // Azul muy claro alternativo
-      backgroundCard: '#FFFFFF', // Blanco
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
       // Los colores de estado y grises se mantienen igual
     },
   } as ThemeConfig,
@@ -677,6 +677,40 @@ export const availableThemes = {
       warning: '#f59e0b',
       error: '#F44336',
       info: '#3B82F6',
+    },
+  } as ThemeConfig,
+
+  // Tema Viña del Mar (colorido)
+  vina_del_mar: {
+    ...defaultTheme,
+    municipality: {
+      name: 'VIÑA DEL MAR',
+      fullName: 'Municipalidad de Viña del Mar',
+      email: 'contacto@vinadelmar.cl',
+      logoPath: 'assets/images/viña.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#0074e0', // Azul vibrante para header, menú, botones
+      primaryLight: '#4fc3f7', // Celeste claro
+      primaryDark: '#005bb5', // Azul más oscuro
+      primaryVeryLight: '#e3f2fd', // Azul muy claro para fondos alternativos
+      primaryBorder: '#90caf9', // Azul claro para bordes
+      primaryRgb: '0, 116, 224',
+      secondary: '#ffffff', // Blanco para contraste
+      accent: '#f7d046', // Amarillo del logo
+      accentLight: '#ffe082', // Amarillo claro
+      textColor: '#222222', // Oscuro para tarjetas blancas
+      textColorLight: '#4fc3f7', // Celeste para texto secundario
+      textColorMuted: '#bdbdbd', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo general blanco
+      backgroundAlt: '#e3f2fd', // Azul muy claro alternativo (header, menú, etc)
+      backgroundCard: '#ffffff', // Blanco para tarjetas, paneles, cajas
+      success: '#8bc34a', // Verde del logo
+      warning: '#f7d046', // Amarillo advertencia
+      error: '#e94e89', // Fucsia error
+      info: '#4fc3f7', // Celeste información
     },
   } as ThemeConfig,
   llayllay: {
