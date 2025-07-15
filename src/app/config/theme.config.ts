@@ -687,8 +687,8 @@ export const availableThemes = {
       name: 'VIÑA DEL MAR',
       fullName: 'Municipalidad de Viña del Mar',
       email: 'contacto@vinadelmar.cl',
-      logoPath: 'assets/images/viña.png',
-      backgroundImagePath: undefined,
+      logoPath: 'assets/images/vina.png',
+      backgroundImagePath: 'assets/images/vina.png',
     },
     colors: {
       ...defaultTheme.colors,
