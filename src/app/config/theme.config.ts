@@ -760,26 +760,25 @@ export const availableThemes = {
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#8B7355', // Beige oscuro fuerte para el sidebar
-      primaryLight: '#A0522D', // Beige medio fuerte
-      primaryDark: '#654321', // Beige muy oscuro
-      primaryVeryLight: '#F5DEB3', // Beige claro para fondos
-      primaryBorder: '#CD853F', // Beige dorado para bordes
-      primaryRgb: '139, 115, 85',
-      secondary: '#1976d2', // Azul del escudo
-      accent: '#4caf50', // Verde vibrante del escudo
-      success: '#4caf50', // Verde del escudo
-      warning: '#ff9800', // Naranja
-      error: '#e91e63', // Rosa del texto QUINCHAO
-      info: '#2196f3', // Azul claro
-      backgroundColor: '#F5F5DC', // Beige muy claro para el fondo
-      backgroundAlt: '#DEB887', // Beige medio para tarjetas
-      backgroundCard: '#D2B48C', // Beige más fuerte para tarjetas
-      textColor: '#2F1B14', // Texto muy oscuro
-      textColorLight: '#4A3728', // Texto oscuro
-      textColorMuted: '#5D4037', // Texto atenuado pero oscuro
-      borderColor: '#BC8F8F', // Borde beige rosado
-      shadowColor: 'rgba(0, 0, 0, 0.15)', // Sombra definida
+      primary: '#2c3e50', // Azul oscuro/gris para fondo
+      primaryLight: '#34495e', // Gris medio claro
+      primaryDark: '#1a252f', // Gris muy oscuro
+      primaryVeryLight: '#ecf0f1', // Gris muy claro para fondos
+      primaryBorder: '#bdc3c7', // Gris claro para bordes
+      primaryRgb: '44, 62, 80',
+      secondary: '#ffffff', // Blanco para contraste
+      accent: '#3498db', // Azul claro para acentos
+      accentLight: '#85c1e9', // Azul muy claro
+      textColor: '#2c3e50', // Gris oscuro para texto principal
+      textColorLight: '#7f8c8d', // Gris medio para texto secundario
+      textColorMuted: '#bdc3c7', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo general blanco
+      backgroundAlt: '#ecf0f1', // Gris muy claro alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+      success: '#27ae60', // Verde
+      warning: '#f39c12', // Naranja
+      error: '#e74c3c', // Rojo
+      info: '#3498db', // Azul información
     },
   },
 
