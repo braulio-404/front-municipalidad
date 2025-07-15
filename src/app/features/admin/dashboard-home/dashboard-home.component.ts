@@ -205,13 +205,13 @@ import { Subscription, timer } from 'rxjs';
         
         h3 {
           margin: 0 0 5px;
-          color: var(--primary-color);
+          color: #1a1a1a;
           font-size: 1.1rem;
         }
         
         p {
           margin: 0;
-          color: var(--text-color);
+          color: #333333;
           font-size: 0.9rem;
         }
       }
@@ -362,14 +362,14 @@ import { Subscription, timer } from 'rxjs';
         h3 {
           font-size: 2rem;
           font-weight: bold;
-          color: var(--primary-color);
+          color: #1a1a1a;
           margin: 0;
           line-height: 1;
         }
         
         p {
           margin: 5px 0 0;
-          color: var(--text-color);
+          color: #333333;
           font-size: 0.9rem;
         }
       }
@@ -458,18 +458,18 @@ import { Subscription, timer } from 'rxjs';
         
         p {
           margin: 0 0 5px;
-          color: var(--text-color);
+          color: #1a1a1a;
           font-size: 0.95rem;
           
           strong {
-            color: var(--primary-color);
+            color: #1a1a1a;
             font-weight: 600;
           }
         }
         
         .activity-time {
           font-size: 0.8rem;
-          color: var(--text-color);
+          color: #555555;
         }
       }
     }

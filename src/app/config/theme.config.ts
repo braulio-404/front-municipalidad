@@ -760,26 +760,26 @@ export const availableThemes = {
     },
     colors: {
       ...defaultTheme.colors,
-      primary: '#FAEED1', // Beige para el sidebar (círculo 1)
-      primaryLight: '#F5F0E0', // Beige más claro
-      primaryDark: '#E8DCC0', // Beige más oscuro
-      primaryVeryLight: '#FDFCF9', // Beige muy claro
-      primaryBorder: '#E0D8C8', // Borde beige
-      primaryRgb: '250, 238, 209',
+      primary: '#8B7355', // Beige oscuro fuerte para el sidebar
+      primaryLight: '#A0522D', // Beige medio fuerte
+      primaryDark: '#654321', // Beige muy oscuro
+      primaryVeryLight: '#F5DEB3', // Beige claro para fondos
+      primaryBorder: '#CD853F', // Beige dorado para bordes
+      primaryRgb: '139, 115, 85',
       secondary: '#1976d2', // Azul del escudo
       accent: '#4caf50', // Verde vibrante del escudo
       success: '#4caf50', // Verde del escudo
       warning: '#ff9800', // Naranja
       error: '#e91e63', // Rosa del texto QUINCHAO
       info: '#2196f3', // Azul claro
-      backgroundColor: '#ffffff', // Blanco para el fondo del contenido (círculo 2)
-      backgroundAlt: '#D4C8B8', // Beige más oscuro y elegante para tarjetas
-      backgroundCard: '#C8BAA8', // Beige oscuro y sofisticado para tarjetas
-      textColor: '#2c3e50', // Texto oscuro
-      textColorLight: '#2c3e50', // Texto claro
-      textColorMuted: '#34495e', // Texto atenuado pero oscuro para legibilidad
-      borderColor: '#B8A898', // Borde beige oscuro elegante
-      shadowColor: 'rgba(0, 0, 0, 0.15)', // Sombra más definida
+      backgroundColor: '#F5F5DC', // Beige muy claro para el fondo
+      backgroundAlt: '#DEB887', // Beige medio para tarjetas
+      backgroundCard: '#D2B48C', // Beige más fuerte para tarjetas
+      textColor: '#2F1B14', // Texto muy oscuro
+      textColorLight: '#4A3728', // Texto oscuro
+      textColorMuted: '#5D4037', // Texto atenuado pero oscuro
+      borderColor: '#BC8F8F', // Borde beige rosado
+      shadowColor: 'rgba(0, 0, 0, 0.15)', // Sombra definida
     },
   },
 
