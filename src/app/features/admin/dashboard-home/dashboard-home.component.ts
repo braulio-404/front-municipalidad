@@ -211,7 +211,7 @@ import { Subscription, timer } from 'rxjs';
         
         p {
           margin: 0;
-          color: var(--text-color-light);
+          color: var(--text-color);
           font-size: 0.9rem;
         }
       }
@@ -369,7 +369,7 @@ import { Subscription, timer } from 'rxjs';
         
         p {
           margin: 5px 0 0;
-          color: var(--text-color-light);
+          color: var(--text-color);
           font-size: 0.9rem;
         }
       }
@@ -469,7 +469,7 @@ import { Subscription, timer } from 'rxjs';
         
         .activity-time {
           font-size: 0.8rem;
-          color: var(--text-color-muted);
+          color: var(--text-color);
         }
       }
     }

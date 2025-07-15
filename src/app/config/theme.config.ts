@@ -713,6 +713,76 @@ export const availableThemes = {
       info: '#4fc3f7', // Celeste información
     },
   } as ThemeConfig,
+
+  // Tema Quillón (logo blanco, fondo oscuro)
+  quillon: {
+    ...defaultTheme,
+    municipality: {
+      name: 'QUILLÓN',
+      fullName: 'Municipalidad de Quillón',
+      email: 'contacto@quillon.cl',
+      logoPath: 'assets/images/quillon.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2c3e50', // Azul oscuro/gris para fondo
+      primaryLight: '#34495e', // Gris medio claro
+      primaryDark: '#1a252f', // Gris muy oscuro
+      primaryVeryLight: '#ecf0f1', // Gris muy claro para fondos
+      primaryBorder: '#bdc3c7', // Gris claro para bordes
+      primaryRgb: '44, 62, 80',
+      secondary: '#ffffff', // Blanco para contraste
+      accent: '#3498db', // Azul claro para acentos
+      accentLight: '#85c1e9', // Azul muy claro
+      textColor: '#2c3e50', // Gris oscuro para texto principal
+      textColorLight: '#7f8c8d', // Gris medio para texto secundario
+      textColorMuted: '#bdc3c7', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo general blanco
+      backgroundAlt: '#ecf0f1', // Gris muy claro alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+      success: '#27ae60', // Verde
+      warning: '#f39c12', // Naranja
+      error: '#e74c3c', // Rojo
+      info: '#3498db', // Azul información
+    },
+  } as ThemeConfig,
+
+  // Tema Quinchao (colores vibrantes del logo)
+  quinchao: {
+    ...defaultTheme,
+    municipality: {
+      name: 'QUINCHAO',
+      fullName: 'Municipalidad de Quinchao',
+      email: 'contacto@quinchao.cl',
+      logoPath: 'assets/images/quimchao2.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#FAEED1', // Beige para el sidebar (círculo 1)
+      primaryLight: '#F5F0E0', // Beige más claro
+      primaryDark: '#E8DCC0', // Beige más oscuro
+      primaryVeryLight: '#FDFCF9', // Beige muy claro
+      primaryBorder: '#E0D8C8', // Borde beige
+      primaryRgb: '250, 238, 209',
+      secondary: '#1976d2', // Azul del escudo
+      accent: '#4caf50', // Verde vibrante del escudo
+      success: '#4caf50', // Verde del escudo
+      warning: '#ff9800', // Naranja
+      error: '#e91e63', // Rosa del texto QUINCHAO
+      info: '#2196f3', // Azul claro
+      backgroundColor: '#ffffff', // Blanco para el fondo del contenido (círculo 2)
+      backgroundAlt: '#D4C8B8', // Beige más oscuro y elegante para tarjetas
+      backgroundCard: '#C8BAA8', // Beige oscuro y sofisticado para tarjetas
+      textColor: '#2c3e50', // Texto oscuro
+      textColorLight: '#2c3e50', // Texto claro
+      textColorMuted: '#34495e', // Texto atenuado pero oscuro para legibilidad
+      borderColor: '#B8A898', // Borde beige oscuro elegante
+      shadowColor: 'rgba(0, 0, 0, 0.15)', // Sombra más definida
+    },
+  },
+
   llayllay: {
     ...defaultTheme,
     municipality: {
