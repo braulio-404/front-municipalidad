@@ -121,6 +121,8 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="vina_del_mar">🏢 Viña del Mar - Colorido</option>
                 <option value="quillon">🏢 Quillón - Gris Oscuro</option>
                 <option value="quinchao">🏢 Quinchao - Vibrante</option>
+                <option value="retiro">🏢 Retiro - Vibrante</option>
+                <option value="puertovaras">🏢 Puerto Varas - Morado</option>
               </select>
             </div>
 

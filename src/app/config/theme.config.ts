@@ -1996,6 +1996,98 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
+  // Municipalidad de Puerto Varas (morado elegante con slogan inclusivo)
+  puertovaras: {
+    ...defaultTheme,
+    municipality: {
+      name: 'PUERTO VARAS',
+      fullName: 'Municipalidad de Puerto Varas',
+      email: 'contacto@puertovaras.cl',
+      logoPath: 'assets/images/puertovaras2.png',
+      backgroundImagePath: 'assets/images/puertovaras2.png'
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#5B2C87', // Morado principal del escudo
+      primaryLight: '#7C3AED', // Morado claro
+      primaryDark: '#4A1A69', // Morado oscuro
+      primaryVeryLight: '#F5F3FF', // Morado muy claro para fondos
+      primaryBorder: '#E0E7FF', // Morado suave para bordes
+      primaryRgb: '91, 44, 135',
+      secondary: '#1F2937', // Gris oscuro para contraste
+      accent: '#10B981', // Verde de acento (representa naturaleza)
+      accentLight: '#D1FAE5', // Verde claro
+      textColor: '#1F2937', // Gris oscuro para texto principal
+      textColorLight: '#4B5563', // Gris medio para texto secundario
+      textColorMuted: '#6B7280', // Gris medio para texto atenuado
+      backgroundColor: '#FEFFFE', // Fondo casi blanco
+      backgroundAlt: '#F8FAFC', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado balanceados
+      success: '#10B981', // Verde éxito (mismo que accent)
+      warning: '#F59E0B', // Naranja advertencia
+      error: '#EF4444', // Rojo error
+      info: '#3B82F6', // Azul información
+      // Grises optimizados para el tema morado
+      gray50: '#F8FAFC',
+      gray100: '#F1F5F9',
+      gray200: '#E2E8F0',
+      gray300: '#CBD5E1',
+      gray400: '#94A3B8',
+      gray500: '#64748B',
+      gray600: '#475569',
+      gray700: '#334155',
+      gray800: '#1E293B',
+      gray900: '#0F172A',
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Retiro (azul agrícola con tractor)
+  retiro: {
+    ...defaultTheme,
+    municipality: {
+      name: 'RETIRO',
+      fullName: 'I. Municipalidad de Retiro',
+      email: 'contacto@retiro.cl',
+      logoPath: 'assets/images/retiro.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1B5EA5', // Azul principal del escudo
+      primaryLight: '#3A8DDE', // Azul claro
+      primaryDark: '#0B2C4A', // Azul oscuro
+      primaryVeryLight: '#EAF4FB', // Azul muy claro para fondos
+      primaryBorder: '#A3C6E5', // Azul grisáceo claro
+      primaryRgb: '27, 94, 165',
+      secondary: '#FFD76A', // Amarillo dorado (representa agricultura)
+      accent: '#A12A1A', // Rojo oscuro (representa tierra)
+      accentLight: '#F5C6C6', // Rojo claro
+      textColor: '#0B2C4A', // Azul oscuro para texto principal
+      textColorLight: '#3A8DDE', // Azul claro para texto secundario
+      textColorMuted: '#A3C6E5', // Azul grisáceo claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#EAF4FB', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado de la agricultura
+      success: '#4CAF50', // Verde éxito (representa cultivos)
+      warning: '#FF9800', // Naranja advertencia (representa cosecha)
+      error: '#F44336', // Rojo error
+      info: '#1B5EA5', // Azul información (mismo que primary)
+      // Grises optimizados para el tema agrícola
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
