@@ -123,6 +123,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="quinchao">🏢 Quinchao - Vibrante</option>
                 <option value="retiro">🏢 Retiro - Vibrante</option>
                 <option value="puertovaras">🏢 Puerto Varas - Morado</option>
+                <option value="guaitecas">🏢 Guaitecas - Azul</option>
               </select>
             </div>
 

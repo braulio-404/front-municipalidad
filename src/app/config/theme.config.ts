@@ -2088,6 +2088,52 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
+  // Municipalidad de Guaitecas (marítimo con biodiversidad)
+  guaitecas: {
+    ...defaultTheme,
+    municipality: {
+      name: 'GUAITECAS',
+      fullName: 'Municipalidad de Guaitecas',
+      email: 'contacto@guaitecas.cl',
+      logoPath: 'assets/images/guaitecas.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1A4B7A', // Azul marino principal del escudo
+      primaryLight: '#2E7D8F', // Azul claro
+      primaryDark: '#0D2C4A', // Azul oscuro
+      primaryVeryLight: '#E8F4F8', // Azul muy claro para fondos
+      primaryBorder: '#A3C6E5', // Azul suave para bordes
+      primaryRgb: '26, 75, 122',
+      secondary: '#4CAF50', // Verde de la naturaleza (árboles)
+      accent: '#FFC107', // Dorado del sol y peces
+      accentLight: '#FFF8E1', // Dorado claro
+      textColor: '#424242', // Gris medio para texto principal
+      textColorLight: '#1A4B7A', // Azul marino para texto secundario
+      textColorMuted: '#87CEEB', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E8F4F8', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Colores de estado marítimos y naturales
+      success: '#4CAF50', // Verde éxito (representa "VIDA")
+      warning: '#FF9800', // Naranja advertencia
+      error: '#E53935', // Rojo error (del escudo)
+      info: '#87CEEB', // Azul información (agua)
+      // Colores adicionales de las barras de colores
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242', // Gris del texto del logo
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
