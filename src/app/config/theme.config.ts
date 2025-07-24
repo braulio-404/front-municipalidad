@@ -2327,6 +2327,53 @@ export const availableThemes = {
       gray900: '#212121',
     },
   } as ThemeConfig,
+  collipulli: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Collipulli',
+      fullName: 'Municipalidad de Collipulli',
+      email: 'contacto@collipulli.cl',
+      logoPath: 'assets/images/Collipulli.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#E53935', // Rojo vibrante del círculo central del logo
+      primaryLight: '#F44336', // Rojo claro
+      primaryDark: '#C62828', // Rojo más oscuro para contraste
+      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
+      primaryBorder: '#FFCDD2', // Rojo suave para bordes
+      primaryRgb: '229, 57, 53',
+      secondary: '#4CAF50', // Verde de las ramas decorativas del logo
+      accent: '#FFD600', // Dorado de la corona y círculos del logo
+      accentLight: '#FFF59D', // Dorado claro
+      // Colores de estado que armonizan con el logo
+      success: '#4CAF50', // Verde éxito (mismo que secondary del logo)
+      error: '#E53935', // Rojo error (mismo que primary del logo)
+      warning: '#FFD600', // Dorado advertencia (mismo que accent del logo)
+      info: '#2196F3', // Azul información complementario
+      // Texto y fondos que respetan la identidad del logo
+      textColor: '#212121', // Negro intenso (como la figura central)
+      textColorLight: '#424242', // Gris oscuro para texto secundario
+      textColorMuted: '#757575', // Gris medio para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro
+      backgroundAlt: '#FFF8E1', // Fondo alternativo con tinte dorado muy suave
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Grises que complementan los colores del logo
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
+
 
 
 

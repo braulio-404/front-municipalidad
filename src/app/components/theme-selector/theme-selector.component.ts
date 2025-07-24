@@ -129,6 +129,7 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="PozoAlmonte">🏢 Pozo Almonte- Azul</option>
                 <option value="sanNicolas">🏢 San Nicolás- Azul</option>
                 <option value="yungai">🏢 Yungai- Azul</option>
+                <option value="collipulli">🏢 Collipulli- rojo</option>
               </select>
             </div>
 
