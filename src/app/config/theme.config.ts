@@ -2134,6 +2134,250 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
+  lagunaBlanca: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'LAGUNA BLANCA',
+      fullName: 'Municipalidad de Laguna Blanca',
+      email: 'contacto@lagunablanca.cl',
+      logoPath: 'assets/images/lagunablanca.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2E86AB', // Azul laguna profundo (representa las aguas cristalinas)
+      primaryLight: '#4FC3F7', // Celeste claro (reflejo del cielo en el agua)
+      primaryDark: '#1B5E78', // Azul profundo (profundidades de la laguna)
+      primaryVeryLight: '#E8F5F9', // Azul muy claro (bruma matutina)
+      primaryBorder: '#B3E5FC', // Celeste suave (ondas del agua)
+      primaryRgb: '46, 134, 171',
+      secondary: '#ECEFF1', // Gris blanco (representa el "blanca" del nombre)
+      accent: '#FF7043', // Coral suave (atardeceres patagónicos)
+      accentLight: '#FFAB91', // Coral claro
+      // Colores de estado naturales
+      success: '#66BB6A', // Verde natural (vegetación patagónica)
+      error: '#EF5350', // Rojo coral suave
+      warning: '#FFCA28', // Amarillo dorado (sol patagónico)
+      info: '#2E86AB', // Azul información (mismo que primary)
+      // Texto y fondos inspirados en la naturaleza
+      textColor: '#263238', // Gris muy oscuro (piedras de la orilla)
+      textColorLight: '#455A64', // Gris medio (sombras en las rocas)
+      textColorMuted: '#78909C', // Gris azulado (niebla sobre la laguna)
+      backgroundColor: '#FAFAFA', // Blanco puro (pureza de la laguna)
+      backgroundAlt: '#F5F5F5', // Gris muy claro (arena blanca)
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Grises inspirados en el paisaje patagónico
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+  panquehue: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Panquehue',
+      fullName: 'Municipalidad de Panquehue',
+      email: 'contacto@panquehue.cl',
+      logoPath: 'assets/images/Panquehue.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#d32f2f', // Rojo institucional
+      primaryLight: '#e57373', // Rojo claro (hover/bordes)
+      primaryDark: '#b71c1c', // Rojo oscuro (contraste)
+      primaryVeryLight: '#ffebee', // Rojo muy claro (fondos suaves)
+      primaryBorder: '#ffcdd2', // Rojo pastel (bordes)
+      primaryRgb: '211, 47, 47',
+      secondary: '#b71c1c', // Rojo oscuro para títulos o detalles
+      accent: '#37474f', // Gris azulado oscuro para botones/acento
+      accentLight: '#b0bec5', // Gris claro para hover/acento suave
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos
+      textColor: '#b71c1c', // Rojo oscuro para texto principal sobre fondo blanco
+      textColorLight: '#37474f', // Gris azulado oscuro para texto secundario
+      textColorMuted: '#90a4ae', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f5f5f5', // Gris muy claro para fondo alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+    },
+  } as ThemeConfig,
+  PozoAlmonte: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Pozo Almonte',
+      fullName: 'Municipalidad de Pozo Almonte',
+      email: 'contacto@pozoalmonte.cl',
+      logoPath: 'assets/images/PozoAlmonte.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#d32f2f', // Rojo institucional
+      primaryLight: '#e57373', // Rojo claro (hover/bordes)
+      primaryDark: '#b71c1c', // Rojo oscuro (contraste)
+      primaryVeryLight: '#ffebee', // Rojo muy claro (fondos suaves)
+      primaryBorder: '#ffcdd2', // Rojo pastel (bordes)
+      primaryRgb: '211, 47, 47',
+      secondary: '#b71c1c', // Rojo oscuro para títulos o detalles
+      accent: '#37474f', // Gris azulado oscuro para botones/acento
+      accentLight: '#b0bec5', // Gris claro para hover/acento suave
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos
+      textColor: '#b71c1c', // Rojo oscuro para texto principal sobre fondo blanco
+      textColorLight: '#37474f', // Gris azulado oscuro para texto secundario
+      textColorMuted: '#90a4ae', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f5f5f5', // Gris muy claro para fondo alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+    },
+  } as ThemeConfig,
+  sanNicolas: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'SAN NICOLAS',
+      fullName: 'Municipalidad de San Nicolás',
+      email: 'contacto@sannicolas.cl',
+      logoPath: 'assets/images/SanNicolas.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#d32f2f', // Rojo institucional
+      primaryLight: '#e57373', // Rojo claro (hover/bordes)
+      primaryDark: '#b71c1c', // Rojo oscuro (contraste)
+      primaryVeryLight: '#ffebee', // Rojo muy claro (fondos suaves)
+      primaryBorder: '#ffcdd2', // Rojo pastel (bordes)
+      primaryRgb: '211, 47, 47',
+      secondary: '#b71c1c', // Rojo oscuro para títulos o detalles
+      accent: '#37474f', // Gris azulado oscuro para botones/acento
+      accentLight: '#b0bec5', // Gris claro para hover/acento suave
+      // Colores de estado
+      success: '#43A047',
+      error: '#D32F2F',
+      warning: '#FBC02D',
+      info: '#1976D2',
+      // Grises y fondos
+      textColor: '#b71c1c', // Rojo oscuro para texto principal sobre fondo blanco
+      textColorLight: '#37474f', // Gris azulado oscuro para texto secundario
+      textColorMuted: '#90a4ae', // Gris claro para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f5f5f5', // Gris muy claro para fondo alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+    },
+  } as ThemeConfig,
+
+  yungai: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'YUNGAI',
+      fullName: 'Municipalidad de Yungai',
+      email: 'contacto@yungai.cl',
+      logoPath: 'assets/images/Yungai.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#E53935', // Rojo vibrante del círculo central del logo
+      primaryLight: '#F44336', // Rojo claro
+      primaryDark: '#C62828', // Rojo más oscuro para contraste
+      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
+      primaryBorder: '#FFCDD2', // Rojo suave para bordes
+      primaryRgb: '229, 57, 53',
+      secondary: '#4CAF50', // Verde de las ramas decorativas del logo
+      accent: '#FFD600', // Dorado de la corona y círculos del logo
+      accentLight: '#FFF59D', // Dorado claro
+      // Colores de estado que armonizan con el logo
+      success: '#4CAF50', // Verde éxito (mismo que secondary del logo)
+      error: '#E53935', // Rojo error (mismo que primary del logo)
+      warning: '#FFD600', // Dorado advertencia (mismo que accent del logo)
+      info: '#2196F3', // Azul información complementario
+      // Texto y fondos que respetan la identidad del logo
+      textColor: '#212121', // Negro intenso (como la figura central)
+      textColorLight: '#424242', // Gris oscuro para texto secundario
+      textColorMuted: '#757575', // Gris medio para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro
+      backgroundAlt: '#FFF8E1', // Fondo alternativo con tinte dorado muy suave
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Grises que complementan los colores del logo
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+  collipulli: { 
+    ...defaultTheme,
+    municipality: {
+      name: 'Collipulli',
+      fullName: 'Municipalidad de Collipulli',
+      email: 'contacto@collipulli.cl',
+      logoPath: 'assets/images/Collipulli.png',
+      backgroundImagePath: undefined, // Sin fondo, solo color/degradado
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#E53935', // Rojo vibrante del círculo central del logo
+      primaryLight: '#F44336', // Rojo claro
+      primaryDark: '#C62828', // Rojo más oscuro para contraste
+      primaryVeryLight: '#FFEBEE', // Rojo muy claro para fondos
+      primaryBorder: '#FFCDD2', // Rojo suave para bordes
+      primaryRgb: '229, 57, 53',
+      secondary: '#4CAF50', // Verde de las ramas decorativas del logo
+      accent: '#FFD600', // Dorado de la corona y círculos del logo
+      accentLight: '#FFF59D', // Dorado claro
+      // Colores de estado que armonizan con el logo
+      success: '#4CAF50', // Verde éxito (mismo que secondary del logo)
+      error: '#E53935', // Rojo error (mismo que primary del logo)
+      warning: '#FFD600', // Dorado advertencia (mismo que accent del logo)
+      info: '#2196F3', // Azul información complementario
+      // Texto y fondos que respetan la identidad del logo
+      textColor: '#212121', // Negro intenso (como la figura central)
+      textColorLight: '#424242', // Gris oscuro para texto secundario
+      textColorMuted: '#757575', // Gris medio para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco puro
+      backgroundAlt: '#FFF8E1', // Fondo alternativo con tinte dorado muy suave
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Grises que complementan los colores del logo
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
+
+
+
+
+
   // Municipalidad de La Reina (azul institucional)
   lareina: {
     ...defaultTheme,
