@@ -124,6 +124,10 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="retiro">🏢 Retiro - Vibrante</option>
                 <option value="puertovaras">🏢 Puerto Varas - Morado</option>
                 <option value="guaitecas">🏢 Guaitecas - Azul</option>
+                <option value="lareina">🏢 La Reina - Azul</option>
+                <option value="cochamo">🏢 Cochamó - Azul Marino</option>
+                <option value="sanpablo">🏢 San Pablo - Azul</option>
+                <option value="santamaria">🏢 Santa María - Verde</option>
               </select>
             </div>
 

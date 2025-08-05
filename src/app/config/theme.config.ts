@@ -2134,6 +2134,153 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
+  // Municipalidad de La Reina (azul institucional)
+  lareina: {
+    ...defaultTheme,
+    municipality: {
+      name: 'LA REINA',
+      fullName: 'Municipalidad de La Reina',
+      email: 'contacto@lareina.cl',
+      logoPath: 'assets/images/lareina.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1976D2', // Azul principal institucional
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '25, 118, 210',
+      secondary: '#37474F', // Gris azulado para contraste
+      accent: '#4CAF50', // Verde de acento
+      accentLight: '#C8E6C9', // Verde claro
+      textColor: '#263238', // Gris oscuro para texto principal
+      textColorLight: '#455A64', // Gris medio para texto secundario
+      textColorMuted: '#78909C', // Gris azulado para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#FAFAFA', // Gris muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      success: '#4CAF50', // Verde éxito
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#1976D2', // Azul información
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Cochamó (azul marino y blanco)
+  cochamo: {
+    ...defaultTheme,
+    municipality: {
+      name: 'COCHAMÓ',
+      fullName: 'I. Municipalidad de Cochamó',
+      email: 'contacto@cochamo.cl',
+      logoPath: 'assets/images/cochamo.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1A4B7A', // Azul marino principal del escudo
+      primaryLight: '#2E7D8F', // Azul claro
+      primaryDark: '#0D2C4A', // Azul oscuro
+      primaryVeryLight: '#E8F4F8', // Azul muy claro para fondos
+      primaryBorder: '#A3C6E5', // Azul suave para bordes
+      primaryRgb: '26, 75, 122',
+      secondary: '#FFFFFF', // Blanco del escudo
+      accent: '#FFC107', // Dorado de acento
+      accentLight: '#FFF8E1', // Dorado claro
+      textColor: '#0D2C4A', // Azul oscuro para texto principal
+      textColorLight: '#1A4B7A', // Azul marino para texto secundario
+      textColorMuted: '#87CEEB', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E8F4F8', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      success: '#4CAF50', // Verde éxito
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#1A4B7A', // Azul información
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de San Pablo (azul y blanco)
+  sanpablo: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SAN PABLO',
+      fullName: 'San Pablo Ilustre Municipalidad',
+      email: 'contacto@sanpablo.cl',
+      logoPath: 'assets/images/sanpablo.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#1976D2', // Azul principal institucional
+      primaryLight: '#42A5F5', // Azul claro
+      primaryDark: '#0D47A1', // Azul oscuro
+      primaryVeryLight: '#E3F2FD', // Azul muy claro para fondos
+      primaryBorder: '#90CAF9', // Azul suave para bordes
+      primaryRgb: '25, 118, 210',
+      secondary: '#FFFFFF', // Blanco del escudo
+      accent: '#FFC107', // Dorado de acento
+      accentLight: '#FFF8E1', // Dorado claro
+      textColor: '#0D47A1', // Azul oscuro para texto principal
+      textColorLight: '#1976D2', // Azul medio para texto secundario
+      textColorMuted: '#64B5F6', // Azul claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E3F2FD', // Azul muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      success: '#4CAF50', // Verde éxito
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#1976D2', // Azul información
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Santa María (verde agrícola)
+  santamaria: {
+    ...defaultTheme,
+    municipality: {
+      name: 'SANTA MARÍA',
+      fullName: 'Municipalidad de Santa María',
+      email: 'contacto@santamaria.cl',
+      logoPath: 'assets/images/santamaria.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2E7D32', // Verde principal agrícola
+      primaryLight: '#4CAF50', // Verde claro
+      primaryDark: '#1B5E20', // Verde oscuro
+      primaryVeryLight: '#E8F5E8', // Verde muy claro para fondos
+      primaryBorder: '#A5D6A7', // Verde suave para bordes
+      primaryRgb: '46, 125, 50',
+      secondary: '#FFC107', // Amarillo del sol
+      accent: '#8BC34A', // Verde claro de acento
+      accentLight: '#C8E6C9', // Verde muy claro
+      textColor: '#1B5E20', // Verde oscuro para texto principal
+      textColorLight: '#2E7D32', // Verde medio para texto secundario
+      textColorMuted: '#81C784', // Verde claro para texto atenuado
+      backgroundColor: '#FFFFFF', // Fondo blanco
+      backgroundAlt: '#E8F5E8', // Verde muy claro alternativo
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      success: '#4CAF50', // Verde éxito (mismo que primaryLight)
+      warning: '#FF9800', // Naranja advertencia
+      error: '#F44336', // Rojo error
+      info: '#2E7D32', // Verde información (mismo que primary)
+      // Grises ajustados para el tema verde
+      gray50: '#FAFAFA',
+      gray100: '#F5F5F5',
+      gray200: '#EEEEEE',
+      gray300: '#E0E0E0',
+      gray400: '#BDBDBD',
+      gray500: '#9E9E9E',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)
