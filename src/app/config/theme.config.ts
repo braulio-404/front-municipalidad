@@ -2525,6 +2525,96 @@ export const availableThemes = {
     },
   } as ThemeConfig,
 
+  // Municipalidad de Canela (azul #2178bf)
+  canela: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CANELA',
+      fullName: 'Municipalidad de Canela',
+      email: 'contacto@canela.cl',
+      logoPath: 'assets/images/canela.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#2178bf', // Azul principal especificado
+      primaryLight: '#4a93e8', // Azul claro
+      primaryDark: '#155a9b', // Azul oscuro
+      primaryVeryLight: '#e6f0fc', // Azul muy claro para fondos
+      primaryBorder: '#a7c7f3', // Azul suave para bordes
+      primaryRgb: '33, 120, 191',
+      secondary: '#37474f', // Gris azulado para contraste
+      accent: '#f59e0b', // Naranja dorado de acento
+      accentLight: '#ffe0b2', // Naranja claro
+      textColor: '#155a9b', // Azul oscuro para texto principal
+      textColorLight: '#2178bf', // Azul medio para texto secundario
+      textColorMuted: '#7b9ad0', // Azul grisáceo para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f8faff', // Azul muy claro alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+      success: '#4caf50', // Verde éxito
+      warning: '#f59e0b', // Naranja advertencia (mismo que accent)
+      error: '#f44336', // Rojo error
+      info: '#2178bf', // Azul información (mismo que primary)
+      // Grises optimizados para el tema azul
+      gray50: '#fafafa',
+      gray100: '#f5f5f5',
+      gray200: '#eeeeee',
+      gray300: '#e0e0e0',
+      gray400: '#bdbdbd',
+      gray500: '#9e9e9e',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
+  // Municipalidad de Cunco (marrón #402600)
+  cunco: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CUNCO',
+      fullName: 'Municipalidad de Cunco',
+      email: 'contacto@cunco.cl',
+      logoPath: 'assets/images/cunco.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#402600', // Marrón principal especificado
+      primaryLight: '#5a3a1a', // Marrón claro
+      primaryDark: '#2d1b00', // Marrón oscuro
+      primaryVeryLight: '#f8f6f3', // Marrón muy claro para fondos
+      primaryBorder: '#d4c4b0', // Marrón suave para bordes
+      primaryRgb: '64, 38, 0',
+      secondary: '#8d6e63', // Marrón grisáceo para contraste
+      accent: '#ff9800', // Naranja de acento
+      accentLight: '#ffe0b2', // Naranja claro
+      textColor: '#2d1b00', // Marrón oscuro para texto principal
+      textColorLight: '#402600', // Marrón medio para texto secundario
+      textColorMuted: '#8d6e63', // Marrón grisáceo para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f8f6f3', // Marrón muy claro alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+      success: '#4caf50', // Verde éxito
+      warning: '#ff9800', // Naranja advertencia (mismo que accent)
+      error: '#f44336', // Rojo error
+      info: '#402600', // Marrón información (mismo que primary)
+      // Grises optimizados para el tema marrón
+      gray50: '#fafafa',
+      gray100: '#f5f5f5',
+      gray200: '#eeeeee',
+      gray300: '#e0e0e0',
+      gray400: '#bdbdbd',
+      gray500: '#9e9e9e',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
+
 };
 
 // Función para obtener el tema actual (por defecto Conchalí)

@@ -134,6 +134,8 @@ import { availableThemes } from '../../config/theme.config';
                 <option value="cochamo">🏢 Cochamó - Azul Marino</option>
                 <option value="sanpablo">🏢 San Pablo - Azul</option>
                 <option value="santamaria">🏢 Santa María - Verde</option>
+                <option value="canela">🏢 Canela - Azul</option>
+                <option value="cunco">🏢 Cunco - Marrón</option>
               </select>
             </div>
 
