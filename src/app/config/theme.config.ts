@@ -2614,6 +2614,85 @@ export const availableThemes = {
       gray900: '#212121',
     },
   } as ThemeConfig,
+  central: {
+    ...defaultTheme,
+    municipality: {
+      name: 'CENTRAL',
+      fullName: 'Municipalidad de Central',
+      email: 'contacto@central.cl',
+      logoPath: 'assets/images/Central.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      primary: '#2E86AB', // Azul laguna profundo (representa las aguas cristalinas)
+      primaryLight: '#4FC3F7', // Celeste claro (reflejo del cielo en el agua)
+      primaryDark: '#1B5E78', // Azul profundo (profundidades de la laguna)
+      primaryVeryLight: '#E8F5F9', // Azul muy claro (bruma matutina)
+      primaryBorder: '#B3E5FC', // Celeste suave (ondas del agua)
+      primaryRgb: '46, 134, 171',
+      secondary: '#ECEFF1', // Gris blanco (representa el "blanca" del nombre)
+      accent: '#FF7043', // Coral suave (atardeceres patagónicos)
+      accentLight: '#FFAB91', // Coral claro
+      // Colores de estado naturales
+      success: '#66BB6A', // Verde natural (vegetación patagónica)
+      error: '#EF5350', // Rojo coral suave
+      warning: '#FFCA28', // Amarillo dorado (sol patagónico)
+      info: '#2E86AB', // Azul información (mismo que primary)
+      // Texto y fondos inspirados en la naturaleza
+      textColor: '#263238', // Gris muy oscuro (piedras de la orilla)
+      textColorLight: '#455A64', // Gris medio (sombras en las rocas)
+      textColorMuted: '#78909C', // Gris azulado (niebla sobre la laguna)
+      backgroundColor: '#FAFAFA', // Blanco puro (pureza de la laguna)
+      backgroundAlt: '#F5F5F5', // Gris muy claro (arena blanca)
+      backgroundCard: '#FFFFFF', // Blanco para tarjetas
+      // Grises inspirados en el paisaje patagónico
+     
+    },
+  } as ThemeConfig,
+
+  vallenar: {
+    ...defaultTheme,
+    municipality: {
+      name: 'Vallenar',
+      fullName: 'Municipalidad de Vallenar',
+      email: 'contacto@vallenar.cl',
+      logoPath: 'assets/images/vallenar.png',
+      backgroundImagePath: undefined,
+    },
+    colors: {
+      ...defaultTheme.colors,
+      primary: '#402600', // Marrón principal especificado
+      primaryLight: '#5a3a1a', // Marrón claro
+      primaryDark: '#2d1b00', // Marrón oscuro
+      primaryVeryLight: '#f8f6f3', // Marrón muy claro para fondos
+      primaryBorder: '#d4c4b0', // Marrón suave para bordes
+      primaryRgb: '64, 38, 0',
+      secondary: '#8d6e63', // Marrón grisáceo para contraste
+      accent: '#ff9800', // Naranja de acento
+      accentLight: '#ffe0b2', // Naranja claro
+      textColor: '#2d1b00', // Marrón oscuro para texto principal
+      textColorLight: '#402600', // Marrón medio para texto secundario
+      textColorMuted: '#8d6e63', // Marrón grisáceo para texto atenuado
+      backgroundColor: '#ffffff', // Fondo blanco
+      backgroundAlt: '#f8f6f3', // Marrón muy claro alternativo
+      backgroundCard: '#ffffff', // Blanco para tarjetas
+      success: '#4caf50', // Verde éxito
+      warning: '#ff9800', // Naranja advertencia (mismo que accent)
+      error: '#f44336', // Rojo error
+      info: '#402600', // Marrón información (mismo que primary)
+      // Grises optimizados para el tema marrón
+      gray50: '#fafafa',
+      gray100: '#f5f5f5',
+      gray200: '#eeeeee',
+      gray300: '#e0e0e0',
+      gray400: '#bdbdbd',
+      gray500: '#9e9e9e',
+      gray600: '#757575',
+      gray700: '#616161',
+      gray800: '#424242',
+      gray900: '#212121',
+    },
+  } as ThemeConfig,
 
 };
 
